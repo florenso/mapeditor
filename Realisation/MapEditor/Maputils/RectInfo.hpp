@@ -1,16 +1,16 @@
 #pragma once
 /* Half pseudocode because of the absense of Map and Box*/
 
-class enum TileType {
+enum class TileType {
     BLOCKED, UNKNOWN, NAVIGATABLE
-}
+};
 
-class 2DBoxInfo {
+class RectInfo {
     Coordinate left_up, right_down;
-    State state;
+    TileType state;
 public:
-    2DBoxInfo(Coordinate up, Coordinate down, TileType state)
-    2DBoxInfo(Box box, TileType state)
+    RectInfo(Coordinate up, Coordinate down, TileType state);
+    RectInfo(Box box, TileType state);
 
     TileType get_state() {
         return state;
@@ -32,4 +32,4 @@ public:
         state = new_state
     }
 
-}
+};
