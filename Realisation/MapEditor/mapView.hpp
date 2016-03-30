@@ -12,10 +12,10 @@ enum class tileType {
     unkown = Qt::black
 };
 
-class Canvas: public QWidget
+class MapView: public QWidget
 {
 public:
-    Canvas(QWidget *parent, QGraphicsView * view);
+    MapView(QWidget *parent, QGraphicsView * view);
     void drawTile(int x, int y, int width, int height, tileType type);
     void drawLine(int x1, int y1, int x2, int y2, int width, QRgb color);
     void setTag(int x, int y, std::string value);
@@ -25,7 +25,7 @@ private:
     int windowHeight = 0;
     QGraphicsView * view;
     QGraphicsScene * scene;
-
+    QCurrentView;
 };
 
 #endif // CANVAS_HPP
