@@ -1,6 +1,6 @@
 #include "mainwindow.hpp"
 #include "ui_mainwindow.h"
-#include "mapView.hpp"
+
 #include <QDesktopServices>
 #include <QFileDialog>
 #include <QUrl>
@@ -13,7 +13,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    mapView* viewer = new mapView(parent, ui->graphicsView);
+    viewer = new mapView(parent, ui->graphicsView);
     viewer->drawTile(10,10,10,10,"blocked");
 }
 
@@ -57,6 +57,18 @@ void MainWindow::on_zoomInButton_clicked()
 void MainWindow::on_zoomOutButtom_clicked()
 {
 
+}
+
+bool MainWindow::event(QEvent *event)
+{
+        //::cout<<"mainWindow event type"<< event->type()<<std::endl;
+        if (event->type() == QEvent::MouseButtonPress){
+                if (viewer->mouseInMapView()){
+                std::cout << "mouse click is in viewer"  <<std::endl;}
+                else {std::cout << "mouse click is not in viewer"  <<std::endl;}
+            }
+        fflush(stdout);
+    return QWidget::event(event);
 }
 
 //void MainWindow::on_inputX_cursorPositionChanged(int arg1, int arg2)

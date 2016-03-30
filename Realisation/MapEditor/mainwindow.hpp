@@ -2,6 +2,7 @@
 #define MAINWINDOW_HPP
 
 #include <QMainWindow>
+#include "mapView.hpp"
 
 namespace Ui {
 class MainWindow;
@@ -10,11 +11,14 @@ class MainWindow;
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
+    mapView* viewer;
 
 public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
 
+protected:
+    bool event(QEvent *event);
 private slots:
     void on_actionRoboRescue_wiki_triggered();
 
