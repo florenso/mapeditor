@@ -1,6 +1,11 @@
 #include "mainwindow.hpp"
 #include "ui_mainwindow.h"
-#include <QGraphicsView>
+#include "mapView.hpp"
+#include <QDesktopServices>
+#include <QFileDialog>
+#include <QUrl>
+#include <QString>
+#include <iostream>
 
 
 MainWindow::MainWindow(QWidget *parent) :
@@ -8,27 +13,58 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    mapView* viewer = new mapView(parent, ui->graphicsView);
+    viewer->drawTile(10,10,10,10,"blocked");
 }
 
 MainWindow::~MainWindow()
 {
     delete ui;
+
 }
 
 
-
-
-void MainWindow::on_actionPan_triggered()
+void MainWindow::on_actionRoboRescue_wiki_triggered()
 {
-    ui->graphicsView->setDragMode(QGraphicsView::ScrollHandDrag);
-    printf("drag hand\n");
-    fflush(stdout);
-
+    QString link = "https://www.roborescue.nl";
+    QDesktopServices::openUrl(QUrl(link));
 }
 
-void MainWindow::on_actionSelect_triggered()
+void MainWindow::on_actionSave_as_triggered()
 {
-    ui->graphicsView->setDragMode(QGraphicsView::NoDrag);
-    printf("select cursor\n");
-    fflush(stdout);
+    QFileDialog dialog(this);
+    dialog.setFileMode(QFileDialog::AnyFile);
+    dialog.exec();
 }
+
+void MainWindow::on_actionLoad_triggered()
+{
+    QFileDialog dialog(this);
+    dialog.setFileMode(QFileDialog::AnyFile);
+    dialog.exec();
+}
+
+//void MainWindow::on_graphicsView_rubberBandChanged(const QRect &viewportRect, const QPointF &fromScenePoint, const QPointF &toScenePoint)
+//{
+// commented to avoid linker error "Unused parameter"
+//}
+
+void MainWindow::on_zoomInButton_clicked()
+{
+
+}
+
+void MainWindow::on_zoomOutButtom_clicked()
+{
+
+}
+
+//void MainWindow::on_inputX_cursorPositionChanged(int arg1, int arg2)
+//{
+// commented to avoid linker error "Unused parameter"
+//}
+
+//void MainWindow::on_inputY_cursorPositionChanged(int arg1, int arg2)
+//{
+// commented to avoid linker error "Unused parameter"
+//}
