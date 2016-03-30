@@ -1,22 +1,17 @@
-#ifndef CANVAS_HPP
-#define CANVAS_HPP
+#ifndef MAPVIEW_HPP
+#define MAPVIEW_HPP
 #include <QGraphicsWidget>
 #include <QGraphicsScene>
 #include <QGraphicsView>
 #include <QGraphicsItem>
 #include <QGraphicsRectItem>
+#include <QString>
 
-enum class tileType {
-    free = Qt::green,
-    blocked = Qt::red,
-    unkown = Qt::black
-};
-
-class MapView: public QWidget
+class mapView: public QWidget
 {
 public:
-    MapView(QWidget *parent, QGraphicsView * view);
-    void drawTile(int x, int y, int width, int height, tileType type);
+    mapView(QWidget *parent, QGraphicsView * view);
+    void drawTile(int x, int y, int width, int height, QString type);
     void drawLine(int x1, int y1, int x2, int y2, int width, QRgb color);
     void setTag(int x, int y, std::string value);
     void clear();
@@ -25,7 +20,8 @@ private:
     int windowHeight = 0;
     QGraphicsView * view;
     QGraphicsScene * scene;
-    QCurrentView;
+    std::map<QString, QRgb> tileType;
+    //QCurrentView;
 };
 
 #endif // CANVAS_HPP

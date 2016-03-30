@@ -1,5 +1,6 @@
 #include "mainwindow.hpp"
 #include "ui_mainwindow.h"
+#include "mapView.hpp"
 #include <QDesktopServices>
 #include <QFileDialog>
 #include <QUrl>
@@ -12,6 +13,8 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    mapView* viewer = new mapView(parent, ui->graphicsView);
+    viewer->drawTile(10,10,10,10,"free");
 }
 
 MainWindow::~MainWindow()
