@@ -236,7 +236,7 @@
      <x>0</x>
      <y>0</y>
      <width>1000</width>
-     <height>22</height>
+     <height>26</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -283,6 +283,14 @@
   <action name="actionRoboRescue_wiki">
    <property name="text">
     <string>RoboRescue wiki</string>
+   </property>
+  </action>
+  <action name="actionPan">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>pan</string>
    </property>
   </action>
  </widget>

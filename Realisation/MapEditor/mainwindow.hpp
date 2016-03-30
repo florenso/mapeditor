@@ -19,6 +19,7 @@ public:
 
 protected:
     bool event(QEvent *event);
+    void wheelEvent(QWheelEvent *event);
 private slots:
     void on_actionRoboRescue_wiki_triggered();
 
@@ -35,6 +36,12 @@ private slots:
   //  void on_inputX_cursorPositionChanged(int arg1, int arg2);
 
   //  void on_inputY_cursorPositionChanged(int arg1, int arg2);
+
+
+    //
+    // drag (pan) for the map viewer
+    //
+    void on_actionPan_toggled(bool);
 
 private:
     Ui::MainWindow *ui;
