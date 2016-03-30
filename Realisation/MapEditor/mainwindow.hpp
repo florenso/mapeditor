@@ -22,6 +22,16 @@ private slots:
 
     void on_actionLoad_triggered();
 
+   // void on_graphicsView_rubberBandChanged(const QRect &viewportRect, const QPointF &fromScenePoint, const QPointF &toScenePoint);
+
+    void on_zoomInButton_clicked();
+
+    void on_zoomOutButtom_clicked();
+
+  //  void on_inputX_cursorPositionChanged(int arg1, int arg2);
+
+  //  void on_inputY_cursorPositionChanged(int arg1, int arg2);
+
 private:
     Ui::MainWindow *ui;
 

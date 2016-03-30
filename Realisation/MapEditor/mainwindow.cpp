@@ -4,6 +4,7 @@
 #include <QFileDialog>
 #include <QUrl>
 #include <QString>
+#include <iostream>
 
 
 MainWindow::MainWindow(QWidget *parent) :
@@ -38,3 +39,28 @@ void MainWindow::on_actionLoad_triggered()
     dialog.setFileMode(QFileDialog::AnyFile);
     dialog.exec();
 }
+
+//void MainWindow::on_graphicsView_rubberBandChanged(const QRect &viewportRect, const QPointF &fromScenePoint, const QPointF &toScenePoint)
+//{
+// commented to avoid linker error "Unused parameter"
+//}
+
+void MainWindow::on_zoomInButton_clicked()
+{
+
+}
+
+void MainWindow::on_zoomOutButtom_clicked()
+{
+
+}
+
+//void MainWindow::on_inputX_cursorPositionChanged(int arg1, int arg2)
+//{
+// commented to avoid linker error "Unused parameter"
+//}
+
+//void MainWindow::on_inputY_cursorPositionChanged(int arg1, int arg2)
+//{
+// commented to avoid linker error "Unused parameter"
+//}
