@@ -6,6 +6,9 @@
 #include <QGraphicsItem>
 #include <QGraphicsRectItem>
 #include <QString>
+#include <iostream>
+#include <string>
+#include <map>
 
 class mapView: public QWidget
 {
@@ -20,7 +23,7 @@ private:
     int windowHeight = 0;
     QGraphicsView * view;
     QGraphicsScene * scene;
-    std::map<QString, QRgb> tileType;
+    std::map<QString, QColor> tileType;
     //QCurrentView;
 };
 

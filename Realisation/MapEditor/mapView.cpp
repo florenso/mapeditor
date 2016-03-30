@@ -1,14 +1,15 @@
 #include "mapView.hpp"
 
-mapView::mapView(QWidget *parent, QGraphicsView * view)
+mapView::mapView(QWidget *parent, QGraphicsView * view):
+    view(view)
 
 {
     scene = new QGraphicsScene;
     scene->setSceneRect( 0, 0, 400, 400);
     view->setScene(scene);
-    tileType["free"]=Qt::green;
-    tileType["blocked"]=Qt::red;
-    tileType["unkown"]=Qt::black;
+    tileType[QString("free")]=Qt::green;
+    tileType[QString("blocked")]=Qt::red;
+    tileType[QString("unkown")]=Qt::black;
 
 }
 
