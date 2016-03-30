@@ -13,14 +13,15 @@
 class mapView: public QWidget
 {
 public:
-    mapView(QWidget *parent, QGraphicsView * view);
+    explicit mapView(QWidget *parent, QGraphicsView * view);
+    ~mapView();
     void drawTile(int x, int y, int width, int height, QString type);
-    void drawLine(int x1, int y1, int x2, int y2, int width, QRgb color);
+    void drawLine(int x1, int y1, int x2, int y2, QRgb color);
     void setTag(int x, int y, std::string value);
     void clear();
 private:
-    int windowWidth = 0;
-    int windowHeight = 0;
+    int windowWidth;
+    int windowHeight;
     QGraphicsView * view;
     QGraphicsScene * scene;
     std::map<QString, QColor> tileType;

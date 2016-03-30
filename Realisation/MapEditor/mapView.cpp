@@ -1,16 +1,22 @@
 #include "mapView.hpp"
 
 mapView::mapView(QWidget *parent, QGraphicsView * view):
-    view(view)
-
+    view(view),
+    windowWidth(view->width()),
+    windowHeight(view->height())
 {
     scene = new QGraphicsScene;
-    scene->setSceneRect( 0, 0, 400, 400);
+    std::cout << "new Viewer with size: " << windowWidth << " x " << windowHeight << std::endl;
+    scene->setSceneRect( 0, 0, windowWidth, windowHeight);
     view->setScene(scene);
     tileType[QString("free")]=Qt::green;
     tileType[QString("blocked")]=Qt::red;
     tileType[QString("unkown")]=Qt::black;
+}
 
+mapView::~mapView(){
+    delete view;
+    delete scene;
 }
 
 void mapView::drawTile(int x, int y, int width, int height, QString type){
@@ -23,8 +29,15 @@ void mapView::drawTile(int x, int y, int width, int height, QString type){
     view->show();
 }
 
-void mapView::drawLine(int x1, int y1, int x2, int y2, int width, QRgb color){
-    //draw a line on the mapView
+void mapView::drawLine(int x1, int y1, int x2, int y2, QRgb color){
+    //Bad method needs rework
+    QGraphicsRectItem *block = new QGraphicsRectItem;
+    block->setRect(0, 0, x2-x1, y2-y1);
+    block->setBrush(* new QBrush(color));
+    block->setPos(x1, y1);
+    scene->addItem(block);
+    view->setScene(scene);
+    view->show();
 }
 
 void mapView::setTag(int x, int y, std::string value){
@@ -32,9 +45,8 @@ void mapView::setTag(int x, int y, std::string value){
 }
 
 void mapView::clear(){
-    /*iter door scene->items();
-    for(){
-       scene->removeItem(item);
+    QList<QGraphicsItem *> list = scene->items();
+    foreach( QGraphicsItem * item, list ){
+        scene->removeItem(item);
     }
-    */
 }

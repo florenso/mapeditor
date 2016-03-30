@@ -2,6 +2,7 @@
 #define MAINWINDOW_HPP
 
 #include <QMainWindow>
+#include "mapView.hpp"
 
 namespace Ui {
 class MainWindow;
@@ -34,6 +35,7 @@ private slots:
 
 private:
     Ui::MainWindow *ui;
+    mapView *viewer;
 
 };
 
