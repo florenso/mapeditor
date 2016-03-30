@@ -1,5 +1,7 @@
 #include "mainwindow.hpp"
 #include "ui_mainwindow.h"
+#include <QGraphicsView>
+
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -11,4 +13,22 @@ MainWindow::MainWindow(QWidget *parent) :
 MainWindow::~MainWindow()
 {
     delete ui;
+}
+
+
+
+
+void MainWindow::on_actionPan_triggered()
+{
+    ui->graphicsView->setDragMode(QGraphicsView::ScrollHandDrag);
+    printf("drag hand\n");
+    fflush(stdout);
+
+}
+
+void MainWindow::on_actionSelect_triggered()
+{
+    ui->graphicsView->setDragMode(QGraphicsView::NoDrag);
+    printf("select cursor\n");
+    fflush(stdout);
 }
