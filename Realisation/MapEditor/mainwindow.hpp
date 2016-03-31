@@ -33,7 +33,6 @@ private slots:
     void on_zoomOutButtom_clicked();
 
   //  void on_inputX_cursorPositionChanged(int arg1, int arg2);
-
   //  void on_inputY_cursorPositionChanged(int arg1, int arg2);
 
 

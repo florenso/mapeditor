@@ -116,4 +116,3 @@ void MainWindow::wheelEvent(QWheelEvent *event)
 // commented to avoid linker error "Unused parameter"
 //}
 
-
