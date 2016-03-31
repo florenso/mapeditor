@@ -2,9 +2,7 @@
 #include <iostream>
 #include <QWheelEvent>
 #include <QMouseEvent>
-#include <QScrollBar>
-#include <QInputEvent>
-#include <QEnterEvent>
+
 
 
 mapView::mapView(QWidget *parent, QGraphicsView * view, int width, int height):
@@ -27,12 +25,7 @@ mapView::mapView(QWidget *parent, QGraphicsView * view, int width, int height):
     tileType[QString("free")]=Qt::green;
     tileType[QString("blocked")]=Qt::red;
     tileType[QString("unkown")]=Qt::black;
-    view->verticalScrollBar()->installEventFilter(this);
-    view->horizontalScrollBar()->installEventFilter(this);
 
-    view->installEventFilter(this);
-    view->setMouseTracking(true);
-    view->grabMouse();
 
 }
 
@@ -96,37 +89,10 @@ bool mapView::mouseInMapView(){
 
 bool mapView::event(QEvent *event)
 {
-        std::cout << "woop"<< mouseInMapView() <<std::endl;
         std::cout<<"map view event type"<< event->type()<<std::endl;
         fflush(stdout);
     return QWidget::event(event);
 }
 
-bool mapView::eventFilter(QObject *object, QEvent *event)
-{
 
-    if (event->type() == QEvent::Wheel)
-    {
-        if (object == view->verticalScrollBar()){//catch
-            QWheelEvent* we = static_cast<QWheelEvent*>(event);
-            int num = we->delta();
-            std::cout << "delta: "<< num<< std::endl;
-            fflush(stdout);
-            return true;
-            }
-        else if(object == view->horizontalScrollBar()){//catch horizontal scroll
-                return true;}
-    }
-    else if (event->type() == QEvent::MouseMove){
-            if(mouseInMapView()){
-                    QMouseEvent* me = static_cast<QMouseEvent*>(event);
-                    //std::cout << "x" << me->pos().x() << " y" << me->pos().y()<< std::endl;
-                }
-
-        }
-    else{
-            std::cout << "mapview event filter event type " << event->type() << std::endl;
-        }
-    return false;
-}
 
