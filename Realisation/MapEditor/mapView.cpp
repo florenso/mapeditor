@@ -22,11 +22,13 @@ mapView::mapView(QWidget *parent, QGraphicsView * view, int width, int height):
     std::cout << "new Viewer with size: " << windowWidth << " x " << windowHeight << std::endl;
     scene->setSceneRect( 0, 0, windowWidth, windowHeight);
     view->setScene(scene);
+    view->show();
     tileType[QString("free")]=Qt::green;
     tileType[QString("blocked")]=Qt::red;
     tileType[QString("unkown")]=Qt::black;
     view->verticalScrollBar()->installEventFilter(this);
     view->horizontalScrollBar()->installEventFilter(this);
+
 
 }
 
@@ -41,8 +43,6 @@ void mapView::drawTile(int x, int y, int width, int height, QString type){
     block->setBrush(* new QBrush(tileType[type]));
     block->setPos(x, y);
     scene->addItem(block);
-    view->setScene(scene);
-    view->show();
 }
 
 void mapView::drawLine(int x1, int y1, int x2, int y2, QRgb color){
@@ -70,12 +70,25 @@ void mapView::clear(){
 }
 
 
+/*  void mapView::drawMap(RectInfo *map){
+ *      for (int i = 0; i <= len(map); i++;){
+ *          Box box = new Box;
+ *          box = map->get_2D_Box()
+ *          Coordinate left_up = map->get_left_up();
+ *          Coordinate right_down = map->get_right_down();
+ *          drawTile(left_up.get_x(), left_up.get_y(), right_down.get_x() - left_up.get_x(),
+ *                   left_up.get_y() - right_down_y(), map->get_state );
+ *          }
+ *  }
+ *
+ */
+
+
 bool mapView::mouseInMapView(){
         QPoint p = view->mapFromGlobal(QCursor::pos());
         if(p.x() < view->size().width() && p.x()>0 && p.y() < view->size().height() && p.y()>0) {return true;}
         return false;
     }
-
 
 bool mapView::event(QEvent *event)
 {
