@@ -25,7 +25,9 @@ MainWindow::MainWindow(QWidget *parent) :
     viewer->drawTile(900,100,100,1000,"unkown");
     viewer->drawTile(200,10,10,10,"free");
     viewer->setTag(100, 100, QString("Hallo! Dit is een test"));
-    ui->graphicsView->installEventFilter(this);
+
+
+
 }
 
 MainWindow::~MainWindow()
@@ -99,6 +101,8 @@ void MainWindow::on_actionPan_toggled(bool activatePan)
             fflush(stdout);
         }
     }
+
+
 
 
 //void MainWindow::on_inputX_cursorPositionChanged(int arg1, int arg2)

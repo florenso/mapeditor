@@ -23,7 +23,7 @@
 //#include "RectInfo"
 #include <QGraphicsSceneMouseEvent>
 
-class mapView: public QWidget
+class mapView: public QGraphicsView
 {
 public:
     //! Constructor of the mapView.

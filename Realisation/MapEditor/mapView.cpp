@@ -4,6 +4,7 @@
 #include <QMouseEvent>
 #include <QScrollBar>
 #include <QInputEvent>
+#include <QEnterEvent>
 
 
 mapView::mapView(QWidget *parent, QGraphicsView * view, int width, int height):
@@ -29,6 +30,9 @@ mapView::mapView(QWidget *parent, QGraphicsView * view, int width, int height):
     view->verticalScrollBar()->installEventFilter(this);
     view->horizontalScrollBar()->installEventFilter(this);
 
+    view->installEventFilter(this);
+    view->setMouseTracking(true);
+    view->grabMouse();
 
 }
 
@@ -100,6 +104,7 @@ bool mapView::event(QEvent *event)
 
 bool mapView::eventFilter(QObject *object, QEvent *event)
 {
+
     if (event->type() == QEvent::Wheel)
     {
         if (object == view->verticalScrollBar()){//catch
@@ -112,6 +117,16 @@ bool mapView::eventFilter(QObject *object, QEvent *event)
         else if(object == view->horizontalScrollBar()){//catch horizontal scroll
                 return true;}
     }
+    else if (event->type() == QEvent::MouseMove){
+            if(mouseInMapView()){
+                    QMouseEvent* me = static_cast<QMouseEvent*>(event);
+                    //std::cout << "x" << me->pos().x() << " y" << me->pos().y()<< std::endl;
+                }
+
+        }
+    else{
+            std::cout << "mapview event filter event type " << event->type() << std::endl;
+        }
     return false;
 }
 
