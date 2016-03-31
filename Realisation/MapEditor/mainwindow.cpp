@@ -71,6 +71,9 @@ bool MainWindow::event(QEvent *event)
 {
         //::cout<<"mainWindow event type"<< event->type()<<std::endl;
         if (event->type() == QEvent::MouseButtonPress){
+                QPoint p = ui->graphicsView->mapFromGlobal(QCursor::pos());
+                //QPoint p = viewer->view->mapFromGlobal(QCursor::pos());
+                std::cout << "mouse pos: x"<< p.x() << " y" <<p.y()<<std::endl;
                 if (viewer->mouseInMapView()){
                 std::cout << "mouse click is in viewer"  <<std::endl;}
                 else {std::cout << "mouse click is not in viewer"  <<std::endl;}
@@ -78,6 +81,30 @@ bool MainWindow::event(QEvent *event)
         fflush(stdout);
     return QWidget::event(event);
 }
+
+void MainWindow::on_actionPan_toggled(bool activatePan)
+{
+    if(activatePan){
+            ui->graphicsView->setDragMode(QGraphicsView::ScrollHandDrag);
+            printf("drag hand\n");
+            fflush(stdout);
+        }
+    else{
+            ui->graphicsView->setDragMode(QGraphicsView::NoDrag);
+            printf("select cursor\n");
+            fflush(stdout);
+        }
+    }
+
+void MainWindow::wheelEvent(QWheelEvent *event)
+    {
+        if (viewer->mouseInMapView()){
+            int num = event->delta();
+            printf("delta: %d \n",num);
+            fflush(stdout);
+        }
+    }
+
 
 //void MainWindow::on_inputX_cursorPositionChanged(int arg1, int arg2)
 //{
@@ -88,3 +115,5 @@ bool MainWindow::event(QEvent *event)
 //{
 // commented to avoid linker error "Unused parameter"
 //}
+
+
