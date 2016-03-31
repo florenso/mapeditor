@@ -1,3 +1,14 @@
+//**************************************
+//! Class responsible for dispaying all the UI elements
+//! \authors
+//! 	- Daniel Klomp
+//!		- Jop van Buuren
+//!     - Koen de Guijter
+//!
+//! \context
+//!		- part of TH7-8 assignment 2016 / Project: MapEditer
+//**************************************
+
 #ifndef MAINWINDOW_HPP
 #define MAINWINDOW_HPP
 
@@ -13,15 +24,23 @@ class MainWindow : public QMainWindow
     Q_OBJECT
 
 public:
+    //! Constructor for MainWindow.
     explicit MainWindow(QWidget *parent = 0);
+
+    //! Deconstructor for MainWindow.
     ~MainWindow();
 
 protected:
+    //! Catches all events and returns true when a event is caught.
     bool event(QEvent *event);
+
     void wheelEvent(QWheelEvent *event);
 private slots:
+
+    //! Opens the RoboRescue wiki page on click.
     void on_actionRoboRescue_wiki_triggered();
 
+    //! Saves the edited map of a location of choice.
     void on_actionSave_as_triggered();
 
     void on_actionLoad_triggered();
@@ -36,9 +55,7 @@ private slots:
   //  void on_inputY_cursorPositionChanged(int arg1, int arg2);
 
 
-    //
-    // drag (pan) for the map viewer
-    //
+    //! Enables the drag mode for the map viewer
     void on_actionPan_toggled(bool);
 
 private:

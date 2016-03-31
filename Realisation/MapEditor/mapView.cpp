@@ -19,9 +19,11 @@ mapView::mapView(QWidget *parent, QGraphicsView * view, int width, int height):
     std::cout << "new Viewer with size: " << windowWidth << " x " << windowHeight << std::endl;
     scene->setSceneRect( 0, 0, windowWidth, windowHeight);
     view->setScene(scene);
+    view->show();
     tileType[QString("free")]=Qt::green;
     tileType[QString("blocked")]=Qt::red;
     tileType[QString("unkown")]=Qt::black;
+
 }
 
 mapView::~mapView(){
@@ -35,8 +37,6 @@ void mapView::drawTile(int x, int y, int width, int height, QString type){
     block->setBrush(* new QBrush(tileType[type]));
     block->setPos(x, y);
     scene->addItem(block);
-    view->setScene(scene);
-    view->show();
 }
 
 void mapView::drawLine(int x1, int y1, int x2, int y2, QRgb color){
@@ -76,7 +76,6 @@ bool mapView::mouseInMapView(){
         if(p.x() < view->size().width() && p.x()>0 && p.y() < view->size().height() && p.y()>0) {return true;}
         return false;
     }
-
 
 bool mapView::event(QEvent *event)
 {
