@@ -13,15 +13,6 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
     viewer = new mapView(parent, ui->graphicsView, 1000, 1000);
-    //ui->mousePos->setStyleSheet("background-color:grey;");
-    viewer->drawTile(10,10,10,10,"Blocked");
-    viewer->drawTile(10,10,10,10,"Blocked");
-    viewer->clear();
-    viewer->drawTile(10,100,100,1000,"Unknown");
-    viewer->drawTile(900,100,100,1000,"Unknown");
-    viewer->drawTile(200,10,10,10,"Free");
-    viewer->setTag(200, 10, QString("20deg"));
-    viewer->setTag(100, 100, QString("Hallo! Dit is een test"));
 }
 
 MainWindow::~MainWindow()
@@ -127,4 +118,18 @@ void MainWindow::on_pushButton_clicked()
 
     QString type(ui->type->currentText());
     viewer->drawTile(x, y, w, h, type);
+}
+
+void MainWindow::on_placeTagButton_clicked()
+{
+    int x = ui->xposTag->value();
+    int y = ui->yposTag->value();
+
+    QString tag(ui->tagName->text());
+    viewer->setTag(x, y, tag);
+}
+
+void MainWindow::on_pushButton_2_clicked()
+{
+    viewer->clear();
 }

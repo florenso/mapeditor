@@ -27,7 +27,6 @@ private:
     QGraphicsView * view;
     QGraphicsScene * scene;
     std::map<QString, QColor> tileType;
-    //QCurrentView;
 protected:
     virtual void wheelEvent(QWheelEvent * event);
     bool event(QEvent *event);
