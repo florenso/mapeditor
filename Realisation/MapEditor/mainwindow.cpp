@@ -12,15 +12,15 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-
     viewer = new mapView(parent, ui->graphicsView, 1000, 1000);
-
-    viewer->drawTile(10,10,10,10,"blocked");
-    viewer->drawTile(10,10,10,10,"blocked");
+    //ui->mousePos->setStyleSheet("background-color:grey;");
+    viewer->drawTile(10,10,10,10,"Blocked");
+    viewer->drawTile(10,10,10,10,"Blocked");
     viewer->clear();
-    viewer->drawTile(10,100,100,1000,"unkown");
-    viewer->drawTile(900,100,100,1000,"unkown");
-    viewer->drawTile(200,10,10,10,"free");
+    viewer->drawTile(10,100,100,1000,"Unknown");
+    viewer->drawTile(900,100,100,1000,"Unknown");
+    viewer->drawTile(200,10,10,10,"Free");
+    viewer->setTag(200, 10, QString("20deg"));
     viewer->setTag(100, 100, QString("Hallo! Dit is een test"));
 }
 
@@ -28,7 +28,6 @@ MainWindow::~MainWindow()
 {
     delete ui;
     delete viewer;
-
 }
 
 
@@ -74,6 +73,8 @@ bool MainWindow::event(QEvent *event)
                 QPoint p = ui->graphicsView->mapFromGlobal(QCursor::pos());
                 //QPoint p = viewer->view->mapFromGlobal(QCursor::pos());
                 std::cout << "mouse pos: x"<< p.x() << " y" <<p.y()<<std::endl;
+                ui->xposLabel->setText(QString::number(p.x()));
+                ui->yposLabel->setText(QString::number(p.y()));
                 if (viewer->mouseInMapView()){
                 std::cout << "mouse click is in viewer"  <<std::endl;}
                 else {std::cout << "mouse click is not in viewer"  <<std::endl;}
@@ -116,3 +117,14 @@ void MainWindow::wheelEvent(QWheelEvent *event)
 // commented to avoid linker error "Unused parameter"
 //}
 
+//testcode
+void MainWindow::on_pushButton_clicked()
+{
+    int x = ui->xpos->value();
+    int y = ui->ypos->value();
+    int w = ui->width->value();
+    int h = ui->Height->value();
+
+    QString type(ui->type->currentText());
+    viewer->drawTile(x, y, w, h, type);
+}

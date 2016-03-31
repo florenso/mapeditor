@@ -41,6 +41,8 @@ private slots:
     //
     void on_actionPan_toggled(bool);
 
+    void on_pushButton_clicked();
+
 private:
     Ui::MainWindow *ui;
     mapView *viewer;
