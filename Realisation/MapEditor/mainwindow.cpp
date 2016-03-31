@@ -12,17 +12,19 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    viewer = new mapView(parent, ui->graphicsView);
+    viewer = new mapView(parent, ui->graphicsView, 1000, 1000);
     viewer->drawTile(10,10,10,10,"blocked");
     viewer->drawTile(10,10,10,10,"blocked");
     viewer->clear();
-    viewer->drawTile(10,100,10,10,"unkown");
+    viewer->drawTile(10,100,100,1000,"unkown");
+    viewer->drawTile(900,100,100,1000,"unkown");
     viewer->drawTile(200,10,10,10,"free");
 }
 
 MainWindow::~MainWindow()
 {
     delete ui;
+    delete viewer;
 
 }
 

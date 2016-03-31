@@ -94,6 +94,9 @@
     <property name="horizontalScrollBarPolicy">
      <enum>Qt::ScrollBarAlwaysOff</enum>
     </property>
+    <property name="dragMode">
+     <enum>QGraphicsView::ScrollHandDrag</enum>
+    </property>
    </widget>
    <widget class="QLineEdit" name="inputX">
     <property name="geometry">

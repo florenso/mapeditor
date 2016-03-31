@@ -1,10 +1,17 @@
 #include "mapView.hpp"
 
-mapView::mapView(QWidget *parent, QGraphicsView * view):
+mapView::mapView(QWidget *parent, QGraphicsView * view, int width, int height):
     view(view),
-    windowWidth(view->width()),
-    windowHeight(view->height())
+    windowWidth(width),
+    windowHeight(height)
 {
+    //if no height or with given, set to view size
+    if(width == 0){
+        windowWidth = view->width();
+    }
+    if(height == 0){
+        windowHeight = view->height();
+    }
     scene = new QGraphicsScene;
     std::cout << "new Viewer with size: " << windowWidth << " x " << windowHeight << std::endl;
     scene->setSceneRect( 0, 0, windowWidth, windowHeight);
@@ -42,6 +49,7 @@ void mapView::drawLine(int x1, int y1, int x2, int y2, QRgb color){
 
 void mapView::setTag(int x, int y, std::string value){
     //place a text on a point on mapView
+
 }
 
 void mapView::clear(){
