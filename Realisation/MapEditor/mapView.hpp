@@ -17,7 +17,7 @@ public:
     ~mapView();
     void drawTile(int x, int y, int width, int height, QString type);
     void drawLine(int x1, int y1, int x2, int y2, QRgb color);
-    void setTag(int x, int y, std::string value);
+    void setTag(int x, int y, QString value);
     void clear();
 private:
     int windowWidth;

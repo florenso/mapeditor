@@ -19,6 +19,7 @@ MainWindow::MainWindow(QWidget *parent) :
     viewer->drawTile(10,100,100,1000,"unkown");
     viewer->drawTile(900,100,100,1000,"unkown");
     viewer->drawTile(200,10,10,10,"free");
+    viewer->setTag(100, 100, QString("Hallo! Dit is een test"));
 }
 
 MainWindow::~MainWindow()

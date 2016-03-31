@@ -47,8 +47,9 @@ void mapView::drawLine(int x1, int y1, int x2, int y2, QRgb color){
     view->show();
 }
 
-void mapView::setTag(int x, int y, std::string value){
-    //place a text on a point on mapView
+void mapView::setTag(int x, int y, QString value){
+    QGraphicsTextItem *item = scene->addText(value);
+    item->setPos(x,y);
 
 }
 
