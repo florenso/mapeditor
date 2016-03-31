@@ -1,4 +1,7 @@
 #include "mapView.hpp"
+#include <iostream>
+#include <QWheelEvent>
+#include <QMouseEvent>
 
 mapView::mapView(QWidget *parent, QGraphicsView * view, int width, int height):
     view(view),
@@ -58,4 +61,27 @@ void mapView::clear(){
     foreach( QGraphicsItem * item, list ){
         scene->removeItem(item);
     }
+}
+
+void mapView::wheelEvent(QWheelEvent *event)
+    {
+        int num = event->delta();
+        std::cout << "delta: "<< num<< std::endl;
+        std::cout<< "wheel pos" << event->pos().x() << std::endl;
+        fflush(stdout);
+    }
+
+bool mapView::mouseInMapView(){
+        QPoint p = view->mapFromGlobal(QCursor::pos());
+        if(p.x() < view->size().width() && p.x()>0 && p.y() < view->size().height() && p.y()>0) {return true;}
+        return false;
+    }
+
+
+bool mapView::event(QEvent *event)
+{
+        std::cout << "woop"<< mouseInMapView() <<std::endl;
+        std::cout<<"map view event type"<< event->type()<<std::endl;
+        fflush(stdout);
+    return QWidget::event(event);
 }

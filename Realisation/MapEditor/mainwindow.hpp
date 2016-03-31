@@ -16,6 +16,8 @@ public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
 
+protected:
+    bool event(QEvent *event);
 private slots:
     void on_actionRoboRescue_wiki_triggered();
 
