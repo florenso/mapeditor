@@ -20,6 +20,7 @@
 #include <iostream>
 #include <string>
 #include <map>
+//#include "RectInfo"
 #include <QGraphicsSceneMouseEvent>
 
 class mapView: public QWidget
@@ -45,6 +46,8 @@ public:
 
     //! Checks to the mouse is located in the view.
     bool mouseInMapView();
+
+    //void drawMap(RectInfo *map);
 
 private:
     int windowWidth;
