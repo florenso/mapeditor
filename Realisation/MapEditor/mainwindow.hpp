@@ -18,7 +18,6 @@ public:
 
 protected:
     bool event(QEvent *event);
-    void wheelEvent(QWheelEvent *event);
 private slots:
     void on_actionRoboRescue_wiki_triggered();
 

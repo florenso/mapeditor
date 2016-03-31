@@ -29,8 +29,8 @@ private:
     std::map<QString, QColor> tileType;
     //QCurrentView;
 protected:
-    virtual void wheelEvent(QWheelEvent * event);
     bool event(QEvent *event);
+    bool eventFilter(QObject *o, QEvent *e);
     };
 
 #endif // CANVAS_HPP

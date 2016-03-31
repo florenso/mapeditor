@@ -5,6 +5,7 @@
 #include <QUrl>
 #include <QString>
 #include <iostream>
+#include <QMouseEvent>
 
 
 MainWindow::MainWindow(QWidget *parent) :
@@ -22,6 +23,7 @@ MainWindow::MainWindow(QWidget *parent) :
     viewer->drawTile(900,100,100,1000,"unkown");
     viewer->drawTile(200,10,10,10,"free");
     viewer->setTag(100, 100, QString("Hallo! Dit is een test"));
+    ui->graphicsView->installEventFilter(this);
 }
 
 MainWindow::~MainWindow()
@@ -92,15 +94,6 @@ void MainWindow::on_actionPan_toggled(bool activatePan)
     else{
             ui->graphicsView->setDragMode(QGraphicsView::NoDrag);
             printf("select cursor\n");
-            fflush(stdout);
-        }
-    }
-
-void MainWindow::wheelEvent(QWheelEvent *event)
-    {
-        if (viewer->mouseInMapView()){
-            int num = event->delta();
-            printf("delta: %d \n",num);
             fflush(stdout);
         }
     }
