@@ -21,6 +21,11 @@ mapView::mapView(QWidget *parent, QGraphicsView * view, int width, int height):
     std::cout << "new Viewer with size: " << windowWidth << " x " << windowHeight << std::endl;
     scene->setSceneRect( 0, 0, windowWidth, windowHeight);
     view->setScene(scene);
+    drawTile(100, 100, 20, 20, "Free");
+    drawTile(300, 200, 50, 70, "Unknown");
+    drawTile(400, 500, 20, 20, "Blocked");
+    drawTile(600, 700, 20, 20, "Mixed");
+    //view->centerOn(0,0);
     tileColors[tileTypes::Free]=Qt::green;
     tileColors[tileTypes::Blocked]=Qt::red;
     tileColors[tileTypes::Mixed]=Qt::yellow;
@@ -35,9 +40,9 @@ mapView::~mapView(){
 void mapView::drawTile(int x, int y, int width, int height, QString type){
     std::cout << "New tile: x " << x << " y " << y << " w " << width << " h " << height << std::endl;
     QGraphicsRectItem *block = new QGraphicsRectItem;
-    block->setRect(0, 0, width, height);
+    block->setRect(0, 0, width *scale, height * scale);
     block->setBrush(* new QBrush(tileColors[getTileColor(type)]));
-    block->setPos(x, y);
+    block->setPos(x*scale, y*scale);
     scene->addItem(block);
     view->setScene(scene);
     view->show();
@@ -76,6 +81,30 @@ tileTypes mapView::getTileColor(QString name){
     }else{
         return tileTypes::Unknown;
     }
+}
+
+void mapView::increaseScale(){
+    scale += 0.2f;
+    QRect newRect(0, 0, windowWidth * scale, windowHeight * scale);
+    scene->setSceneRect(newRect);
+}
+
+void mapView::decreaseScale(){
+    scale -= 1;
+    QRect newRect(0, 0, windowWidth * scale, windowHeight * scale);
+    scene->setSceneRect(newRect);
+    std::cout << "w " << scene->width() << " h " << scene->height() << std::endl;
+}
+
+int mapView::getScale(){
+    return scale;
+}
+
+void mapView::rescale(){
+    clear();
+    QRect newRect(0, 0, windowWidth * scale, windowHeight * scale);
+    scene->setSceneRect(newRect);
+    std::cout << "w " << scene->width() << " h " << scene->height() << std::endl;
 }
 
 void mapView::wheelEvent(QWheelEvent *event)

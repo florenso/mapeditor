@@ -22,12 +22,16 @@ public:
     void drawLine(int x1, int y1, int x2, int y2, QRgb color);
     void setTag(int x, int y, QString value);
     void clear();
+    void increaseScale();
+    void decreaseScale();
+    int getScale();
     tileTypes getTileColor(QString s);
     bool mouseInMapView();
 private:
+    void rescale();
     int windowWidth;
     int windowHeight;
-    int scale;
+    int scale = 1;
     QGraphicsView * view;
     QGraphicsScene * scene;
     std::map<tileTypes, QColor> tileColors;

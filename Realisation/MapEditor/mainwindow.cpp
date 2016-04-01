@@ -49,12 +49,12 @@ void MainWindow::on_actionLoad_triggered()
 
 void MainWindow::on_zoomInButton_clicked()
 {
-
+    viewer->decreaseScale();
 }
 
 void MainWindow::on_zoomOutButtom_clicked()
 {
-
+    viewer->increaseScale();
 }
 
 bool MainWindow::event(QEvent *event)
