@@ -1,10 +1,8 @@
 #include "mapView.hpp"
 #include <iostream>
-#include <QWheelEvent>
-#include <QMouseEvent>
 
 
-mapView::mapView(QWidget *parent, QGraphicsView * view, int width, int height):
+mapView::mapView( QGraphicsView * view, int width, int height):
     view(view),
     windowWidth(width),
     windowHeight(height)
@@ -24,8 +22,6 @@ mapView::mapView(QWidget *parent, QGraphicsView * view, int width, int height):
     tileType[QString("free")]=Qt::green;
     tileType[QString("blocked")]=Qt::red;
     tileType[QString("unkown")]=Qt::black;
-
-
 }
 
 mapView::~mapView(){
@@ -55,7 +51,6 @@ void mapView::drawLine(int x1, int y1, int x2, int y2, QRgb color){
 void mapView::setTag(int x, int y, QString value){
     QGraphicsTextItem *item = scene->addText(value);
     item->setPos(x,y);
-
 }
 
 void mapView::clear(){
@@ -64,7 +59,6 @@ void mapView::clear(){
         scene->removeItem(item);
     }
 }
-
 
 /*  void mapView::drawMap(RectInfo *map){
  *      for (int i = 0; i <= len(map); i++;){
@@ -79,7 +73,6 @@ void mapView::clear(){
  *
  */
 
-
 bool mapView::mouseInMapView(QPoint p){
         //QPoint p = view->mapFromGlobal(QCursor::pos());
         if(p.x() <= view->size().width() && p.x()>=0 && p.y() <= view->size().height() && p.y()>=0) {return true;}
@@ -92,6 +85,3 @@ bool mapView::event(QEvent *event)
         fflush(stdout);
     return QWidget::event(event);
 }
-
-
-

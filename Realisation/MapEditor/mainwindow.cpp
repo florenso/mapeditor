@@ -13,14 +13,13 @@
 #include <QEnterEvent>
 #include <QEvent>
 
-
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
 
-    viewer = new mapView(parent, ui->graphicsView, 1000, 1000);
+    viewer = new mapView(ui->graphicsView, 1000, 1000);
 
     viewer->drawTile(10,10,10,10,"blocked");
     viewer->drawTile(10,10,10,10,"blocked");
@@ -43,7 +42,6 @@ MainWindow::~MainWindow()
 {
     delete ui;
     delete viewer;
-
 }
 
 
@@ -74,12 +72,10 @@ void MainWindow::on_actionLoad_triggered()
 
 void MainWindow::on_zoomInButton_clicked()
 {
-
 }
 
 void MainWindow::on_zoomOutButtom_clicked()
 {
-
 }
 
 bool MainWindow::event(QEvent *event)
@@ -115,7 +111,6 @@ void MainWindow::on_actionPan_toggled(bool activatePan)
 
 bool MainWindow::eventFilter(QObject *object, QEvent *event)
 {
-
     switch(event->type()){
 
         case QEvent::Wheel:
@@ -134,7 +129,7 @@ bool MainWindow::eventFilter(QObject *object, QEvent *event)
             {
             QMouseEvent* me = static_cast<QMouseEvent*>(event);
             if(viewer->mouseInMapView(me->pos())){
-                //std::cout << "main window x" << me->pos().x() << " y" << me->pos().y()<< std::endl;
+                std::cout << "main window x" << me->pos().x() << " y" << me->pos().y()<< std::endl;
             } else if(true) {ui->graphicsView->releaseMouse();
                 std::cout << "leaving view" << std::endl;
                 }
@@ -142,7 +137,7 @@ bool MainWindow::eventFilter(QObject *object, QEvent *event)
             break;
         case QEvent::MouseButtonPress:
             {QPoint p = ui->graphicsView->mapFromGlobal(QCursor::pos());
-            std::cout << "mouse pos: x"<< p.x() << " y" <<p.y()<<std::endl;
+            std::cout << "mouse press @ pos: x"<< p.x() << " y" <<p.y()<<std::endl;
             fflush(stdout);}
             break;
         case QEvent::Enter:
@@ -161,8 +156,6 @@ bool MainWindow::eventFilter(QObject *object, QEvent *event)
     return QWidget::eventFilter(object,event);
 }
 
-
-
 //void MainWindow::on_inputX_cursorPositionChanged(int arg1, int arg2)
 //{
 // commented to avoid linker error "Unused parameter"
@@ -173,3 +166,7 @@ bool MainWindow::eventFilter(QObject *object, QEvent *event)
 // commented to avoid linker error "Unused parameter"
 //}
 
+void MainWindow::on_actionSave_triggered()
+{
+
+}

@@ -57,6 +57,8 @@ private slots:
     //! Enables the drag mode for the map viewer
     void on_actionPan_toggled(bool);
 
+    void on_actionSave_triggered();
+
 private:
     Ui::MainWindow *ui;
     mapView *viewer;

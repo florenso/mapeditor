@@ -21,13 +21,12 @@
 #include <string>
 #include <map>
 //#include "RectInfo"
-#include <QGraphicsSceneMouseEvent>
 
-class mapView: public QGraphicsView
+class mapView: public QObject
 {
 public:
     //! Constructor of the mapView.
-    explicit mapView(QWidget *parent, QGraphicsView * view, int width=0, int height=0);
+    explicit mapView(QGraphicsView * view, int width=0, int height=0);
 
     //! Deconstroctor of the mapView.
     ~mapView();
