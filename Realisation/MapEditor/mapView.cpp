@@ -12,16 +12,19 @@ mapView::mapView(QWidget *parent, QGraphicsView * view, int width, int height):
     if(width == 0){
         windowWidth = view->width();
     }
+
     if(height == 0){
         windowHeight = view->height();
     }
+
     scene = new QGraphicsScene;
     std::cout << "new Viewer with size: " << windowWidth << " x " << windowHeight << std::endl;
     scene->setSceneRect( 0, 0, windowWidth, windowHeight);
     view->setScene(scene);
-    tileType[QString("Free")]=Qt::green;
-    tileType[QString("Blocked")]=Qt::red;
-    tileType[QString("Unknown")]=Qt::black;
+    tileColors[tileTypes::Free]=Qt::green;
+    tileColors[tileTypes::Blocked]=Qt::red;
+    tileColors[tileTypes::Mixed]=Qt::yellow;
+    tileColors[tileTypes::Unknown]=Qt::black;
 }
 
 mapView::~mapView(){
@@ -33,7 +36,7 @@ void mapView::drawTile(int x, int y, int width, int height, QString type){
     std::cout << "New tile: x " << x << " y " << y << " w " << width << " h " << height << std::endl;
     QGraphicsRectItem *block = new QGraphicsRectItem;
     block->setRect(0, 0, width, height);
-    block->setBrush(* new QBrush(tileType[type]));
+    block->setBrush(* new QBrush(tileColors[getTileColor(type)]));
     block->setPos(x, y);
     scene->addItem(block);
     view->setScene(scene);
@@ -63,7 +66,7 @@ void mapView::clear(){
     }
 }
 
-tileTypes mapView::getTileType(QString name){
+tileTypes mapView::getTileColor(QString name){
     if(name == "Free"){
         return tileTypes::Free;
     }else if(name == "Blocked"){

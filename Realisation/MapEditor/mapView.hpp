@@ -22,7 +22,7 @@ public:
     void drawLine(int x1, int y1, int x2, int y2, QRgb color);
     void setTag(int x, int y, QString value);
     void clear();
-    tileTypes getTileType(QString s);
+    tileTypes getTileColor(QString s);
     bool mouseInMapView();
 private:
     int windowWidth;
@@ -30,7 +30,7 @@ private:
     int scale;
     QGraphicsView * view;
     QGraphicsScene * scene;
-    std::map<tileTypes, QColor> tileType;
+    std::map<tileTypes, QColor> tileColors;
 protected:
     virtual void wheelEvent(QWheelEvent * event);
     bool event(QEvent *event);
