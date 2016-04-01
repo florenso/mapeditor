@@ -30,13 +30,12 @@ MainWindow::MainWindow(QWidget *parent) :
     viewer->drawTile(200,10,10,10,"free");
     viewer->setTag(100, 100, QString("Hallo! Dit is een test"));
 
+    //hijacking scrolbar events
     ui->graphicsView->verticalScrollBar()->installEventFilter(this);
     ui->graphicsView->horizontalScrollBar()->installEventFilter(this);
+    //install event filter for graphicsView
     ui->graphicsView->installEventFilter(this);
-    viewer->installEventFilter(this);
     ui->graphicsView->setMouseTracking(true);
-    //ui->graphicsView->grabMouse();
-    //setCentralWidget(ui->graphicsView);
 
 }
 
@@ -92,7 +91,7 @@ bool MainWindow::event(QEvent *event)
                 QPoint p = ui->graphicsView->mapFromGlobal(QCursor::pos());
                 //QPoint p = viewer->view->mapFromGlobal(QCursor::pos());
                 std::cout << "mouse pos: x"<< p.x() << " y" <<p.y()<<std::endl;
-                if (viewer->mouseInMapView()){
+                if (viewer->mouseInMapView(p)){
                 std::cout << "mouse click is in viewer"  <<std::endl;}
                 else {std::cout << "mouse click is not in viewer"  <<std::endl;}
             }
@@ -132,9 +131,13 @@ bool MainWindow::eventFilter(QObject *object, QEvent *event)
             break;
 
         case QEvent::MouseMove:
-            if(viewer->mouseInMapView()){
-                QMouseEvent* me = static_cast<QMouseEvent*>(event);
-                std::cout << "main window x" << me->pos().x() << " y" << me->pos().y()<< std::endl;
+            {
+            QMouseEvent* me = static_cast<QMouseEvent*>(event);
+            if(viewer->mouseInMapView(me->pos())){
+                //std::cout << "main window x" << me->pos().x() << " y" << me->pos().y()<< std::endl;
+            } else if(true) {ui->graphicsView->releaseMouse();
+                std::cout << "leaving view" << std::endl;
+                }
             }
             break;
         case QEvent::MouseButtonPress:
@@ -142,12 +145,20 @@ bool MainWindow::eventFilter(QObject *object, QEvent *event)
             std::cout << "mouse pos: x"<< p.x() << " y" <<p.y()<<std::endl;
             fflush(stdout);}
             break;
+        case QEvent::Enter:
+            {
+            std::cout << "succecvol enter " << object << std::endl;
+            if(! ui->actionPan->isChecked()){
+                ui->graphicsView->grabMouse();}
+            }
+            break;
         default:
             std::cout << "mapview event filter event type " << event->type() << std::endl;
             fflush(stdout);
             break;
         }
-    return false;
+    fflush(stdout);
+    return QWidget::eventFilter(object,event);
 }
 
 

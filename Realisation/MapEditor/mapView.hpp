@@ -45,7 +45,7 @@ public:
     void clear();
 
     //! Checks to the mouse is located in the view.
-    bool mouseInMapView();
+    bool mouseInMapView(QPoint p);
 
     //void drawMap(RectInfo *map);
 

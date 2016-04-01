@@ -4,7 +4,6 @@
 #include <QMouseEvent>
 
 
-
 mapView::mapView(QWidget *parent, QGraphicsView * view, int width, int height):
     view(view),
     windowWidth(width),
@@ -81,9 +80,9 @@ void mapView::clear(){
  */
 
 
-bool mapView::mouseInMapView(){
-        QPoint p = view->mapFromGlobal(QCursor::pos());
-        if(p.x() < view->size().width() && p.x()>0 && p.y() < view->size().height() && p.y()>0) {return true;}
+bool mapView::mouseInMapView(QPoint p){
+        //QPoint p = view->mapFromGlobal(QCursor::pos());
+        if(p.x() <= view->size().width() && p.x()>=0 && p.y() <= view->size().height() && p.y()>=0) {return true;}
         return false;
     }
 
