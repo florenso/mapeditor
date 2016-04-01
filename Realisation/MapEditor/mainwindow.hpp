@@ -59,6 +59,8 @@ private slots:
 
     void on_actionSave_triggered();
 
+    void on_mapView_rubberBandChanged(const QRect &viewportRect, const QPointF &fromScenePoint, const QPointF &toScenePoint);
+
 private:
     Ui::MainWindow *ui;
     mapView *viewer;

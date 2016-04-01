@@ -19,22 +19,23 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    viewer = new mapView(ui->graphicsView, 1000, 1000);
+    //viewer = new mapView(1000, 1000);
+    viewer = ui->mapViewWidget;
 
-    viewer->drawTile(10,10,10,10,"blocked");
-    viewer->drawTile(10,10,10,10,"blocked");
-    viewer->clear();
-    viewer->drawTile(10,100,100,1000,"unkown");
-    viewer->drawTile(900,100,100,1000,"unkown");
-    viewer->drawTile(200,10,10,10,"free");
-    viewer->setTag(100, 100, QString("Hallo! Dit is een test"));
+//    viewer->drawTile(10,10,10,10,"blocked");
+//    viewer->drawTile(10,10,10,10,"blocked");
+//    viewer->clear();
+//    viewer->drawTile(10,100,100,1000,"unkown");
+//    viewer->drawTile(900,100,100,1000,"unkown");
+//    viewer->drawTile(200,10,10,10,"free");
+//    viewer->setTag(100, 100, QString("Hallo! Dit is een test"));
 
-    //hijacking scrolbar events
-    ui->graphicsView->verticalScrollBar()->installEventFilter(this);
-    ui->graphicsView->horizontalScrollBar()->installEventFilter(this);
-    //install event filter for graphicsView
-    ui->graphicsView->installEventFilter(this);
-    ui->graphicsView->setMouseTracking(true);
+//    //hijacking scrolbar events
+//    viewer->verticalScrollBar()->installEventFilter(this);
+//    viewer->horizontalScrollBar()->installEventFilter(this);
+//    //install event filter for graphicsView
+//    viewer->installEventFilter(this);
+//    viewer->setMouseTracking(true);
 
 }
 
@@ -84,10 +85,11 @@ bool MainWindow::event(QEvent *event)
 
         //::cout<<"mainWindow event type"<< event->type()<<std::endl;
         if (event->type() == QEvent::MouseButtonPress){
-                QPoint p = ui->graphicsView->mapFromGlobal(QCursor::pos());
+                QPoint p = viewer->mapFromGlobal(QCursor::pos());
                 //QPoint p = viewer->view->mapFromGlobal(QCursor::pos());
                 std::cout << "mouse pos: x"<< p.x() << " y" <<p.y()<<std::endl;
-                if (viewer->mouseInMapView(p)){
+                //if (viewer->mouseInMapView(p)){
+                if(true){
                 std::cout << "mouse click is in viewer"  <<std::endl;}
                 else {std::cout << "mouse click is not in viewer"  <<std::endl;}
             }
@@ -98,12 +100,12 @@ bool MainWindow::event(QEvent *event)
 void MainWindow::on_actionPan_toggled(bool activatePan)
 {
     if(activatePan){
-            ui->graphicsView->setDragMode(QGraphicsView::ScrollHandDrag);
+            viewer->setDragMode(QGraphicsView::ScrollHandDrag);
             printf("drag hand\n");
             fflush(stdout);
         }
     else{
-            ui->graphicsView->setDragMode(QGraphicsView::NoDrag);
+            viewer->setDragMode(QGraphicsView::NoDrag);
             printf("select cursor\n");
             fflush(stdout);
         }
@@ -114,29 +116,30 @@ bool MainWindow::eventFilter(QObject *object, QEvent *event)
     switch(event->type()){
 
         case QEvent::Wheel:
-            if (object == ui->graphicsView->verticalScrollBar()){//catch
+            if (object == viewer->verticalScrollBar()){//catch
                 QWheelEvent* we = static_cast<QWheelEvent*>(event);
                 int num = we->delta();
                 std::cout << "delta: "<< num<< std::endl;
                 fflush(stdout);
                 return true;
                 }
-            else if(object == ui->graphicsView->horizontalScrollBar()){//catch horizontal scroll
+            else if(object == viewer->horizontalScrollBar()){//catch horizontal scroll
                 return true;}
             break;
 
         case QEvent::MouseMove:
             {
             QMouseEvent* me = static_cast<QMouseEvent*>(event);
-            if(viewer->mouseInMapView(me->pos())){
+            //if(viewer->mouseInMapView(me->pos())){
+            if(true){
                 std::cout << "main window x" << me->pos().x() << " y" << me->pos().y()<< std::endl;
-            } else if(true) {ui->graphicsView->releaseMouse();
+            } else if(true) {viewer->releaseMouse();
                 std::cout << "leaving view" << std::endl;
                 }
             }
             break;
         case QEvent::MouseButtonPress:
-            {QPoint p = ui->graphicsView->mapFromGlobal(QCursor::pos());
+            {QPoint p = viewer->mapFromGlobal(QCursor::pos());
             std::cout << "mouse press @ pos: x"<< p.x() << " y" <<p.y()<<std::endl;
             fflush(stdout);}
             break;
@@ -144,7 +147,7 @@ bool MainWindow::eventFilter(QObject *object, QEvent *event)
             {
             std::cout << "succecvol enter " << object << std::endl;
             if(! ui->actionPan->isChecked()){
-                ui->graphicsView->grabMouse();}
+                viewer->grabMouse();}
             }
             break;
         default:

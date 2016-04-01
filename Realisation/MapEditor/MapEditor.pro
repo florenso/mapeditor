@@ -14,9 +14,9 @@ TEMPLATE = app
 
 SOURCES += main.cpp\
         mainwindow.cpp \
-    mapView.cpp
+        mapView.cpp \
 
 HEADERS  += mainwindow.hpp \
-    mapView.hpp
+    mapView.hpp \
 
 FORMS    += mainwindow.ui
