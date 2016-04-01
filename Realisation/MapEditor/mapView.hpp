@@ -11,6 +11,8 @@
 #include <map>
 #include <QGraphicsSceneMouseEvent>
 
+enum class tileTypes {Free, Blocked, Mixed, Unknown};
+
 class mapView: public QWidget
 {
 public:
@@ -20,13 +22,15 @@ public:
     void drawLine(int x1, int y1, int x2, int y2, QRgb color);
     void setTag(int x, int y, QString value);
     void clear();
+    tileTypes getTileType(QString s);
     bool mouseInMapView();
 private:
     int windowWidth;
     int windowHeight;
+    int scale;
     QGraphicsView * view;
     QGraphicsScene * scene;
-    std::map<QString, QColor> tileType;
+    std::map<tileTypes, QColor> tileType;
 protected:
     virtual void wheelEvent(QWheelEvent * event);
     bool event(QEvent *event);

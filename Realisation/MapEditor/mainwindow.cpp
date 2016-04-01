@@ -129,7 +129,7 @@ void MainWindow::on_placeTagButton_clicked()
     viewer->setTag(x, y, tag);
 }
 
-void MainWindow::on_pushButton_2_clicked()
+void MainWindow::on_clearButton_clicked()
 {
     viewer->clear();
 }

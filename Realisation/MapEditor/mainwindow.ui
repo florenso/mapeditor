@@ -686,7 +686,7 @@
        <enum>Qt::Horizontal</enum>
       </property>
      </widget>
-     <widget class="QPushButton" name="pushButton_2">
+     <widget class="QPushButton" name="clearButton">
       <property name="geometry">
        <rect>
         <x>10</x>

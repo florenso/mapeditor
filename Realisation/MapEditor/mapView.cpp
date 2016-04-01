@@ -54,13 +54,24 @@ void mapView::drawLine(int x1, int y1, int x2, int y2, QRgb color){
 void mapView::setTag(int x, int y, QString value){
     QGraphicsTextItem *item = scene->addText(value);
     item->setPos(x,y);
-
 }
 
 void mapView::clear(){
     QList<QGraphicsItem *> list = scene->items();
     foreach( QGraphicsItem * item, list ){
         scene->removeItem(item);
+    }
+}
+
+tileTypes mapView::getTileType(QString name){
+    if(name == "Free"){
+        return tileTypes::Free;
+    }else if(name == "Blocked"){
+        return tileTypes::Blocked;
+    }else if(name == "Mixed"){
+        return tileTypes::Mixed;
+    }else{
+        return tileTypes::Unknown;
     }
 }
 

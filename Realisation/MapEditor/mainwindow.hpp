@@ -45,7 +45,7 @@ private slots:
 
     void on_placeTagButton_clicked();
 
-    void on_pushButton_2_clicked();
+    void on_clearButton_clicked();
 
 private:
     Ui::MainWindow *ui;
