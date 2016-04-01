@@ -83,5 +83,5 @@ bool mapView::event(QEvent *event)
 {
         std::cout<<"map view event type"<< event->type()<<std::endl;
         fflush(stdout);
-    return QWidget::event(event);
+    return QObject::event(event);
 }
