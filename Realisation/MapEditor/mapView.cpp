@@ -1,9 +1,8 @@
 #include "mapView.hpp"
 #include <iostream>
-#include <QWheelEvent>
-#include <QMouseEvent>
 
-mapView::mapView(QWidget *parent, QGraphicsView * view, int width, int height):
+
+mapView::mapView( QGraphicsView * view, int width, int height):
     view(view),
     windowWidth(width),
     windowHeight(height)
@@ -25,6 +24,7 @@ mapView::mapView(QWidget *parent, QGraphicsView * view, int width, int height):
     tileColors[tileTypes::Blocked]=Qt::red;
     tileColors[tileTypes::Mixed]=Qt::yellow;
     tileColors[tileTypes::Unknown]=Qt::black;
+
 }
 
 mapView::~mapView(){
@@ -39,8 +39,6 @@ void mapView::drawTile(int x, int y, int width, int height, QString type){
     block->setBrush(* new QBrush(tileColors[getTileColor(type)]));
     block->setPos(x, y);
     scene->addItem(block);
-    view->setScene(scene);
-    view->show();
 }
 
 void mapView::drawLine(int x1, int y1, int x2, int y2, QRgb color){
@@ -78,25 +76,29 @@ tileTypes mapView::getTileColor(QString name){
     }
 }
 
-void mapView::wheelEvent(QWheelEvent *event)
-    {
-        int num = event->delta();
-        std::cout << "delta: "<< num<< std::endl;
-        std::cout<< "wheel pos" << event->pos().x() << std::endl;
-        fflush(stdout);
-    }
+/*  void mapView::drawMap(RectInfo *map){
+ *      for (int i = 0; i <= len(map); i++;){
+ *          Box box = new Box;
+ *          box = map->get_2D_Box()
+ *          Coordinate left_up = map->get_left_up();
+ *          Coordinate right_down = map->get_right_down();
+ *          drawTile(left_up.get_x(), left_up.get_y(), right_down.get_x() - left_up.get_x(),
+ *                   left_up.get_y() - right_down_y(), map->get_state );
+ *          }
+ *  }
+ *
+ */
 
-bool mapView::mouseInMapView(){
-        QPoint p = view->mapFromGlobal(QCursor::pos());
-        if(p.x() < view->size().width() && p.x()>0 && p.y() < view->size().height() && p.y()>0) {return true;}
+
+bool mapView::mouseInMapView(QPoint p){
+        //QPoint p = view->mapFromGlobal(QCursor::pos());
+        if(p.x() <= view->size().width() && p.x()>=0 && p.y() <= view->size().height() && p.y()>=0) {return true;}
         return false;
     }
 
-
 bool mapView::event(QEvent *event)
 {
-        std::cout << "woop"<< mouseInMapView() <<std::endl;
         std::cout<<"map view event type"<< event->type()<<std::endl;
         fflush(stdout);
-    return QWidget::event(event);
+    return QObject::event(event);
 }
