@@ -22,11 +22,11 @@
 #include <map>
 //#include "RectInfo"
 
-class mapView: public QObject
+class mapView: public QGraphicsView
 {
 public:
     //! Constructor of the mapView.
-    explicit mapView(QGraphicsView * view, int width=0, int height=0);
+    explicit mapView(QWidget *parent);
 
     //! Deconstroctor of the mapView.
     ~mapView();
