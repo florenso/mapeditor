@@ -24,11 +24,11 @@
 
 enum class tileTypes {Free, Blocked, Mixed, Unknown};
 
-class mapView: public QWidget
+class mapView: public QGraphicsView
 {
 public:
     //! Constructor of the mapView.
-    explicit mapView(QGraphicsView * view, int width=0, int height=0);
+    explicit mapView(QWidget *parent);
 
     //! Deconstroctor of the mapView.
     ~mapView();

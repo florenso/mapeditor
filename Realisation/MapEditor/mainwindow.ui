@@ -64,7 +64,7 @@
      <string>-</string>
     </property>
    </widget>
-   <widget class="QGraphicsView" name="graphicsView">
+   <widget class="mapView" name="graphicsView">
     <property name="geometry">
      <rect>
       <x>340</x>
@@ -1156,6 +1156,13 @@
   </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
+ <customwidgets>
+  <customwidget>
+   <class>mapView</class>
+   <extends>QGraphicsView</extends>
+   <header>mapView.hpp</header>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>

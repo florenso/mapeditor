@@ -2,29 +2,29 @@
 #include <iostream>
 
 
-mapView::mapView( QGraphicsView * view, int width, int height):
-    view(view),
-    windowWidth(width),
-    windowHeight(height)
+mapView::mapView(QWidget *parent):
+    QGraphicsView(parent),
+    windowWidth(1000),
+    windowHeight(1000)
 {
-    //if no height or with given, set to view size
+    /*//if no height or with given, set to view size
+
     if(width == 0){
-        windowWidth = view->width();
+      windowWidth = width();
     }
-
     if(height == 0){
-        windowHeight = view->height();
+        windowHeight = height();
     }
-
+    */
     scene = new QGraphicsScene;
     std::cout << "new Viewer with size: " << windowWidth << " x " << windowHeight << std::endl;
     scene->setSceneRect( 0, 0, windowWidth, windowHeight);
-    view->setScene(scene);
+    setScene(scene);
+    show();
     tileColors[tileTypes::Free]=Qt::green;
     tileColors[tileTypes::Blocked]=Qt::red;
     tileColors[tileTypes::Mixed]=Qt::yellow;
     tileColors[tileTypes::Unknown]=Qt::black;
-
 }
 
 mapView::~mapView(){
@@ -48,8 +48,8 @@ void mapView::drawLine(int x1, int y1, int x2, int y2, QRgb color){
     block->setBrush(* new QBrush(color));
     block->setPos(x1, y1);
     scene->addItem(block);
-    view->setScene(scene);
-    view->show();
+    setScene(scene);
+    show();
 }
 
 void mapView::setTag(int x, int y, QString value){
@@ -91,8 +91,8 @@ tileTypes mapView::getTileColor(QString name){
 
 
 bool mapView::mouseInMapView(QPoint p){
-        //QPoint p = view->mapFromGlobal(QCursor::pos());
-        if(p.x() <= view->size().width() && p.x()>=0 && p.y() <= view->size().height() && p.y()>=0) {return true;}
+        //QPoint p = mapFromGlobal(QCursor::pos());
+        if(p.x() <= size().width() && p.x()>=0 && p.y() <= size().height() && p.y()>=0) {return true;}
         return false;
     }
 

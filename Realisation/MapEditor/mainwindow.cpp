@@ -18,7 +18,8 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    viewer = new mapView(ui->graphicsView, 1000, 1000);
+    //viewer = new mapView(ui->graphicsView, 1000, 1000); //TODO: parameter word niet meer mee gegeven en staat in de klasse zelf nu....
+    viewer = ui->graphicsView;//TODO: dit is een beetje overbodig toch?
 
     viewer->drawTile(10,10,10,10,"blocked");
     viewer->drawTile(10,10,10,10,"blocked");
