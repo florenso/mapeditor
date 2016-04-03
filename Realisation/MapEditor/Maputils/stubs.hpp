@@ -1,3 +1,8 @@
+#pragma once
+
+#include <rand>
+#include <time>
+
 class Box {
 public:
     Box(Coordinate bottomLeft, Coordinate topRight) : bottomLeft(bottomLeft), topRight(topRight) {}
@@ -23,9 +28,29 @@ public:
 class Coordinate {
 public:
     Box(double x, double y, double z) : x(x), y(y), z(z) {}
-    double get_x();
-    double get_y();
-    double get_z();
+    double get_x() {return x;}
+    double get_y() {return y;}
+    double get_z() {return z;}
 private:
     double x, y, z;
+}
+
+class Map {
+public:
+    Map();
+    BoxInfo get_box_info(Box box) {
+        std::srand(std::time(0))
+        int getal = std::rand() % 3;
+        switch(getal) {
+            case 0: {
+                return BoxInfo(true, false false)
+            },
+            case 1: {
+                return BoxInfo(false, true false)
+            },
+            case 2: {
+                return BoxInfo(true, false true)
+            }
+        }
+    }
 }
