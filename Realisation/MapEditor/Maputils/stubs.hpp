@@ -55,4 +55,7 @@ public:
             }
         }
     }
+    Box get_bounding_box() {
+        return Box(Coordinate(0, 0, 0), Coordinate(20, 20, 1));
+    }
 };
