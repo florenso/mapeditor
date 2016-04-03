@@ -1,5 +1,4 @@
 #pragma once
-/* Half pseudocode because of the absense of Map and Box*/
 
 enum class TileType {
     BLOCKED, UNKNOWN, NAVIGATABLE
@@ -11,6 +10,7 @@ private:
     TileType state;
     std::vector<RectInfo> children;
 public:
+    RectInfo(Coordinate pos, int sizex, int sizey, TileType new_state);
     RectInfo(Coordinate up, Coordinate down, TileType state);
     RectInfo(Box box, TileType state);
 
@@ -18,8 +18,8 @@ public:
         return state;
     }
 
-    Box get_2D_Box() {
-        return Box(first, second)
+    Box get_box() {
+        return Box(left_up, right_down)
     }
 
     Coordinate get_left_up() {
