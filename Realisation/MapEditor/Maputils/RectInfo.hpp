@@ -1,8 +1,7 @@
 #pragma once
 
-enum class TileType {
-    BLOCKED, UNKNOWN, NAVIGATABLE
-};
+#include "stubs.hpp"
+#include <vector>
 
 class RectInfo {
 private:
