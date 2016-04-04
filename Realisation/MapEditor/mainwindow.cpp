@@ -18,6 +18,14 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    //hijacking scrolbar events
+    ui->graphicsView->verticalScrollBar()->installEventFilter(this);
+    ui->graphicsView->horizontalScrollBar()->installEventFilter(this);
+
+    ui->graphicsView->installEventFilter(this);
+    ui->graphicsView->setMouseTracking(true);
+
+    //TestCode
     ui->graphicsView->drawTile(10,10,10,10,"blocked");
     ui->graphicsView->drawTile(10,10,10,10,"blocked");
     ui->graphicsView->clear();
@@ -25,19 +33,12 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->graphicsView->drawTile(900,100,100,1000,"unkown");
     ui->graphicsView->drawTile(200,10,10,10,"free");
     ui->graphicsView->setTag(100, 100, QString("Hallo! Dit is een test"));
-
-    //hijacking scrolbar events
-    ui->graphicsView->verticalScrollBar()->installEventFilter(this);
-    ui->graphicsView->horizontalScrollBar()->installEventFilter(this);
-    //install event filter for graphicsView
-    ui->graphicsView->installEventFilter(this);
-    ui->graphicsView->setMouseTracking(true);
+    //end testcode
 }
 
 MainWindow::~MainWindow()
 {
     delete ui;
-    delete viewer;
 }
 
 void MainWindow::on_actionRoboRescue_wiki_triggered()
@@ -112,6 +113,10 @@ void MainWindow::on_actionPan_toggled(bool activatePan)
 
 bool MainWindow::eventFilter(QObject *object, QEvent *event)
 {
+        if (event->type()==QEvent::KeyPress){
+                QKeyEvent * ke = static_cast<QKeyEvent*>(event);
+            std::cout << "key pressed in @ event filter in mainwindow " << ke->key() << std::endl;
+            }
     switch(event->type()){
 
         case QEvent::Wheel:
@@ -149,14 +154,38 @@ bool MainWindow::eventFilter(QObject *object, QEvent *event)
                 ui->graphicsView->grabMouse();}
             }
             break;
+        case QEvent::KeyPress:
+            {
+            QKeyEvent * ke = static_cast<QKeyEvent*>(event);
+            std::cout << "key pressed in @ event filter in mainwindow " << ke->key() << std::endl;
+                if(ke->key() == Qt::Key_Down){
+                        int val = ui->graphicsView->verticalScrollBar()->value();
+                        ui->graphicsView->verticalScrollBar()->setValue(val+scrollStepSize);
+                    }
+                else if(ke->key() == Qt::Key_Up){
+                        int val = ui->graphicsView->verticalScrollBar()->value();
+                        ui->graphicsView->verticalScrollBar()->setValue(val-scrollStepSize);
+                    }
+                else if(ke->key() == Qt::Key_Right){
+                        int val = ui->graphicsView->horizontalScrollBar()->value();
+                        ui->graphicsView->horizontalScrollBar()->setValue(val+scrollStepSize);
+                    }
+                else if(ke->key() == Qt::Key_Left){
+                        int val = ui->graphicsView->horizontalScrollBar()->value();
+                        ui->graphicsView->horizontalScrollBar()->setValue(val-scrollStepSize);
+                    }
+            break;
+            }
         default:
             std::cout << "mapview event filter event type " << event->type() << std::endl;
             fflush(stdout);
             break;
         }
     fflush(stdout);
+    //TODO: i have no clue what this return method does(for all event related methods), should be figured out....
     return QWidget::eventFilter(object,event);
 }
+
 
 
 //testcode
