@@ -1,4 +1,4 @@
-#-------------------------------------------------
+#----------------------------------------------
 #
 # Project created by QtCreator 2016-03-29T14:23:54
 #
@@ -16,9 +16,15 @@ TEMPLATE = app
 
 SOURCES += main.cpp\
         mainwindow.cpp \
-    mapView.cpp
+    mapView.cpp \
+    map_utils.cpp \
+    RectInfo.cpp \
+    stubs.cpp
 
 HEADERS  += mainwindow.hpp \
-    mapView.hpp
+    mapView.hpp \
+    map_utils.hpp \
+    RectInfo.hpp \
+    stubs.hpp
 
 FORMS    += mainwindow.ui
