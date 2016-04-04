@@ -1,5 +1,3 @@
-
-
 #include "mainwindow.hpp"
 #include "ui_mainwindow.h"
 #include <QDesktopServices>
@@ -20,14 +18,6 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
     //viewer = new mapView(ui->graphicsView, 1000, 1000); //TODO: parameter word niet meer mee gegeven en staat in de klasse zelf nu....
     viewer = ui->graphicsView;//TODO: dit is een beetje overbodig toch?
-
-    viewer->drawTile(10,10,10,10,"blocked");
-    viewer->drawTile(10,10,10,10,"blocked");
-    viewer->clear();
-    viewer->drawTile(10,100,100,1000,"unkown");
-    viewer->drawTile(900,100,100,1000,"unkown");
-    viewer->drawTile(200,10,10,10,"free");
-    viewer->setTag(100, 100, QString("Hallo! Dit is een test"));
 
     //hijacking scrolbar events
     ui->graphicsView->verticalScrollBar()->installEventFilter(this);
@@ -71,12 +61,20 @@ void MainWindow::on_actionLoad_triggered()
 
 void MainWindow::on_zoomInButton_clicked()
 {
-    viewer->decreaseScale();
+    viewer->increaseScale(0.1f);
+    ui->zoomResetButton->setText(QString::number(viewer->getScale())+ "%");
 }
 
 void MainWindow::on_zoomOutButtom_clicked()
 {
-    viewer->increaseScale();
+    viewer->decreaseScale(0.1f);
+    ui->zoomResetButton->setText(QString::number(viewer->getScale())+ "%");
+}
+
+void MainWindow::on_zoomResetButton_clicked()
+{
+    viewer->resetScale();
+    ui->zoomResetButton->setText(QString::number(viewer->getScale())+ "%");
 }
 
 bool MainWindow::event(QEvent *event)
@@ -122,6 +120,12 @@ bool MainWindow::eventFilter(QObject *object, QEvent *event)
             if (object == ui->graphicsView->verticalScrollBar()){//catch
                 QWheelEvent* we = static_cast<QWheelEvent*>(event);
                 int num = we->delta();
+                if(num < 0){
+                    viewer->decreaseScale();
+                }else{
+                    viewer->increaseScale();
+                }
+                ui->zoomResetButton->setText(QString::number(viewer->getScale()));
                 std::cout << "delta: "<< num<< std::endl;
                 fflush(stdout);
                 return true;
@@ -203,3 +207,20 @@ void MainWindow::on_actionSave_triggered()
 
 }
 
+void MainWindow::on_rotateLeftButton_clicked()
+{
+    viewer->decreaseRotation();
+    ui->resetRotationButton->setText(QString::number(viewer->getRotation()));
+}
+
+void MainWindow::on_rotateRightButton_clicked()
+{
+    viewer->increaseRotation();
+    ui->resetRotationButton->setText(QString::number(viewer->getRotation()));
+}
+
+void MainWindow::on_resetRotationButton_clicked()
+{
+    viewer->resetRotation();
+    ui->resetRotationButton->setText(QString::number(viewer->getRotation()));
+}

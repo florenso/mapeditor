@@ -19,9 +19,12 @@ mapView::mapView(QWidget *parent):
     scene = new QGraphicsScene;
     std::cout << "new Viewer with size: " << windowWidth << " x " << windowHeight << std::endl;
     scene->setSceneRect( 0, 0, windowWidth, windowHeight);
-
     setScene(scene);
     show();
+
+    //set default scale
+    resetScale();
+
     tileColors[tileTypes::Free]=Qt::green;
     tileColors[tileTypes::Blocked]=Qt::red;
     tileColors[tileTypes::Mixed]=Qt::yellow;
@@ -36,9 +39,9 @@ mapView::~mapView(){
 void mapView::drawTile(int x, int y, int width, int height, QString type){
     std::cout << "New tile: x " << x << " y " << y << " w " << width << " h " << height << std::endl;
     QGraphicsRectItem *block = new QGraphicsRectItem;
-    block->setRect(0, 0, width *scale, height * scale);
+    block->setRect(0, 0, width, height);
     block->setBrush(* new QBrush(tileColors[getTileColor(type)]));
-    block->setPos(x*scale, y*scale);
+    block->setPos(x, y);
     scene->addItem(block);
 }
 
@@ -77,28 +80,59 @@ tileTypes mapView::getTileColor(QString name){
     }
 }
 
-void mapView::increaseScale(){
-    scale += 0.2f;
-    QRect newRect(0, 0, windowWidth * scale, windowHeight * scale);
-    scene->setSceneRect(newRect);
+void mapView::increaseScale(qreal inc){
+    if(!(scaleSize > maxScale)){
+        scaleSize += inc;
+    }
+    updateTransform();
 }
 
-void mapView::decreaseScale(){
-    scale -= 1;
-    QRect newRect(0, 0, windowWidth * scale, windowHeight * scale);
-    scene->setSceneRect(newRect);
-    std::cout << "w " << scene->width() << " h " << scene->height() << std::endl;
+void mapView::decreaseScale(qreal dec){
+    std::cout << "resize: " << scaleSize << std::endl;
+    scaleSize -= dec;
+    if(scaleSize < minScale){
+        scaleSize = minScale;
+
+    }
+    updateTransform();
 }
 
 int mapView::getScale(){
-    return scale;
+    return scaleSize * 200;
 }
 
-void mapView::rescale(){
-    clear();
-    QRect newRect(0, 0, windowWidth * scale, windowHeight * scale);
-    scene->setSceneRect(newRect);
-    std::cout << "w " << scene->width() << " h " << scene->height() << std::endl;
+void mapView::resetScale(){
+    scaleSize = 0.5f;
+    updateTransform();
+}
+
+void mapView::increaseRotation(int inc){
+    rotation = (rotation + inc) % 360;
+    updateTransform();
+}
+
+void mapView::decreaseRotation(int dec){
+    if(rotation == 0){
+        rotation = 360 - dec;
+    }else{
+        rotation -= dec;
+    }
+    updateTransform();
+}
+
+int mapView::getRotation(){
+    return rotation;
+}
+
+void mapView::resetRotation(){
+    rotation = 0;
+    updateTransform();
+}
+
+void mapView::updateTransform(){
+    resetTransform();
+    rotate(rotation);
+    scale(scaleSize, scaleSize);
 }
 
 /*  void mapView::drawMap(RectInfo *map){
@@ -111,19 +145,18 @@ void mapView::rescale(){
  *                   left_up.get_y() - right_down_y(), map->get_state );
  *          }
  *  }
- *
  */
 
 
 bool mapView::mouseInMapView(QPoint p){
-        //QPoint p = mapFromGlobal(QCursor::pos());
-        if(p.x() <= size().width() && p.x()>=0 && p.y() <= size().height() && p.y()>=0) {return true;}
-        return false;
-    }
+    //QPoint p = mapFromGlobal(QCursor::pos());
+    if(p.x() <= size().width() && p.x()>=0 && p.y() <= size().height() && p.y()>=0) {return true;}
+    return false;
+}
 
 bool mapView::event(QEvent *event)
 {
-        std::cout<<"map view event type"<< event->type()<<std::endl;
-        fflush(stdout);
+    std::cout<<"map view event type"<< event->type()<<std::endl;
+    fflush(stdout);
     return QObject::event(event);
 }

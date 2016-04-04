@@ -66,6 +66,14 @@ private slots:
     void on_actionSave_triggered();
 
 
+    void on_zoomResetButton_clicked();
+
+    void on_rotateLeftButton_clicked();
+
+    void on_rotateRightButton_clicked();
+
+    void on_resetRotationButton_clicked();
+
 private:
     Ui::MainWindow *ui;
     mapView *viewer;

@@ -45,9 +45,14 @@ public:
     //! Clears all the objects in the scene.
     void clear();
 
-    void increaseScale();
-    void decreaseScale();
+    void increaseScale(qreal inc = 0.025f);
+    void decreaseScale(qreal dec = 0.025f);
+    void increaseRotation(int inc = 90);
+    void decreaseRotation(int dec = 90);
+    void resetRotation();
+    void resetScale();
     int getScale();
+    int getRotation();
 
     tileTypes getTileColor(QString s);
 
@@ -56,10 +61,13 @@ public:
 
     //void drawMap(RectInfo *map);
 private:
-    void rescale();
+    void updateTransform();
     int windowWidth;
     int windowHeight;
-    int scale = 1;
+    int rotation  = 0;
+    qreal maxScale  = 1.0f;
+    qreal minScale  = 0.1f;
+    qreal scaleSize = 0.5f;
     QGraphicsView * view;
     QGraphicsScene * scene;
     std::map<tileTypes, QColor> tileColors;
