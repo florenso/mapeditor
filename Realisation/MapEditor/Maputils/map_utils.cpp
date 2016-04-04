@@ -8,7 +8,7 @@ int main() {
 
 std::vector< std::vector<RectInfo> > RectInfo_from_map_using_tiles(Map map, int amountx, int amounty) {
     std::vector< std::vector<RectInfo> > result;
-`
+
     for (int y = 0; y < amounty; y++) {
         result.push_back(std::vector<RectInfo>());
     }
