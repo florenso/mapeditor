@@ -4,7 +4,7 @@
 #define MAPUTILS
 
 std::vector<std::vector<RectInfo> > RectInfo_grid_from_map(MapTypes::TileType map, int amountx, int amounty);
-std::vector<std::vector<RectInfo> > RectInfo_from_map_using_tiles(Map map);
+std::vector<std::vector<RectInfo> > RectInfo_from_map_using_tiles(Map map, int amountx, int amounty);
 RectInfo get_rectinfo_recursive(Map map, Box total, RectInfo& parent);
 
 #endif /* end of include guard:  */

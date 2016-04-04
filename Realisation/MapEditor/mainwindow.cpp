@@ -10,15 +10,7 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
     //viewer = new mapView(ui->graphicsView, 1000, 1000); //TODO: parameter word niet meer mee gegeven en staat in de klasse zelf nu....
-    viewer = ui->graphicsView;//TODO: dit is een beetje overbodig toch?
-
-    viewer->drawTile(10,10,10,10,"blocked");
-    viewer->drawTile(10,10,10,10,"blocked");
-    viewer->clear();
-    viewer->drawTile(10,100,100,1000,"unkown");
-    viewer->drawTile(900,100,100,1000,"unkown");
-    viewer->drawTile(200,10,10,10,"free");
-    viewer->setTag(100, 100, QString("Hallo! Dit is een test"));
+    viewer = ui->graphicsView;//TODO: dit is een beetje overbodig toch?;
 
     //hijacking scrolbar events
     ui->graphicsView->verticalScrollBar()->installEventFilter(this);
@@ -26,7 +18,7 @@ MainWindow::MainWindow(QWidget *parent) :
     //install event filter for graphicsView
     ui->graphicsView->installEventFilter(this);
     ui->graphicsView->setMouseTracking(true);
-    Map map();
+    Map map = Map();
     viewer->drawMap(map);
 }
 
@@ -172,7 +164,7 @@ void MainWindow::on_pushButton_clicked()
     int h = ui->Height->value();
 
     QString type(ui->type->currentText());
-    viewer->drawTile(x, y, w, h, type);
+    //viewer->drawTile(x, y, w, h, type);
 }
 
 void MainWindow::on_placeTagButton_clicked()

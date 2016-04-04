@@ -20,11 +20,11 @@ mapView::mapView(QWidget *parent):
     std::cout << "new Viewer with size: " << windowWidth << " x " << windowHeight << std::endl;
     scene->setSceneRect( 0, 0, windowWidth, windowHeight);
     setScene(scene);
-    show();
-    tileColors[tileTypes::Free]=Qt::green;
-    tileColors[tileTypes::Blocked]=Qt::red;
-    tileColors[tileTypes::Mixed]=Qt::yellow;
-    tileColors[tileTypes::Unknown]=Qt::black;
+    show();    
+    tileColors[MapTypes::TileType::EMPTY]=Qt::green;
+    tileColors[MapTypes::TileType::BLOCKED]=Qt::red;
+    tileColors[MapTypes::TileType::MIXED]=Qt::yellow;
+    tileColors[MapTypes::TileType::UNKNOWN]=Qt::black;
 }
 
 mapView::~mapView(){
@@ -32,11 +32,11 @@ mapView::~mapView(){
     delete scene;
 }
 
-void mapView::drawTile(int x, int y, int width, int height, QString type){
+void mapView::drawTile(int x, int y, int width, int height, QColor color){
     std::cout << "New tile: x " << x << " y " << y << " w " << width << " h " << height << std::endl;
     QGraphicsRectItem *block = new QGraphicsRectItem;
     block->setRect(0, 0, width, height);
-    block->setBrush(* new QBrush(tileColors[getTileColor(type)]));
+    block->setBrush(* new QBrush(color));
     block->setPos(x, y);
     scene->addItem(block);
 }
@@ -64,29 +64,39 @@ void mapView::clear(){
     }
 }
 
-tileTypes mapView::getTileColor(QString name){
+MapTypes::TileType mapView::getTileColor(QString name){
     if(name == "Free"){
-        return tileTypes::Free;
+        return MapTypes::TileType::EMPTY;
     }else if(name == "Blocked"){
-        return tileTypes::Blocked;
+        return MapTypes::TileType::BLOCKED;
     }else if(name == "Mixed"){
-        return tileTypes::Mixed;
+        return MapTypes::TileType::MIXED;
     }else{
-        return tileTypes::Unknown;
+        return MapTypes::TileType::UNKNOWN;
     }
 }
 
 void mapView::drawMap(Map &map){
+    std::cout<<"Test 1";
+    std::flush(std::cout);
     std::vector<std::vector<RectInfo> > rectList = RectInfo_from_map_using_tiles(map, 100, 100);
+    std::cout<<"size: " << rectList.size();
+    std::flush(std::cout);
     for (int y = 0; y <= rectList.size(); y++){
+        std::cout<<"Test for lus1";
+        std::flush(std::cout);
         for(int x = 0; x <= rectList[y].size(); x++){
+            std::cout<<"Test for lus2";
+            std::flush(std::cout);
             RectInfo current = rectList[y][x];
             Coordinate left_up = current.get_left_up();
             Coordinate right_down = current.get_right_down();
-            drawTile(left_up.get_x(), left_up.get_y(), right_down.get_x() - left_up.get_x(),
-                                        left_up.get_y() - right_down_y(), current.get_state );
+            drawTile((int)left_up.get_x(), (int)left_up.get_y(), (int)(right_down.get_x() - left_up.get_x()),
+                                        (int)(left_up.get_y() - right_down.get_y()), tileColors[current.get_state()] );
         }
     }
+    std::cout<<"Test 2";
+    std::flush(std::cout);
 }
 
 
