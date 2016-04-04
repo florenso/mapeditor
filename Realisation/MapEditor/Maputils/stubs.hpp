@@ -4,6 +4,12 @@
 #include <iostream>
 #include <ctime>
 
+namespace MapTypes{
+    enum class TileType {
+        UNKNOWN, MIXED, BLOCKED, EMPTY
+    };
+}
+
 class BoxInfo {
 public:
     BoxInfo(bool has_unknown, bool has_obstacles, bool has_navigatable) : has_unknown(has_unknown), has_obstacles(has_obstacles), has_navigatable(has_navigatable) {}
@@ -16,6 +22,7 @@ public:
 class Coordinate {
 public:
     Coordinate(double x, double y, double z) : x(x), y(y), z(z) {};
+    Coordinate() : x(0), y(0), z(0) {};
     double get_x() {return x;}
     double get_y() {return y;}
     double get_z() {return z;}

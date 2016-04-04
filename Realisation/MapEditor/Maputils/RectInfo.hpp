@@ -6,19 +6,19 @@
 class RectInfo {
 private:
     Coordinate left_up, right_down;
-    TileType state;
+    MapTypes::TileType state;
     std::vector<RectInfo> children;
 public:
-    RectInfo(Coordinate pos, int sizex, int sizey, TileType new_state);
-    RectInfo(Coordinate up, Coordinate down, TileType state);
-    RectInfo(Box box, TileType state);
+    RectInfo(Coordinate pos, int sizex, int sizey, MapTypes::TileType new_state);
+    RectInfo(Coordinate up, Coordinate down, MapTypes::TileType state);
+    RectInfo(Box box, MapTypes::TileType state);
 
-    TileType get_state() {
+    MapTypes::TileType get_state() {
         return state;
     }
 
     Box get_box() {
-        return Box(left_up, right_down)
+        return Box(left_up, right_down);
     }
 
     Coordinate get_left_up() {
@@ -29,8 +29,8 @@ public:
         return right_down;
     }
 
-    TileType set_type(TileType new_state) {
-        state = new_state
+    MapTypes::TileType set_type(MapTypes::TileType new_state) {
+        state = new_state;
     }
 
     std::vector<RectInfo> get_rekt() {

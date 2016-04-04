@@ -19,9 +19,9 @@ std::vector< std::vector<RectInfo> > RectInfo_from_map_using_tiles(Map map, int 
         for (int x = 0; x < amountx; x++) {
             Box current_box = Box(Coordinate(sizex * x, sizey * y, 0), Coordinate(sizex * (x + 1), sizey * (y + 1), 1));
             BoxInfo info = map.get_box_info(current_box);
-            TileType new_type = TileType::UNKNOWN;
-            if (info.has_navigatable)   new_type = TileType::EMPTY;
-            if (info.has_obstacles)     new_type = TileType::BLOCKED;
+            MapTypes::TileType new_type = MapTypes::TileType::UNKNOWN;
+            if (info.has_navigatable)   new_type = MapTypes::TileType::EMPTY;
+            if (info.has_obstacles)     new_type = MapTypes::TileType::BLOCKED;
             result[y].push_back(RectInfo(current_box, new_type));
         }
     }
@@ -30,7 +30,7 @@ std::vector< std::vector<RectInfo> > RectInfo_from_map_using_tiles(Map map, int 
 // std::vector< std::vector<RectInfo> > RectInfo_from_map_using_quadtree(Map map, Box size) {
 //     std::vector<RectInfo> boxes;
 //     BoxInfo info = map.get_box_info(current_box);
-//     RectInfo rectinfo = RectInfo(aabb, TileType::UNKNOWN);
+//     RectInfo rectinfo = RectInfo(aabb, Map::TileType::UNKNOWN);
 //
 //     return get_rectinfo_recursive(map, aabb, size, rectinfo);
 // }
@@ -45,17 +45,17 @@ std::vector< std::vector<RectInfo> > RectInfo_from_map_using_tiles(Map map, int 
 //
 //     int i = 0;
 //
-//     TileType new_type = TileType::UNKNOWN;
-//     if (info.has_navigatable)   new_type = TileType::EMPTY;
-//     if (info.has_unknown)       new_type = TileType::UNKNOWN;
-//     if (info.has_obstacles)     new_type = TileType::BLOCKED;
+//     Map::TileType new_type = Map::TileType::UNKNOWN;
+//     if (info.has_navigatable)   new_type = Map::TileType::EMPTY;
+//     if (info.has_unknown)       new_type = Map::TileType::UNKNOWN;
+//     if (info.has_obstacles)     new_type = Map::TileType::BLOCKED;
 //
 //     if (info.has_navigatable)   i++;
 //     if (info.has_unknown)       i++;
 //     if (info.has_obstacles)     i++;
 //
 //     if (i > 1) {
-//         new_type = TileType::MIXED;
+//         new_type = Map::TileType::MIXED;
 //     }
 //
 //     RectInfo current_info = RectInfo(new_box, new_type);
