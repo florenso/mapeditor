@@ -106,3 +106,5 @@ CMakeLists.txt.user
 
 # Debug files
 *.dSYM/
+
+.idea/
