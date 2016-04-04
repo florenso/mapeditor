@@ -2,16 +2,7 @@
 
 #include "mainwindow.hpp"
 #include "ui_mainwindow.h"
-#include <QDesktopServices>
-#include <QFileDialog>
-#include <QUrl>
-#include <QString>
-#include <iostream>
-#include <QMouseEvent>
-#include <QScrollBar>
-#include <QInputEvent>
-#include <QEnterEvent>
-#include <QEvent>
+
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -35,6 +26,8 @@ MainWindow::MainWindow(QWidget *parent) :
     //install event filter for graphicsView
     ui->graphicsView->installEventFilter(this);
     ui->graphicsView->setMouseTracking(true);
+    Map map();
+    viewer->drawMap(map);
 }
 
 MainWindow::~MainWindow()

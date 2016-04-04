@@ -19,8 +19,8 @@
 #include <QString>
 #include <iostream>
 #include <string>
-#include <map>
-//#include "RectInfo"
+#include "map_utils.hpp"
+#include "stubs.hpp"
 
 enum class tileTypes {Free, Blocked, Mixed, Unknown};
 
@@ -50,7 +50,7 @@ public:
     //! Checks to the mouse is located in the view.
     bool mouseInMapView(QPoint p);
 
-    //void drawMap(RectInfo *map);
+    void drawMap(Map &map);
 private:
     int windowWidth;
     int windowHeight;

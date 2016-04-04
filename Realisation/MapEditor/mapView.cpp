@@ -76,18 +76,18 @@ tileTypes mapView::getTileColor(QString name){
     }
 }
 
-/*  void mapView::drawMap(RectInfo *map){
- *      for (int i = 0; i <= len(map); i++;){
- *          Box box = new Box;
- *          box = map->get_2D_Box()
- *          Coordinate left_up = map->get_left_up();
- *          Coordinate right_down = map->get_right_down();
- *          drawTile(left_up.get_x(), left_up.get_y(), right_down.get_x() - left_up.get_x(),
- *                   left_up.get_y() - right_down_y(), map->get_state );
- *          }
- *  }
- *
- */
+void mapView::drawMap(Map &map){
+    std::vector<std::vector<RectInfo> > rectList = RectInfo_from_map_using_tiles(map, 100, 100);
+    for (int y = 0; y <= rectList.size(); y++){
+        for(int x = 0; x <= rectList[y].size(); x++){
+            RectInfo current = rectList[y][x];
+            Coordinate left_up = current.get_left_up();
+            Coordinate right_down = current.get_right_down();
+            drawTile(left_up.get_x(), left_up.get_y(), right_down.get_x() - left_up.get_x(),
+                                        left_up.get_y() - right_down_y(), current.get_state );
+        }
+    }
+}
 
 
 bool mapView::mouseInMapView(QPoint p){

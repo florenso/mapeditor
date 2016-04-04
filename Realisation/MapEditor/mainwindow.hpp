@@ -14,6 +14,17 @@
 
 #include <QMainWindow>
 #include "mapView.hpp"
+#include "stubs.hpp"
+#include <QDesktopServices>
+#include <QFileDialog>
+#include <QUrl>
+#include <QString>
+#include <iostream>
+#include <QMouseEvent>
+#include <QScrollBar>
+#include <QInputEvent>
+#include <QEnterEvent>
+#include <QEvent>
 
 namespace Ui {
 class MainWindow;
