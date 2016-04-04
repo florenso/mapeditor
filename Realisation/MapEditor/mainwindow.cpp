@@ -92,19 +92,21 @@ bool MainWindow::event(QEvent *event)
 void MainWindow::on_actionPan_toggled(bool activatePan)
 {
     if(activatePan){
-            //QEvent * harry = new QEvent(QEvent::Enter);
-            //QCoreApplication::sendEvent(ui->graphicsView,harry);
+            // Releases mouse in case if the hotkey is used while the mouse is in the mapview
             ui->graphicsView->releaseMouse();
             ui->graphicsView->setDragMode(QGraphicsView::ScrollHandDrag);
             //ui->graphicsView->send
 
-            printf("drag hand\n");
-            fflush(stdout);
+            std::cout << "selected drag hand" << std::endl;
         }
     else{
+            QPoint p = ui->graphicsView->mapFromGlobal(QCursor::pos());
+            // if statement is for when the hotkey is used and the mouse is already in the mapView
+            if(ui->graphicsView->mouseInMapView(p)){
+                    ui->graphicsView->grabMouse();
+                }
             ui->graphicsView->setDragMode(QGraphicsView::NoDrag);
-            printf("select cursor\n");
-            fflush(stdout);
+            std::cout << "select cursor" << std::endl;
         }
 }
 
@@ -156,15 +158,6 @@ bool MainWindow::eventFilter(QObject *object, QEvent *event)
     return QWidget::eventFilter(object,event);
 }
 
-//void MainWindow::on_inputX_cursorPositionChanged(int arg1, int arg2)
-//{
-// commented to avoid linker error "Unused parameter"
-//}
-
-//void MainWindow::on_inputY_cursorPositionChanged(int arg1, int arg2)
-//{
-// commented to avoid linker error "Unused parameter"
-//}
 
 //testcode
 void MainWindow::on_pushButton_clicked()
