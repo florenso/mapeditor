@@ -82,13 +82,12 @@ tileTypes mapView::getTileColor(QString name){
 
 void mapView::increaseScale(qreal inc){
     if(!(scaleSize > maxScale)){
-        scaleSize += inc;
+        scaleSize += zoomSpeed;
     }
     updateTransform();
 }
 
 void mapView::decreaseScale(qreal dec){
-    std::cout << "scSi" << zoomSpeed << std::endl;
     scaleSize -= zoomSpeed;
     if(scaleSize < minScale){
         scaleSize = minScale;
@@ -160,7 +159,7 @@ bool mapView::mouseInMapView(QPoint p){
 
 bool mapView::event(QEvent *event)
 {
-    std::cout<<"map view event type"<< event->type()<<std::endl;
-    fflush(stdout);
+        //std::cout<<"map view event type"<< event->type()<<std::endl;
+        //fflush(stdout);
     return QObject::event(event);
 }

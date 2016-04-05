@@ -78,8 +78,7 @@ private slots:
 
 private:
     Ui::MainWindow *ui;
-    mapView *viewer;
-
+    int scrollStepSize=10;
 };
 
 #endif // MAINWINDOW_HPP
