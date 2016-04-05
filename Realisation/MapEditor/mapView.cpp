@@ -88,7 +88,8 @@ void mapView::increaseScale(qreal inc){
 }
 
 void mapView::decreaseScale(qreal dec){
-    scaleSize -= dec;
+    std::cout << "scSi" << zoomSpeed << std::endl;
+    scaleSize -= zoomSpeed;
     if(scaleSize < minScale){
         scaleSize = minScale;
 
@@ -134,7 +135,7 @@ void mapView::updateTransform(){
     scale(scaleSize, scaleSize);
 }
 
-void mapView::setZoomSpeed(int speed){
+void mapView::setZoomSpeed(qreal speed){
     zoomSpeed = speed;
 }
 

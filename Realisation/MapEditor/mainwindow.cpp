@@ -227,5 +227,5 @@ void MainWindow::on_resetRotationButton_clicked()
 
 void MainWindow::on_zoomSpeedSlider_valueChanged(int value)
 {
-    viewer->setZoomSpeed(value);
+    viewer->setZoomSpeed(qreal(float(value)/1000));
 }
