@@ -48,13 +48,13 @@ mapView::~mapView(){
 
 void mapView::increaseScale(qreal inc){
     if(!(scaleSize > maxScale)){
-        scaleSize += inc;
+        scaleSize += zoomSpeed;
     }
     updateTransform();
 }
 
 void mapView::decreaseScale(qreal dec){
-    scaleSize -= dec;
+    scaleSize -= zoomSpeed;
     if(scaleSize < minScale){
         scaleSize = minScale;
 
@@ -100,7 +100,7 @@ void mapView::updateTransform(){
     scale(scaleSize, scaleSize);
 }
 
-void mapView::setZoomSpeed(int speed){
+void mapView::setZoomSpeed(qreal speed){
     zoomSpeed = speed;
 }
 
