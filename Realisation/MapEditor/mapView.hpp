@@ -45,6 +45,16 @@ public:
     //! Clears all the objects in the scene.
     void clear();
 
+    void increaseScale(qreal inc = 0.025f);
+    void decreaseScale(qreal dec = 0.025f);
+    void increaseRotation(int inc = 90);
+    void decreaseRotation(int dec = 90);
+    void resetRotation();
+    void resetScale();
+    void setZoomSpeed(int speed);
+    int getScale();
+    int getRotation();
+
     tileTypes getTileColor(QString s);
 
     //! Checks to the mouse is located in the view.
@@ -52,9 +62,14 @@ public:
 
     //void drawMap(RectInfo *map);
 private:
+    void updateTransform();
     int windowWidth;
     int windowHeight;
-    int scale;
+    int rotation  = 0;
+    int zoomSpeed = 50;
+    qreal maxScale  = 1.0f;
+    qreal minScale  = 0.1f;
+    qreal scaleSize = 0.5f;
     QGraphicsView * view;
     QGraphicsScene * scene;
     std::map<tileTypes, QColor> tileColors;

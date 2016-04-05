@@ -1,5 +1,3 @@
-
-
 #include "mainwindow.hpp"
 #include "ui_mainwindow.h"
 #include <QDesktopServices>
@@ -66,10 +64,20 @@ void MainWindow::on_actionLoad_triggered()
 
 void MainWindow::on_zoomInButton_clicked()
 {
+    ui->graphicsView->increaseScale(0.1f);
+    ui->zoomResetButton->setText(QString::number(ui->graphicsView->getScale())+ "%");
 }
 
 void MainWindow::on_zoomOutButtom_clicked()
 {
+    ui->graphicsView->decreaseScale(0.1f);
+    ui->zoomResetButton->setText(QString::number(ui->graphicsView->getScale())+ "%");
+}
+
+void MainWindow::on_zoomResetButton_clicked()
+{
+    ui->graphicsView->resetScale();
+    ui->zoomResetButton->setText(QString::number(ui->graphicsView->getScale())+ "%");
 }
 
 bool MainWindow::event(QEvent *event)
@@ -124,6 +132,12 @@ bool MainWindow::eventFilter(QObject *object, QEvent *event)
             if (object == ui->graphicsView->verticalScrollBar()){//catch
                 QWheelEvent* we = static_cast<QWheelEvent*>(event);
                 int num = we->delta();
+                if(num < 0){
+                    ui->graphicsView->decreaseScale();
+                }else{
+                    ui->graphicsView->increaseScale();
+                }
+                ui->zoomResetButton->setText(QString::number(ui->graphicsView->getScale()));
                 std::cout << "delta: "<< num<< std::endl;
                 fflush(stdout);
                 return true;
@@ -223,3 +237,25 @@ void MainWindow::on_actionSave_triggered()
 
 }
 
+void MainWindow::on_rotateLeftButton_clicked()
+{
+    ui->graphicsView->decreaseRotation();
+    ui->resetRotationButton->setText(QString::number(ui->graphicsView->getRotation()));
+}
+
+void MainWindow::on_rotateRightButton_clicked()
+{
+    ui->graphicsView->increaseRotation();
+    ui->resetRotationButton->setText(QString::number(ui->graphicsView->getRotation()));
+}
+
+void MainWindow::on_resetRotationButton_clicked()
+{
+    ui->graphicsView->resetRotation();
+    ui->resetRotationButton->setText(QString::number(ui->graphicsView->getRotation()));
+}
+
+void MainWindow::on_zoomSpeedSlider_valueChanged(int value)
+{
+    ui->graphicsView->setZoomSpeed(value);
+}

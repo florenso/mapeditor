@@ -21,6 +21,10 @@ mapView::mapView(QWidget *parent):
     scene->setSceneRect( 0, 0, windowWidth, windowHeight);
     setScene(scene);
     show();
+
+    //set default scale
+    resetScale();
+
     tileColors[tileTypes::Free]=Qt::green;
     tileColors[tileTypes::Blocked]=Qt::red;
     tileColors[tileTypes::Mixed]=Qt::yellow;
@@ -76,6 +80,64 @@ tileTypes mapView::getTileColor(QString name){
     }
 }
 
+void mapView::increaseScale(qreal inc){
+    if(!(scaleSize > maxScale)){
+        scaleSize += inc;
+    }
+    updateTransform();
+}
+
+void mapView::decreaseScale(qreal dec){
+    scaleSize -= dec;
+    if(scaleSize < minScale){
+        scaleSize = minScale;
+
+    }
+    updateTransform();
+}
+
+int mapView::getScale(){
+    return scaleSize * 200;
+}
+
+void mapView::resetScale(){
+    scaleSize = 0.5f;
+    updateTransform();
+}
+
+void mapView::increaseRotation(int inc){
+    rotation = (rotation + inc) % 360;
+    updateTransform();
+}
+
+void mapView::decreaseRotation(int dec){
+    if(rotation == 0){
+        rotation = 360 - dec;
+    }else{
+        rotation -= dec;
+    }
+    updateTransform();
+}
+
+int mapView::getRotation(){
+    return rotation;
+}
+
+void mapView::resetRotation(){
+    rotation = 0;
+    updateTransform();
+}
+
+void mapView::updateTransform(){
+    resetTransform();
+    rotate(rotation);
+    scale(scaleSize, scaleSize);
+}
+
+void mapView::setZoomSpeed(int speed){
+    zoomSpeed = speed;
+}
+
 /*  void mapView::drawMap(RectInfo *map){
  *      for (int i = 0; i <= len(map); i++;){
  *          Box box = new Box;
@@ -86,19 +148,18 @@ tileTypes mapView::getTileColor(QString name){
  *                   left_up.get_y() - right_down_y(), map->get_state );
  *          }
  *  }
- *
  */
 
 
 bool mapView::mouseInMapView(QPoint p){
-        //QPoint p = mapFromGlobal(QCursor::pos());
-        if(p.x() <= size().width() && p.x()>=0 && p.y() <= size().height() && p.y()>=0) {return true;}
-        return false;
-    }
+    //QPoint p = mapFromGlobal(QCursor::pos());
+    if(p.x() <= size().width() && p.x()>=0 && p.y() <= size().height() && p.y()>=0) {return true;}
+    return false;
+}
 
 bool mapView::event(QEvent *event)
 {
         //std::cout<<"map view event type"<< event->type()<<std::endl;
-        fflush(stdout);
+        //fflush(stdout);
     return QObject::event(event);
 }

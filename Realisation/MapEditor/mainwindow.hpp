@@ -66,6 +66,16 @@ private slots:
     void on_actionSave_triggered();
 
 
+    void on_zoomResetButton_clicked();
+
+    void on_rotateLeftButton_clicked();
+
+    void on_rotateRightButton_clicked();
+
+    void on_resetRotationButton_clicked();
+
+    void on_zoomSpeedSlider_valueChanged(int value);
+
 private:
     Ui::MainWindow *ui;
     int scrollStepSize=10;
