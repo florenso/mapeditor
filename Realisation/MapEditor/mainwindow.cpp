@@ -115,7 +115,7 @@ void MainWindow::on_actionPan_toggled(bool activatePan)
             QPoint p = ui->graphicsView->mapFromGlobal(QCursor::pos());
             // if statement is for when the hotkey is used and the mouse is already in the mapView
             if(ui->graphicsView->mouseInMapView(p)){
-                    ui->graphicsView->grabMouse();
+                    //ui->graphicsView->grabMouse();
                 }
             ui->graphicsView->setDragMode(QGraphicsView::NoDrag);
             std::cout << "select cursor" << std::endl;
@@ -169,7 +169,8 @@ bool MainWindow::eventFilter(QObject *object, QEvent *event)
             {
             std::cout << "succecvol enter " << object << std::endl;
             if(! ui->actionPan->isChecked()){
-                ui->graphicsView->grabMouse();}
+                //ui->graphicsView->grabMouse();
+                }
             }
             break;
         case QEvent::KeyPress:

@@ -9,6 +9,11 @@
 //!		- part of TH7-8 assignment 2016 / Project: MapEditer
 //**************************************
 
+
+//TODO: deze klasse moet een mapinterface hebben!!!
+
+
+
 #ifndef MAPVIEW_HPP
 #define MAPVIEW_HPP
 #include <QGraphicsWidget>
@@ -77,6 +82,9 @@ private:
 protected:
     //! Catches all events and returns true when a event is caught
     bool event(QEvent *event);
+    bool eventFilter(QObject *object, QEvent *event);
     };
+
+
 
 #endif // CANVAS_HPP

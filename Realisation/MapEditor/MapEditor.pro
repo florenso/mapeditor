@@ -19,12 +19,14 @@ SOURCES += main.cpp\
     mapView.cpp \
     map_utils.cpp \
     RectInfo.cpp \
-    stubs.cpp
+    stubs.cpp \
+    mapeditor.cpp
 
 HEADERS  += mainwindow.hpp \
     mapView.hpp \
     map_utils.hpp \
     RectInfo.hpp \
-    stubs.hpp
+    stubs.hpp \
+    mapeditor.hpp
 
 FORMS    += mainwindow.ui

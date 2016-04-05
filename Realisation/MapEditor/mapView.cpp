@@ -1,5 +1,11 @@
 #include "mapView.hpp"
 #include <iostream>
+#include <QMouseEvent>
+#include <QScrollBar>
+#include <QInputEvent>
+#include <QEnterEvent>
+#include <QEvent>
+#include <QGraphicsSceneMouseEvent>
 
 
 mapView::mapView(QWidget *parent):
@@ -29,6 +35,8 @@ mapView::mapView(QWidget *parent):
     tileColors[tileTypes::Blocked]=Qt::red;
     tileColors[tileTypes::Mixed]=Qt::yellow;
     tileColors[tileTypes::Unknown]=Qt::black;
+
+    scene->installEventFilter(this);
 }
 
 mapView::~mapView(){
@@ -163,3 +171,21 @@ bool mapView::event(QEvent *event)
         //fflush(stdout);
     return QObject::event(event);
 }
+
+bool mapView::eventFilter(QObject * object, QEvent * event){
+        //return true if you want to stop the event from going to other objects
+        //return false if you you do not want to kill the event.
+
+       switch(event->type()){
+       case QEvent::GraphicsSceneMouseMove:
+           {
+           QGraphicsSceneMouseEvent * gsme = static_cast<QGraphicsSceneMouseEvent*>(event);
+           std::cout<< "mouse pos in scene is: x" << gsme->pos().x() << " y" << gsme->pos().y() << std::endl;
+           return false;
+           break;
+            }
+       default:
+           break;
+        }
+       return false;
+    }
