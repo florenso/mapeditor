@@ -12,6 +12,7 @@
 #include <QInputEvent>
 #include <QEnterEvent>
 #include <QEvent>
+#include <QGraphicsSceneMouseEvent>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -24,6 +25,8 @@ MainWindow::MainWindow(QWidget *parent) :
 
     ui->graphicsView->installEventFilter(this);
     ui->graphicsView->setMouseTracking(true);
+
+    //ui->graphicsView->scene->installEventFilter(this);
 
     //TestCode
     ui->graphicsView->drawTile(10,10,10,10,"blocked");
@@ -113,10 +116,8 @@ void MainWindow::on_actionPan_toggled(bool activatePan)
 
 bool MainWindow::eventFilter(QObject *object, QEvent *event)
 {
-        if (event->type()==QEvent::KeyPress){
-                QKeyEvent * ke = static_cast<QKeyEvent*>(event);
-            std::cout << "key pressed in @ event filter in mainwindow " << ke->key() << std::endl;
-            }
+       // if(ui->graphicsView->scene)
+
     switch(event->type()){
 
         case QEvent::Wheel:
@@ -134,7 +135,10 @@ bool MainWindow::eventFilter(QObject *object, QEvent *event)
         case QEvent::MouseMove:
             {
             QMouseEvent* me = static_cast<QMouseEvent*>(event);
+            //QGraphicsSceneMouseEvent* gsme = static_cast<QGraphicsSceneMouseEvent*>(event);
             if(ui->graphicsView->mouseInMapView(me->pos())){
+                    //scenePos()
+                    //gsme->scenePos()
                 ui->xposLabel->setText(QString::number(me->pos().x()));
                 ui->yposLabel->setText(QString::number(me->pos().y()));
             } else if(true) {ui->graphicsView->releaseMouse();
