@@ -1,16 +1,18 @@
 #ifndef MAPEDITOR_HPP
 #define MAPEDITOR_HPP
 
+//this class contains functions to edit a map (this does not call draw functions for the map, only for ghosting purposes)
+
 #include <QMainWindow>
 #include <QObject>
 #include <QWidget>
 #include "mapView.hpp"
 
-class MapEditor : public mapView
+class mapEditor : public mapView
     {
     Q_OBJECT
 public:
-    explicit MapEditor(QWidget *parent = 0);
+    explicit mapEditor(QWidget *parent = 0);
 
 signals:
 

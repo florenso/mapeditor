@@ -7,6 +7,9 @@
 //!
 //! \context
 //!		- part of TH7-8 assignment 2016 / Project: MapEditer
+//!
+//! this class contains the methods to navigate,read and translates a map to avalible draw functions for a scene.
+//!
 //**************************************
 
 
@@ -25,9 +28,10 @@
 #include <iostream>
 #include <string>
 #include <map>
+#include "viewScene.hpp"
 //#include "RectInfo"
 
-enum class tileTypes {Free, Blocked, Mixed, Unknown};
+
 
 class mapView: public QGraphicsView
 {
@@ -37,18 +41,6 @@ public:
 
     //! Deconstroctor of the mapView.
     ~mapView();
-
-    //! Draws a tile with position x,y and size width,height on the scene.
-    void drawTile(int x, int y, int width, int height, QString type);
-
-    //! Draws a line from position x1,y1 to position x2,y2 on the scene.
-    void drawLine(int x1, int y1, int x2, int y2, QRgb color);
-
-    //! Draws a the text value on the scene on position x,y.
-    void setTag(int x, int y, QString value);
-
-    //! Clears all the objects in the scene.
-    void clear();
 
     void increaseScale(qreal inc = 0.025f);
     void decreaseScale(qreal dec = 0.025f);
@@ -60,11 +52,8 @@ public:
     int getScale();
     int getRotation();
 
-    tileTypes getTileColor(QString s);
-
-
     //void drawMap(RectInfo *map);
-    QGraphicsScene * scene;
+    viewScene * scene;
 private:
     void updateTransform();
     int windowWidth;
@@ -74,7 +63,6 @@ private:
     qreal maxScale  = 1.0f;
     qreal minScale  = 0.1f;
     qreal scaleSize = 0.5f;
-    std::map<tileTypes, QColor> tileColors;
     int scrollStepSize=10;
 
 protected:
@@ -83,6 +71,4 @@ protected:
     bool eventFilter(QObject *object, QEvent *event);
     };
 
-
-
-#endif // CANVAS_HPP
+#endif // MAPVIEW_HPP

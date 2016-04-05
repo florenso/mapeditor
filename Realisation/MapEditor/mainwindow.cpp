@@ -11,29 +11,26 @@
 #include <QEnterEvent>
 #include <QEvent>
 #include <QGraphicsSceneMouseEvent>
+#include "mapEditor.hpp"
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    //hijacking scrolbar events
-    //ui->graphicsView->verticalScrollBar()->installEventFilter(this);
-    //ui->graphicsView->horizontalScrollBar()->installEventFilter(this);
-    //ui->graphicsView-installEventFilter(this);
-    ui->graphicsView->scene->installEventFilter(this);
 
+    //TODO: check if we need both eventfilters (check MainWindow::eventFilter(...) )
+    ui->graphicsView->scene->installEventFilter(this);
     ui->graphicsView->installEventFilter(this);
-    ui->graphicsView->setMouseTracking(true);
 
     //TestCode
-    ui->graphicsView->drawTile(10,10,10,10,"blocked");
-    ui->graphicsView->drawTile(10,10,10,10,"blocked");
-    ui->graphicsView->clear();
-    ui->graphicsView->drawTile(10,100,100,1000,"unkown");
-    ui->graphicsView->drawTile(900,100,100,1000,"unkown");
-    ui->graphicsView->drawTile(200,10,10,10,"free");
-    ui->graphicsView->setTag(100, 100, QString("Hallo! Dit is een test"));
+    ui->graphicsView->scene->drawTile(10,10,10,10,"blocked");
+    ui->graphicsView->scene->drawTile(10,10,10,10,"blocked");
+    ui->graphicsView->scene->clear();
+    ui->graphicsView->scene->drawTile(10,100,100,1000,"unkown");
+    ui->graphicsView->scene->drawTile(900,100,100,1000,"unkown");
+    ui->graphicsView->scene->drawTile(200,10,10,10,"free");
+    ui->graphicsView->scene->setTag(100, 100, QString("Hallo! Dit is een test"));
     //end testcode
 }
 
@@ -64,20 +61,20 @@ void MainWindow::on_actionLoad_triggered()
 
 void MainWindow::on_zoomInButton_clicked()
 {
-    ui->graphicsView->increaseScale(0.1f);
-    ui->zoomResetButton->setText(QString::number(ui->graphicsView->getScale())+ "%");
+    ui->graphicsView->increaseScale(0.1f);//TODO: magic value
+    ui->zoomResetButton->setText(QString::number(ui->graphicsView->getScale())+ " %");
 }
 
 void MainWindow::on_zoomOutButtom_clicked()
 {
-    ui->graphicsView->decreaseScale(0.1f);
-    ui->zoomResetButton->setText(QString::number(ui->graphicsView->getScale())+ "%");
+    ui->graphicsView->decreaseScale(0.1f);//TODO: magic value
+    ui->zoomResetButton->setText(QString::number(ui->graphicsView->getScale())+ " %");
 }
 
 void MainWindow::on_zoomResetButton_clicked()
 {
     ui->graphicsView->resetScale();
-    ui->zoomResetButton->setText(QString::number(ui->graphicsView->getScale())+ "%");
+    ui->zoomResetButton->setText(QString::number(ui->graphicsView->getScale())+ " %");
 }
 
 
@@ -87,6 +84,7 @@ void MainWindow::on_zoomResetButton_clicked()
 void MainWindow::on_actionPan_toggled(bool activatePan)
 {
     if(activatePan){
+            ui->actionSelectMode->setChecked(false);
             ui->graphicsView->setDragMode(QGraphicsView::ScrollHandDrag);
         }
     else{
@@ -94,7 +92,19 @@ void MainWindow::on_actionPan_toggled(bool activatePan)
         }
 }
 
-bool MainWindow::eventFilter(QObject *object, QEvent *event)
+void MainWindow::on_actionSelectMode_toggled(bool activateSelect)
+{
+
+        if(activateSelect){
+                ui->actionPan->setChecked(false);
+                ui->graphicsView->setDragMode(QGraphicsView::RubberBandDrag);
+            }
+        else{
+                ui->graphicsView->setDragMode(QGraphicsView::NoDrag);
+            }
+}
+
+bool MainWindow::eventFilter(QObject *, QEvent *event)
 {
     switch(event->type()){
         case QEvent::GraphicsSceneMouseMove:
@@ -107,8 +117,8 @@ bool MainWindow::eventFilter(QObject *object, QEvent *event)
             }
         case QEvent::Wheel:
             {
-                ui->zoomResetButton->setText((QString::number(ui->graphicsView->getScale())) + " %");
-                return false;
+                ui->zoomResetButton->setText(QString::number(ui->graphicsView->getScale()) + " %");
+                return false;//returns false so that evenfilter in mapview can catch it too
                 break;
             }
         default:
@@ -131,7 +141,7 @@ void MainWindow::on_pushButton_clicked()
     int h = ui->Height->value();
 
     QString type(ui->type->currentText());
-    ui->graphicsView->drawTile(x, y, w, h, type);
+    ui->graphicsView->scene->drawTile(x, y, w, h, type);
 }
 
 void MainWindow::on_placeTagButton_clicked()
@@ -140,12 +150,12 @@ void MainWindow::on_placeTagButton_clicked()
     int y = ui->yposTag->value();
 
     QString tag(ui->tagName->text());
-    ui->graphicsView->setTag(x, y, tag);
+    ui->graphicsView->scene->setTag(x, y, tag);
 }
 
 void MainWindow::on_clearButton_clicked()
 {
-    ui->graphicsView->clear();
+    ui->graphicsView->scene->clear();
 }
 
 void MainWindow::on_actionSave_triggered()
@@ -175,3 +185,5 @@ void MainWindow::on_zoomSpeedSlider_valueChanged(int value)
 {
     ui->graphicsView->setZoomSpeed(value);
 }
+
+

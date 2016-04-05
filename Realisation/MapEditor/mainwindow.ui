@@ -88,7 +88,7 @@
      <string>-</string>
     </property>
    </widget>
-   <widget class="mapView" name="graphicsView">
+   <widget class="mapEditor" name="graphicsView">
     <property name="geometry">
      <rect>
       <x>340</x>
@@ -1013,7 +1013,7 @@
      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Zoom out&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
     </property>
     <property name="text">
-     <string>100%</string>
+     <string>100 %</string>
     </property>
    </widget>
    <widget class="QLabel" name="label_10">
@@ -1326,7 +1326,7 @@
      <x>0</x>
      <y>0</y>
      <width>1000</width>
-     <height>31</height>
+     <height>26</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -1348,6 +1348,7 @@
      <string>Tools</string>
     </property>
     <addaction name="actionPan"/>
+    <addaction name="actionSelectMode"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menuTools"/>
@@ -1394,13 +1395,21 @@
     <string>Ctrl+D</string>
    </property>
   </action>
+  <action name="actionSelectMode">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>SelectMode</string>
+   </property>
+  </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <customwidgets>
   <customwidget>
-   <class>mapView</class>
+   <class>mapEditor</class>
    <extends>QGraphicsView</extends>
-   <header>mapView.hpp</header>
+   <header>mapEditor.hpp</header>
   </customwidget>
  </customwidgets>
  <resources/>

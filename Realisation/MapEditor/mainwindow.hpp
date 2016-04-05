@@ -76,6 +76,8 @@ private slots:
 
     void on_zoomSpeedSlider_valueChanged(int value);
 
+    void on_actionSelectMode_toggled(bool arg1);
+
 private:
     Ui::MainWindow *ui;
 };
