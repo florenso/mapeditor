@@ -88,7 +88,6 @@ void mapView::increaseScale(qreal inc){
 }
 
 void mapView::decreaseScale(qreal dec){
-    std::cout << "resize: " << scaleSize << std::endl;
     scaleSize -= dec;
     if(scaleSize < minScale){
         scaleSize = minScale;
@@ -133,6 +132,10 @@ void mapView::updateTransform(){
     resetTransform();
     rotate(rotation);
     scale(scaleSize, scaleSize);
+}
+
+void mapView::setZoomSpeed(int speed){
+    zoomSpeed = speed;
 }
 
 /*  void mapView::drawMap(RectInfo *map){

@@ -51,6 +51,7 @@ public:
     void decreaseRotation(int dec = 90);
     void resetRotation();
     void resetScale();
+    void setZoomSpeed(int speed);
     int getScale();
     int getRotation();
 
@@ -65,6 +66,7 @@ private:
     int windowWidth;
     int windowHeight;
     int rotation  = 0;
+    int zoomSpeed = 50;
     qreal maxScale  = 1.0f;
     qreal minScale  = 0.1f;
     qreal scaleSize = 0.5f;

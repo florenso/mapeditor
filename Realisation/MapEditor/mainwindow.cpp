@@ -224,3 +224,8 @@ void MainWindow::on_resetRotationButton_clicked()
     viewer->resetRotation();
     ui->resetRotationButton->setText(QString::number(viewer->getRotation()));
 }
+
+void MainWindow::on_zoomSpeedSlider_valueChanged(int value)
+{
+    viewer->setZoomSpeed(value);
+}

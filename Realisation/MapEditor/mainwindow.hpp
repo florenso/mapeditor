@@ -74,6 +74,8 @@ private slots:
 
     void on_resetRotationButton_clicked();
 
+    void on_zoomSpeedSlider_valueChanged(int value);
+
 private:
     Ui::MainWindow *ui;
     mapView *viewer;
