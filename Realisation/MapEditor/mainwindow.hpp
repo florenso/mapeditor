@@ -4,6 +4,7 @@
 //! 	- Daniel Klomp
 //!		- Jop van Buuren
 //!     - Koen de Guijter
+//!     - jessy Visch
 //!
 //! \context
 //!		- part of TH7-8 assignment 2016 / Project: MapEditer
@@ -32,7 +33,6 @@ public:
 
 protected:
     //! Catches all events and returns true when a event is caught.
-    bool event(QEvent *event);
     bool eventFilter(QObject *object, QEvent *event);
 private slots:
 
@@ -78,7 +78,6 @@ private slots:
 
 private:
     Ui::MainWindow *ui;
-    int scrollStepSize=10;
 };
 
 #endif // MAINWINDOW_HPP

@@ -18,13 +18,13 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
     //hijacking scrolbar events
-    ui->graphicsView->verticalScrollBar()->installEventFilter(this);
-    ui->graphicsView->horizontalScrollBar()->installEventFilter(this);
+    //ui->graphicsView->verticalScrollBar()->installEventFilter(this);
+    //ui->graphicsView->horizontalScrollBar()->installEventFilter(this);
+    //ui->graphicsView-installEventFilter(this);
+    ui->graphicsView->scene->installEventFilter(this);
 
     ui->graphicsView->installEventFilter(this);
     ui->graphicsView->setMouseTracking(true);
-
-    //ui->graphicsView->scene->installEventFilter(this);
 
     //TestCode
     ui->graphicsView->drawTile(10,10,10,10,"blocked");
@@ -80,129 +80,44 @@ void MainWindow::on_zoomResetButton_clicked()
     ui->zoomResetButton->setText(QString::number(ui->graphicsView->getScale())+ "%");
 }
 
-bool MainWindow::event(QEvent *event)
-{
-        return QWidget::event(event);
 
-        //::cout<<"mainWindow event type"<< event->type()<<std::endl;
-        if (event->type() == QEvent::MouseButtonPress){
-                QPoint p = ui->graphicsView->mapFromGlobal(QCursor::pos());
-                //QPoint p = ui->graphicsView->view->mapFromGlobal(QCursor::pos());
-                std::cout << "mouse pos: x"<< p.x() << " y" <<p.y()<<std::endl;
-                ui->xposLabel->setText(QString::number(p.x()));
-                ui->yposLabel->setText(QString::number(p.y()));
 
-                if (ui->graphicsView->mouseInMapView(p)){
 
-                std::cout << "mouse click is in viewer"  <<std::endl;}
-                else {std::cout << "mouse click is not in viewer"  <<std::endl;}
-            }
-        fflush(stdout);
-    return QWidget::event(event);
-}
 
 void MainWindow::on_actionPan_toggled(bool activatePan)
 {
     if(activatePan){
-            // Releases mouse in case if the hotkey is used while the mouse is in the mapview
-            ui->graphicsView->releaseMouse();
             ui->graphicsView->setDragMode(QGraphicsView::ScrollHandDrag);
-            //ui->graphicsView->send
-
-            std::cout << "selected drag hand" << std::endl;
         }
     else{
-            QPoint p = ui->graphicsView->mapFromGlobal(QCursor::pos());
-            // if statement is for when the hotkey is used and the mouse is already in the mapView
-            if(ui->graphicsView->mouseInMapView(p)){
-                    //ui->graphicsView->grabMouse();
-                }
             ui->graphicsView->setDragMode(QGraphicsView::NoDrag);
-            std::cout << "select cursor" << std::endl;
         }
 }
 
 bool MainWindow::eventFilter(QObject *object, QEvent *event)
 {
-       // if(ui->graphicsView->scene)
-
     switch(event->type()){
-
+        case QEvent::GraphicsSceneMouseMove:
+            {
+                QGraphicsSceneMouseEvent * gsme = static_cast<QGraphicsSceneMouseEvent*>(event);
+                ui->xposLabel->setText(QString::number(gsme->scenePos().x()));
+                ui->yposLabel->setText(QString::number(gsme->scenePos().y()));
+                return false;
+                break;
+            }
         case QEvent::Wheel:
-            if (object == ui->graphicsView->verticalScrollBar()){//catch
-                QWheelEvent* we = static_cast<QWheelEvent*>(event);
-                int num = we->delta();
-                if(num < 0){
-                    ui->graphicsView->decreaseScale();
-                }else{
-                    ui->graphicsView->increaseScale();
-                }
-                ui->zoomResetButton->setText(QString::number(ui->graphicsView->getScale()));
-                std::cout << "delta: "<< num<< std::endl;
-                fflush(stdout);
-                return true;
-                }
-            else if(object == ui->graphicsView->horizontalScrollBar()){//catch horizontal scroll
-                return true;}
-            break;
-
-        case QEvent::MouseMove:
             {
-            QMouseEvent* me = static_cast<QMouseEvent*>(event);
-            //QGraphicsSceneMouseEvent* gsme = static_cast<QGraphicsSceneMouseEvent*>(event);
-            if(ui->graphicsView->mouseInMapView(me->pos())){
-                    //scenePos()
-                    //gsme->scenePos()
-                ui->xposLabel->setText(QString::number(me->pos().x()));
-                ui->yposLabel->setText(QString::number(me->pos().y()));
-            } else if(true) {ui->graphicsView->releaseMouse();
-                std::cout << "leaving view" << std::endl;
-                }
-            }
-            break;
-        case QEvent::MouseButtonPress:
-            {QPoint p = ui->graphicsView->mapFromGlobal(QCursor::pos());
-            std::cout << "mouse press @ pos: x"<< p.x() << " y" <<p.y()<<std::endl;
-            fflush(stdout);}
-            break;
-        case QEvent::Enter:
-            {
-            std::cout << "succecvol enter " << object << std::endl;
-            if(! ui->actionPan->isChecked()){
-                //ui->graphicsView->grabMouse();
-                }
-            }
-            break;
-        case QEvent::KeyPress:
-            {
-            QKeyEvent * ke = static_cast<QKeyEvent*>(event);
-            std::cout << "key pressed in @ event filter in mainwindow " << ke->key() << std::endl;
-                if(ke->key() == Qt::Key_Down){
-                        int val = ui->graphicsView->verticalScrollBar()->value();
-                        ui->graphicsView->verticalScrollBar()->setValue(val+scrollStepSize);
-                    }
-                else if(ke->key() == Qt::Key_Up){
-                        int val = ui->graphicsView->verticalScrollBar()->value();
-                        ui->graphicsView->verticalScrollBar()->setValue(val-scrollStepSize);
-                    }
-                else if(ke->key() == Qt::Key_Right){
-                        int val = ui->graphicsView->horizontalScrollBar()->value();
-                        ui->graphicsView->horizontalScrollBar()->setValue(val+scrollStepSize);
-                    }
-                else if(ke->key() == Qt::Key_Left){
-                        int val = ui->graphicsView->horizontalScrollBar()->value();
-                        ui->graphicsView->horizontalScrollBar()->setValue(val-scrollStepSize);
-                    }
-            break;
+                ui->zoomResetButton->setText((QString::number(ui->graphicsView->getScale())) + " %");
+                return false;
+                break;
             }
         default:
             std::cout << "mapview event filter event type " << event->type() << std::endl;
-            fflush(stdout);
             break;
         }
     fflush(stdout);
     //TODO: i have no clue what this return method does(for all event related methods), should be figured out....
-    return QWidget::eventFilter(object,event);
+    return false;
 }
 
 

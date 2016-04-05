@@ -62,10 +62,9 @@ public:
 
     tileTypes getTileColor(QString s);
 
-    //! Checks to the mouse is located in the view.
-    bool mouseInMapView(QPoint p);
 
     //void drawMap(RectInfo *map);
+    QGraphicsScene * scene;
 private:
     void updateTransform();
     int windowWidth;
@@ -75,9 +74,8 @@ private:
     qreal maxScale  = 1.0f;
     qreal minScale  = 0.1f;
     qreal scaleSize = 0.5f;
-    QGraphicsView * view;
-    QGraphicsScene * scene;
     std::map<tileTypes, QColor> tileColors;
+    int scrollStepSize=10;
 
 protected:
     //! Catches all events and returns true when a event is caught

@@ -6,6 +6,7 @@
 #include <QEnterEvent>
 #include <QEvent>
 #include <QGraphicsSceneMouseEvent>
+#include <QCoreApplication>
 
 
 mapView::mapView(QWidget *parent):
@@ -40,7 +41,6 @@ mapView::mapView(QWidget *parent):
 }
 
 mapView::~mapView(){
-    delete view;
     delete scene;
 }
 
@@ -159,14 +159,37 @@ void mapView::setZoomSpeed(int speed){
  */
 
 
-bool mapView::mouseInMapView(QPoint p){
-    //QPoint p = mapFromGlobal(QCursor::pos());
-    if(p.x() <= size().width() && p.x()>=0 && p.y() <= size().height() && p.y()>=0) {return true;}
-    return false;
-}
+
 
 bool mapView::event(QEvent *event)
 {
+        switch(event->type()){
+                case QEvent::KeyPress:
+                    {
+                    QKeyEvent * ke = static_cast<QKeyEvent*>(event);
+                    std::cout << "key pressed in @ event filter in mainwindow " << ke->key() << std::endl;
+                        if(ke->key() == Qt::Key_Down){
+                                int val = verticalScrollBar()->value();
+                                verticalScrollBar()->setValue(val+scrollStepSize);
+                            }
+                        else if(ke->key() == Qt::Key_Up){
+                                int val = verticalScrollBar()->value();
+                                verticalScrollBar()->setValue(val-scrollStepSize);
+                            }
+                        else if(ke->key() == Qt::Key_Right){
+                                int val = horizontalScrollBar()->value();
+                                horizontalScrollBar()->setValue(val+scrollStepSize);
+                            }
+                        else if(ke->key() == Qt::Key_Left){
+                                int val = horizontalScrollBar()->value();
+                                horizontalScrollBar()->setValue(val-scrollStepSize);
+                            }
+                    break;
+
+                    }
+                default:
+            break;
+            }
         //std::cout<<"map view event type"<< event->type()<<std::endl;
         //fflush(stdout);
     return QObject::event(event);
@@ -175,13 +198,31 @@ bool mapView::event(QEvent *event)
 bool mapView::eventFilter(QObject * object, QEvent * event){
         //return true if you want to stop the event from going to other objects
         //return false if you you do not want to kill the event.
+        //event filter order parent->child->child'sChild->etc...
 
        switch(event->type()){
+       case QEvent::Wheel:
+           if (object == verticalScrollBar()){//catch
+               QWheelEvent* we = static_cast<QWheelEvent*>(event);
+               int num = we->delta();
+               if(num < 0){
+                   decreaseScale();
+               }else{
+                   increaseScale();
+               }
+               //ui->zoomResetButton->setText(QString::number(getScale())); //TODO: make sure text is set... (make your own event?)
+               return true;//mischien event door laten gaan en ook vangen in de mainwindow?
+               }
+           else if(object == horizontalScrollBar()){//catch horizontal scroll
+               return true;}
+           break;
+
        case QEvent::GraphicsSceneMouseMove:
            {
-           QGraphicsSceneMouseEvent * gsme = static_cast<QGraphicsSceneMouseEvent*>(event);
-           std::cout<< "mouse pos in scene is: x" << gsme->pos().x() << " y" << gsme->pos().y() << std::endl;
-           return false;
+           //Example code for scene mouse pos:
+           //QGraphicsSceneMouseEvent * gsme = static_cast<QGraphicsSceneMouseEvent*>(event);
+           //std::cout<< "mouse pos in scene is: x" << gsme->scenePos().x() << " y" << gsme->scenePos().y() << std::endl;
+           return true;
            break;
             }
        default:
