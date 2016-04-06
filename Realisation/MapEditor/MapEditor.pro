@@ -19,7 +19,6 @@ SOURCES += main.cpp\
     mapView.cpp \
     map_utils.cpp \
     RectInfo.cpp \
-    stubs.cpp \
     mapEditor.cpp \
     viewScene.cpp
 

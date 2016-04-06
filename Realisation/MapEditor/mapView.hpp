@@ -63,9 +63,9 @@ private:
     int windowHeight;  
     int rotation  = 0;
     qreal zoomSpeed = 0.05f;
-    qreal maxScale  = 1.0f;
+    qreal maxScale  = 5.0f;
     qreal minScale  = 0.1f;
-    qreal scaleSize = 0.5f;
+    qreal scaleSize = (maxScale / 2) - minScale;
     int scrollStepSize=10;
 
 protected:

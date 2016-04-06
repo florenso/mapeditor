@@ -41,9 +41,12 @@ mapView::~mapView(){
 
 
 void mapView::increaseScale(qreal inc){
-    if(!(scaleSize > maxScale)){
-        scaleSize += zoomSpeed;
+    scaleSize += zoomSpeed;
+    if(scaleSize > maxScale){
+
+        scaleSize = maxScale;
     }
+
     updateTransform();
 }
 
@@ -57,11 +60,13 @@ void mapView::decreaseScale(qreal dec){
 }
 
 int mapView::getScale(){
-    return scaleSize * 200;
+    float normalizer = maxScale / 1;
+    // multiply with 200 to make center of the scale range 100%
+    return (scaleSize / normalizer) * 200;
 }
 
 void mapView::resetScale(){
-    scaleSize = 0.5f;
+    scaleSize = (maxScale / 2) - minScale;
     updateTransform();
 }
 

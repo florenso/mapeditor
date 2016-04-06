@@ -46,7 +46,7 @@ private:
 
 class Map {
 public:
-    Map(){};
+    Map(){}
     BoxInfo get_box_info(Box box) {
 
         int getal = std::rand() % 3;
