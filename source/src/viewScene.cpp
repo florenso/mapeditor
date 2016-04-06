@@ -1,4 +1,4 @@
-#include "viewScene.hpp"
+#include "../include/viewScene.hpp"
 
 viewScene::viewScene(QObject *parent) : QGraphicsScene(parent)
     {

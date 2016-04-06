@@ -1,4 +1,4 @@
-#include "RectInfo.hpp"
+#include "../include/RectInfo.hpp"
 
 RectInfo::RectInfo(Coordinate up, Coordinate down, MapTypes::TileType new_state) :
     left_up(up),

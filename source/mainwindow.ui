@@ -1399,7 +1399,7 @@
   <customwidget>
    <class>mapEditor</class>
    <extends>QGraphicsView</extends>
-   <header>mapEditor.hpp</header>
+   <header>../source/include/mapEditor.hpp</header>
   </customwidget>
  </customwidgets>
  <tabstops>

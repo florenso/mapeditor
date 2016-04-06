@@ -1,0 +1,12 @@
+INPUT(
+./debug\main.o
+./debug\mainwindow.o
+./debug\map_utils.o
+./debug\mapEditor.o
+./debug\mapView.o
+./debug\RectInfo.o
+./debug\viewScene.o
+./debug\moc_mainwindow.o
+./debug\moc_mapEditor.o
+./debug\moc_viewScene.o
+);

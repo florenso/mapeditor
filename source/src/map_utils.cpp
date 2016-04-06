@@ -1,5 +1,5 @@
-#include "map_utils.hpp"
-#include "stubs.hpp"
+#include "../include/map_utils.hpp"
+#include "../include/stubs.hpp"
 #include <vector>
 
 std::vector< std::vector<RectInfo> > RectInfo_from_map_using_tiles(Map map, int amountx, int amounty) {

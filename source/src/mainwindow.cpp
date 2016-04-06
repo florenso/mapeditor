@@ -1,4 +1,4 @@
-#include "mainwindow.hpp"
+#include "../include/mainwindow.hpp"
 #include "ui_mainwindow.h"
 #include <QDesktopServices>
 #include <QFileDialog>
@@ -11,7 +11,7 @@
 #include <QEnterEvent>
 #include <QEvent>
 #include <QGraphicsSceneMouseEvent>
-#include "mapEditor.hpp"
+#include "../include/mapEditor.hpp"
 
 
 MainWindow::MainWindow(QWidget *parent) :

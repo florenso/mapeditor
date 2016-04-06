@@ -1,4 +1,4 @@
-#include "mapView.hpp"
+#include "../include/mapView.hpp"
 #include <iostream>
 #include <QMouseEvent>
 #include <QScrollBar>
