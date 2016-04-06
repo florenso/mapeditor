@@ -9,11 +9,11 @@ std::vector< std::vector<RectInfo> > RectInfo_from_map_using_tiles(Map map, int 
         result.push_back(std::vector<RectInfo>());
     }
     Box aabb = map.get_bounding_box(); //Axis Aligned Bounding Box
-    int deltax = aabb.getTopRight().get_x() - aabb.getBottomLeft().get_x();
-    int deltay = aabb.getBottomLeft().get_y() - aabb.getTopRight().get_y();
+    float deltax = aabb.getTopRight().get_x() - aabb.getBottomLeft().get_x();
+    float deltay = aabb.getTopRight().get_y() - aabb.getBottomLeft().get_y();
 
-    int sizex = deltax / amountx;
-    int sizey = deltay / amounty;
+    float sizex = 10; //deltax / amountx;
+    float sizey = 10; //deltay / amounty;
 
     for (int y = 0; y < amounty; y++) {
         for (int x = 0; x < amountx; x++) {
@@ -25,6 +25,7 @@ std::vector< std::vector<RectInfo> > RectInfo_from_map_using_tiles(Map map, int 
             result[y].push_back(RectInfo(current_box, new_type));
         }
     }
+    return result;
 }
 //
 // std::vector< std::vector<RectInfo> > RectInfo_from_map_using_quadtree(Map map, Box size) {

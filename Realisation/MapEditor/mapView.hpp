@@ -22,8 +22,6 @@
 #include "map_utils.hpp"
 #include "stubs.hpp"
 
-enum class tileTypes {Free, Blocked, Mixed, Unknown};
-
 class mapView: public QGraphicsView
 {
 public:
@@ -64,4 +62,4 @@ protected:
     bool event(QEvent *event);
     };
 
-#endif // CANVAS_HPP
+#endif // MAPVIEW_HPP

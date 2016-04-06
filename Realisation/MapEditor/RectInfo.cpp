@@ -14,8 +14,8 @@ RectInfo::RectInfo(Coordinate bottomLeft, int sizex,  int sizey, MapTypes::TileT
 
 RectInfo::RectInfo(Box box, MapTypes::TileType new_state) {
     int deltax = box.getTopRight().get_x() - box.getBottomLeft().get_x();
-    int deltay = box.getBottomLeft().get_y() - box.getTopRight().get_y();
-    left_up = Coordinate(box.getBottomLeft().get_x() + deltax, box.getBottomLeft().get_y(), 0);
-    right_down = Coordinate(box.getTopRight().get_x(), box.getTopRight().get_y() - deltay, 1); //Higher, so we actually get data later :I
+//    int deltay = box.getBottomLeft().get_y() - box.getTopRight().get_y();
+    left_up = Coordinate(box.getTopRight().get_x() - deltax, box.getTopRight().get_y(), 0);
+    right_down = Coordinate(box.getBottomLeft().get_x() + deltax, box.getBottomLeft().get_y(), 1); //Higher, so we actually get data later :I
     state = new_state;
 }

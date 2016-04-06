@@ -48,7 +48,7 @@ class Map {
 public:
     Map(){};
     BoxInfo get_box_info(Box box) {
-        std::srand(std::time(0));
+
         int getal = std::rand() % 3;
         switch(getal) {
             case 0: {
