@@ -1,7 +1,17 @@
-
-
 #include "mainwindow.hpp"
 #include "ui_mainwindow.h"
+#include <QDesktopServices>
+#include <QFileDialog>
+#include <QUrl>
+#include <QString>
+#include <iostream>
+#include <QMouseEvent>
+#include <QScrollBar>
+#include <QInputEvent>
+#include <QEnterEvent>
+#include <QEvent>
+#include <QGraphicsSceneMouseEvent>
+#include "mapEditor.hpp"
 
 
 MainWindow::MainWindow(QWidget *parent) :
@@ -9,25 +19,30 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+
     //viewer = new mapView(ui->graphicsView, 1000, 1000); //TODO: parameter word niet meer mee gegeven en staat in de klasse zelf nu....
-    viewer = ui->graphicsView;//TODO: dit is een beetje overbodig toch?;
+    //viewer = ui->graphicsView;//TODO: dit is een beetje overbodig toch?;
 
     //hijacking scrolbar events
     ui->graphicsView->verticalScrollBar()->installEventFilter(this);
     ui->graphicsView->horizontalScrollBar()->installEventFilter(this);
+
     //install event filter for graphicsView
     ui->graphicsView->installEventFilter(this);
     ui->graphicsView->setMouseTracking(true);
+
     Map map = Map();
-    viewer->drawMap(map);
+    ui->graphicsView->scene->drawMap(map);
+
+    //TODO: check if we need both eventfilters (check MainWindow::eventFilter(...) )
+    ui->graphicsView->scene->installEventFilter(this);
+    ui->graphicsView->installEventFilter(this);
 }
 
 MainWindow::~MainWindow()
 {
     delete ui;
-    delete viewer;
 }
-
 
 void MainWindow::on_actionRoboRescue_wiki_triggered()
 {
@@ -49,111 +64,78 @@ void MainWindow::on_actionLoad_triggered()
     dialog.exec();
 }
 
-//void MainWindow::on_graphicsView_rubberBandChanged(const QRect &viewportRect, const QPointF &fromScenePoint, const QPointF &toScenePoint)
-//{
-// commented to avoid linker error "Unused parameter"
-//}
-
 void MainWindow::on_zoomInButton_clicked()
 {
+    ui->graphicsView->increaseScale(0.1f);//TODO: magic value
+    ui->zoomResetButton->setText(QString::number(ui->graphicsView->getScale())+ " %");
 }
 
 void MainWindow::on_zoomOutButtom_clicked()
 {
+    ui->graphicsView->decreaseScale(0.1f);//TODO: magic value
+    ui->zoomResetButton->setText(QString::number(ui->graphicsView->getScale())+ " %");
 }
 
-bool MainWindow::event(QEvent *event)
+void MainWindow::on_zoomResetButton_clicked()
 {
-        return QWidget::event(event);
-
-        //::cout<<"mainWindow event type"<< event->type()<<std::endl;
-        if (event->type() == QEvent::MouseButtonPress){
-                QPoint p = ui->graphicsView->mapFromGlobal(QCursor::pos());
-                //QPoint p = viewer->view->mapFromGlobal(QCursor::pos());
-                std::cout << "mouse pos: x"<< p.x() << " y" <<p.y()<<std::endl;
-                ui->xposLabel->setText(QString::number(p.x()));
-                ui->yposLabel->setText(QString::number(p.y()));
-
-                if (viewer->mouseInMapView(p)){
-
-                std::cout << "mouse click is in viewer"  <<std::endl;}
-                else {std::cout << "mouse click is not in viewer"  <<std::endl;}
-            }
-        fflush(stdout);
-    return QWidget::event(event);
+    ui->graphicsView->resetScale();
+    ui->zoomResetButton->setText(QString::number(ui->graphicsView->getScale())+ " %");
 }
+
+
+
+
 
 void MainWindow::on_actionPan_toggled(bool activatePan)
 {
     if(activatePan){
+            ui->actionSelectMode->setChecked(false);
             ui->graphicsView->setDragMode(QGraphicsView::ScrollHandDrag);
-            printf("drag hand\n");
-            fflush(stdout);
         }
     else{
             ui->graphicsView->setDragMode(QGraphicsView::NoDrag);
-            printf("select cursor\n");
-            fflush(stdout);
         }
 }
 
-bool MainWindow::eventFilter(QObject *object, QEvent *event)
+void MainWindow::on_actionSelectMode_toggled(bool activateSelect)
+{
+
+        if(activateSelect){
+                ui->actionPan->setChecked(false);
+                ui->graphicsView->setDragMode(QGraphicsView::RubberBandDrag);
+            }
+        else{
+                ui->graphicsView->setDragMode(QGraphicsView::NoDrag);
+            }
+}
+
+bool MainWindow::eventFilter(QObject *, QEvent *event)
 {
     switch(event->type()){
-
+        case QEvent::GraphicsSceneMouseMove:
+            {
+                QGraphicsSceneMouseEvent * gsme = static_cast<QGraphicsSceneMouseEvent*>(event);
+                ui->xposLabel->setText(QString::number(gsme->scenePos().x()));
+                ui->yposLabel->setText(QString::number(gsme->scenePos().y()));
+                return false;
+                break;
+            }
         case QEvent::Wheel:
-            if (object == ui->graphicsView->verticalScrollBar()){//catch
-                QWheelEvent* we = static_cast<QWheelEvent*>(event);
-                int num = we->delta();
-                std::cout << "delta: "<< num<< std::endl;
-                fflush(stdout);
-                return true;
-                }
-            else if(object == ui->graphicsView->horizontalScrollBar()){//catch horizontal scroll
-                return true;}
-            break;
-
-        case QEvent::MouseMove:
             {
-            QMouseEvent* me = static_cast<QMouseEvent*>(event);
-            if(viewer->mouseInMapView(me->pos())){
-                ui->xposLabel->setText(QString::number(me->pos().x()));
-                ui->yposLabel->setText(QString::number(me->pos().y()));
-            } else if(true) {ui->graphicsView->releaseMouse();
-                std::cout << "leaving view" << std::endl;
-                }
+                ui->zoomResetButton->setText(QString::number(ui->graphicsView->getScale()) + " %");
+                return false;//returns false so that evenfilter in mapview can catch it too
+                break;
             }
-            break;
-        case QEvent::MouseButtonPress:
-            {QPoint p = ui->graphicsView->mapFromGlobal(QCursor::pos());
-            std::cout << "mouse press @ pos: x"<< p.x() << " y" <<p.y()<<std::endl;
-            fflush(stdout);}
-            break;
-        case QEvent::Enter:
-            {
-            std::cout << "succecvol enter " << object << std::endl;
-            if(! ui->actionPan->isChecked()){
-                ui->graphicsView->grabMouse();}
-            }
-            break;
         default:
             std::cout << "mapview event filter event type " << event->type() << std::endl;
-            fflush(stdout);
             break;
         }
     fflush(stdout);
-    return QWidget::eventFilter(object,event);
+    //TODO: i have no clue what this return method does(for all event related methods), should be figured out....
+    return false;
 }
 
-//void MainWindow::on_inputX_cursorPositionChanged(int arg1, int arg2)
-//{
-// commented to avoid linker error "Unused parameter"
-//}
 
-//void MainWindow::on_inputY_cursorPositionChanged(int arg1, int arg2)
-//{
-// commented to avoid linker error "Unused parameter"
-//}
 
 //testcode
 void MainWindow::on_pushButton_clicked()
@@ -164,7 +146,11 @@ void MainWindow::on_pushButton_clicked()
     int h = ui->Height->value();
 
     QString type(ui->type->currentText());
+
     //viewer->drawTile(x, y, w, h, type);
+
+    ui->graphicsView->scene->drawTile(x, y, w, h, type);
+
 }
 
 void MainWindow::on_placeTagButton_clicked()
@@ -173,16 +159,40 @@ void MainWindow::on_placeTagButton_clicked()
     int y = ui->yposTag->value();
 
     QString tag(ui->tagName->text());
-    viewer->setTag(x, y, tag);
+    ui->graphicsView->scene->setTag(x, y, tag);
 }
 
 void MainWindow::on_clearButton_clicked()
 {
-    viewer->clear();
+    ui->graphicsView->scene->clear();
 }
 
 void MainWindow::on_actionSave_triggered()
 {
 
 }
+
+void MainWindow::on_rotateLeftButton_clicked()
+{
+    ui->graphicsView->decreaseRotation();
+    ui->resetRotationButton->setText(QString::number(ui->graphicsView->getRotation()));
+}
+
+void MainWindow::on_rotateRightButton_clicked()
+{
+    ui->graphicsView->increaseRotation();
+    ui->resetRotationButton->setText(QString::number(ui->graphicsView->getRotation()));
+}
+
+void MainWindow::on_resetRotationButton_clicked()
+{
+    ui->graphicsView->resetRotation();
+    ui->resetRotationButton->setText(QString::number(ui->graphicsView->getRotation()));
+}
+
+void MainWindow::on_zoomSpeedSlider_valueChanged(int value)
+{
+    ui->graphicsView->setZoomSpeed(qreal(float(value)/1000));
+}
+
 

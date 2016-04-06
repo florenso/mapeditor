@@ -4,6 +4,7 @@
 //! 	- Daniel Klomp
 //!		- Jop van Buuren
 //!     - Koen de Guijter
+//!     - jessy Visch
 //!
 //! \context
 //!		- part of TH7-8 assignment 2016 / Project: MapEditer
@@ -43,7 +44,6 @@ public:
 
 protected:
     //! Catches all events and returns true when a event is caught.
-    bool event(QEvent *event);
     bool eventFilter(QObject *object, QEvent *event);
 private slots:
 
@@ -77,10 +77,20 @@ private slots:
     void on_actionSave_triggered();
 
 
+    void on_zoomResetButton_clicked();
+
+    void on_rotateLeftButton_clicked();
+
+    void on_rotateRightButton_clicked();
+
+    void on_resetRotationButton_clicked();
+
+    void on_zoomSpeedSlider_valueChanged(int value);
+
+    void on_actionSelectMode_toggled(bool arg1);
+
 private:
     Ui::MainWindow *ui;
-    mapView *viewer;
-
 };
 
 #endif // MAINWINDOW_HPP
