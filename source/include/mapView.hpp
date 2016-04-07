@@ -40,11 +40,6 @@ public:
     ~mapView();   
 
 
-
-    //! Checks to the mouse is located in the view.
-    bool mouseInMapView(QPoint p);
-
-
     void increaseScale(qreal inc = 0.025f);
     void decreaseScale(qreal dec = 0.025f);
     void increaseRotation(int inc = 90);

@@ -112,8 +112,9 @@ bool MainWindow::eventFilter(QObject *, QEvent *event)
         case QEvent::GraphicsSceneMouseMove:
             {
                 QGraphicsSceneMouseEvent * gsme = static_cast<QGraphicsSceneMouseEvent*>(event);
-                ui->xposLabel->setText(QString::number(gsme->scenePos().x()));
-                ui->yposLabel->setText(QString::number(gsme->scenePos().y()));
+                ui->xposLabel->setText(QString::number(gsme->scenePos().x() - ui->graphicsView->scene->getOriginOffset().x()));
+                ui->yposLabel->setText(QString::number(gsme->scenePos().y() - ui->graphicsView->scene->getOriginOffset().y()));
+                //std::cout << ui->graphicsView->scene->
                 return false;
                 break;
             }
@@ -193,3 +194,8 @@ void MainWindow::on_zoomSpeedSlider_valueChanged(int value)
 }
 
 
+
+void MainWindow::on_actionAddOffset_triggered()
+{
+    ui->graphicsView->scene->setNewOriginOffset(100,100);
+}
