@@ -1084,7 +1084,7 @@
      <string>↷</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="pushButton_2">
+   <widget class="QPushButton" name="goNavigate">
     <property name="geometry">
      <rect>
       <x>720</x>
@@ -1298,7 +1298,7 @@
    <zorder>rotateLeftButton</zorder>
    <zorder>resetRotationButton</zorder>
    <zorder>rotateRightButton</zorder>
-   <zorder>pushButton_2</zorder>
+   <zorder>goNavigate</zorder>
    <zorder>zoomSpeedSlider</zorder>
    <zorder>line_6</zorder>
    <zorder>line_7</zorder>
@@ -1316,7 +1316,7 @@
      <x>0</x>
      <y>0</y>
      <width>1000</width>
-     <height>26</height>
+     <height>21</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -1426,7 +1426,7 @@
   <tabstop>rotateRightButton</tabstop>
   <tabstop>inputX</tabstop>
   <tabstop>inputY</tabstop>
-  <tabstop>pushButton_2</tabstop>
+  <tabstop>goNavigate</tabstop>
  </tabstops>
  <resources/>
  <connections/>

@@ -89,6 +89,8 @@ private slots:
 
     void on_actionSelectMode_toggled(bool arg1);
 
+    void on_goNavigate_clicked();
+
 private:
     Ui::MainWindow *ui;
 };

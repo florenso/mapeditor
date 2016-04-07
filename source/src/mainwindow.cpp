@@ -193,3 +193,8 @@ void MainWindow::on_zoomSpeedSlider_valueChanged(int value)
 }
 
 
+void MainWindow::on_goNavigate_clicked()
+{
+    ui->graphicsView->centerOn(ui->inputX->text().toInt(),ui->inputY->text().toInt());
+}
+
