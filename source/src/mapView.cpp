@@ -8,6 +8,7 @@
 #include <QGraphicsSceneMouseEvent>
 #include <QCoreApplication>
 #include <QKeyEvent>
+#include <QtGui>
 
 mapView::mapView(QWidget *parent):
     QGraphicsView(parent),
@@ -33,8 +34,10 @@ mapView::mapView(QWidget *parent):
     //set default scale
     resetScale();
     scene->installEventFilter(this);
-    horizontalScrollBar()->installEventFilter(this);
+
     scene->drawAxes();
+    verticalScrollBar()->installEventFilter(this);
+    horizontalScrollBar()->installEventFilter(this);
 }
 
 mapView::~mapView(){
@@ -107,11 +110,13 @@ void mapView::setZoomSpeed(qreal speed){
 
 bool mapView::event(QEvent *event)
 {
-        //std::cout<< event->type() << std::endl;
+
         switch(event->type()){
+
+
                 case QEvent::KeyPress:{
                     QKeyEvent * ke = static_cast<QKeyEvent*>(event);
-                    std::cout << "key pressed in @ event filter in mainwindow " << ke->key() << std::endl;
+                   // std::cout << "key pressed in @ event filter in mainwindow " << ke->key() << std::endl;
                         if(ke->key() == Qt::Key_Down){
                                 int val = verticalScrollBar()->value();
                                 verticalScrollBar()->setValue(val+scrollStepSize);
@@ -142,9 +147,44 @@ bool mapView::eventFilter(QObject * object, QEvent * event){
         //return true if you want to stop the event from going to other objects
         //return false if you you do not want to kill the event.
         //event filter order parent->child->child'sChild->etc...
-        std::cout<< event->type() << std::endl;
-       switch(event->type()){
+
+
+    QPointF startPoint = mapToScene(QPoint(0,0));
+    QPointF endPoint = mapToScene(QPoint(width(),height()));
+
+    std::cout << startPoint.x() << " | " << startPoint.y() << std::endl;
+
+    if(startPoint.x() < 200){
+       std::cout << "too close to startPoint.x" << std::endl;
+
+       //scene->addOriginOffset(10,0);
+       //centerOn(QPoint(10,0)+((startPoint+endPoint)/2)+startPoint);
+
+    }
+    if(startPoint.y() < 200){
+        std::cout << "too close to startPoint.y" << std::endl;
+        //scene->addOriginOffset(0,10);
+        //centerOn(QPoint(0,10)+((startPoint+endPoint)/2)+startPoint);
+    }
+
+    if(endPoint.x() > (scene->width() - 200)){
+       std::cout << "too close to endPoint.x" << std::endl;
+    }
+
+    if(endPoint.y() > (scene->height() - 200)){
+        std::cout << "too close to endPoint.y" << std::endl;
+    }
+
+    switch(event->type()){
+
+       case QEvent::GraphicsSceneDragEnter:{
+         std::cout << "MOVED THE SCENE";
+         break;
+
+       }
+
        case QEvent::Wheel:
+
            if (object == verticalScrollBar()){//catch
                QWheelEvent* we = static_cast<QWheelEvent*>(event);
                int num = we->delta();
@@ -171,6 +211,7 @@ bool mapView::eventFilter(QObject * object, QEvent * event){
            return true;
            break;
            }
+
 
         default:
         break;

@@ -2,10 +2,12 @@
 
 void viewScene::setNewOriginOffset(int unsigned xOffset,int unsigned yOffset)
     {
+
        QPoint oldOffset = originOffset;
        originOffset.setX(xOffset);
        originOffset.setY(yOffset);
        QPoint relativeOffset = originOffset - oldOffset;
+       //setSceneRect(0,0,width() + relativeOffset.x(), height()+relativeOffset.y());
        for( auto item : items() ) {
             item->setPos(item->pos()+relativeOffset);
            }
