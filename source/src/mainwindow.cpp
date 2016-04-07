@@ -25,8 +25,8 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->graphicsView->horizontalScrollBar()->installEventFilter(this);
 
     //install event filter for graphicsView
-    ui->graphicsView->installEventFilter(this);
-    ui->graphicsView->setMouseTracking(true);
+    //ui->graphicsView->installEventFilter(this);
+
 
     Map map = Map();
     ui->graphicsView->scene->drawMap(map);
@@ -193,17 +193,6 @@ void MainWindow::on_zoomSpeedSlider_valueChanged(int value)
     ui->graphicsView->setZoomSpeed(qreal(float(value)/1000));
 }
 
-
-
-void MainWindow::on_actionAddOffset_triggered()
-{
-
-
-    QPointF center = ui->graphicsView->mapToScene(ui->graphicsView->viewport()->rect().center());
-    ui->graphicsView->scene->addOriginOffset(0,100);
-    ui->graphicsView->centerOn(QPointF(0,100)+center);
-
-}
 
 void MainWindow::on_goNavigate_clicked()
 {

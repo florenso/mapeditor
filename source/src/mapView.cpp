@@ -42,6 +42,7 @@ mapView::mapView(QWidget *parent):
     scene->drawAxes();
     verticalScrollBar()->installEventFilter(this);
     horizontalScrollBar()->installEventFilter(this);
+    setMouseTracking(true);
 }
 
 mapView::~mapView(){
@@ -147,7 +148,7 @@ bool mapView::event(QEvent *event)
             }
         //std::cout<<"map view event type"<< event->type()<<std::endl;
         //fflush(stdout);
-    return QObject::event(event);
+    return QGraphicsView::event(event);
 }
 
 void mapView::checkSceneBorder(){
@@ -155,36 +156,31 @@ void mapView::checkSceneBorder(){
         QPointF endPoint = mapToScene(QPoint(width(),height()));
         int stepSize = endPoint.x()-startPoint.x();
 
-        //std::cout << startPoint.x() << " | " << startPoint.y() << std::endl;
-
-        if(startPoint.x() < stepSize){// && EventRecursion.tryLock()){
+        if(startPoint.x() < stepSize && EventRecursion.tryLock()){
            //std::cout << "too close to startPoint.x" << std::endl;
-
            QPointF center = mapToScene(viewport()->rect().center());
            scene->addOriginOffset(stepSize,0);
-           centerOn(QPointF(stepSize,0)+center);
-           //EventRecursion.unlock();
+           centerOn(QPointF(stepSize,0)+center);//causes an event (recursion)
+           EventRecursion.unlock();
 
         }
         if(startPoint.y() < stepSize && EventRecursion.tryLock()){
             //std::cout << "too close to startPoint.y" << std::endl;
             QPointF center = mapToScene(viewport()->rect().center());
             scene->addOriginOffset(0,stepSize);
-            centerOn(QPointF(0,stepSize)+center);
+            centerOn(QPointF(0,stepSize)+center);//causes an event (recursion)
             EventRecursion.unlock();
         }
-        if(endPoint.x() > (scene->width() - stepSize)){// && EventRecursion.tryLock())){
+        if(endPoint.x() > (scene->width() - stepSize)){
            //std::cout << "too close to endPoint.x" << std::endl;
            scene->setSceneRect(0,0,scene->width() + stepSize, scene->height());
            scene->drawAxes();
-           //EventRecursion.unlock();
         }
 
-        if(endPoint.y() > (scene->height() - stepSize)){// && EventRecursion.tryLock())){
+        if(endPoint.y() > (scene->height() - stepSize)){
             //std::cout << "too close to endPoint.y" << std::endl;
             scene->setSceneRect(0,0,scene->width(), scene->height()+stepSize);
             scene->drawAxes();
-            //EventRecursion.unlock();
         }
         //std::cout<< "scene size: " << scene->width() << " " << scene->height() << std::endl;
     }

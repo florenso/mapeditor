@@ -2,30 +2,23 @@
 
 void viewScene::setNewOriginOffset(int unsigned xOffset,int unsigned yOffset)
     {
-
        QPoint oldOffset = originOffset;
        originOffset.setX(xOffset);
        originOffset.setY(yOffset);
        QPoint relativeOffset = originOffset - oldOffset;
        setSceneRect(0,0,width() + relativeOffset.x(), height() + relativeOffset.y());
+       //loop to relocate all items on the scene
        for( auto item : items() ) {
             item->setPos(item->pos()+relativeOffset);
            }
        drawAxes();
-
-       //clean
-       //redraw
-       //draw Axes
     }
 
 void viewScene::drawAxes()
     {
-        //draw on offset line from 0 till with/height
-        drawTile(-10,-10,20,20,QColor(100,0,0));
+        //drawTile(-10,-10,20,20,QColor(100,0,0));
         delete (xAxis);
         delete (yAxis);
-        //xAxis = addLine(0,originOffset.x(),width(),originOffset.x());
-        //yAxis = addLine(originOffset.y(),0,originOffset.y(),height());
         xAxis = addLine(0,originOffset.y(),width(),originOffset.y());
         yAxis = addLine(originOffset.x(),0,originOffset.x(),height());
     }
