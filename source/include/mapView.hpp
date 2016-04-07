@@ -49,6 +49,7 @@ public:
     void setZoomSpeed(qreal speed);
     int getScale();
     int getRotation();
+    void checkSceneBorder();
 
     viewScene * scene;
 
@@ -62,6 +63,7 @@ private:
     qreal minScale  = 0.1f;
     qreal scaleSize = (maxScale / 2) - minScale;
     int scrollStepSize=10;
+
 
 protected:
     //! Catches all events and returns true when a event is caught

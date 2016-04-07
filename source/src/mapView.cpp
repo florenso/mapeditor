@@ -9,6 +9,10 @@
 #include <QCoreApplication>
 #include <QKeyEvent>
 #include <QtGui>
+#include <QMutex>
+
+QMutex EventRecursion;
+
 
 mapView::mapView(QWidget *parent):
     QGraphicsView(parent),
@@ -53,6 +57,7 @@ void mapView::increaseScale(qreal inc){
     }
 
     updateTransform();
+    //checkSceneBorder();
 }
 
 void mapView::decreaseScale(qreal dec){
@@ -62,6 +67,7 @@ void mapView::decreaseScale(qreal dec){
 
     }
     updateTransform();
+    //checkSceneBorder();
 }
 
 int mapView::getScale(){
@@ -133,6 +139,7 @@ bool mapView::event(QEvent *event)
                                 int val = horizontalScrollBar()->value();
                                 horizontalScrollBar()->setValue(val-scrollStepSize);
                             }
+                        //checkSceneBorder();
                     break;}
 
                 default:
@@ -143,37 +150,52 @@ bool mapView::event(QEvent *event)
     return QObject::event(event);
 }
 
+void mapView::checkSceneBorder(){
+        QPointF startPoint = mapToScene(QPoint(0,0));
+        QPointF endPoint = mapToScene(QPoint(width(),height()));
+        int stepSize = endPoint.x()-startPoint.x();
+
+        //std::cout << startPoint.x() << " | " << startPoint.y() << std::endl;
+
+        if(startPoint.x() < stepSize){// && EventRecursion.tryLock()){
+           //std::cout << "too close to startPoint.x" << std::endl;
+
+           QPointF center = mapToScene(viewport()->rect().center());
+           scene->addOriginOffset(stepSize,0);
+           centerOn(QPointF(stepSize,0)+center);
+           //EventRecursion.unlock();
+
+        }
+        if(startPoint.y() < stepSize && EventRecursion.tryLock()){
+            //std::cout << "too close to startPoint.y" << std::endl;
+            QPointF center = mapToScene(viewport()->rect().center());
+            scene->addOriginOffset(0,stepSize);
+            centerOn(QPointF(0,stepSize)+center);
+            EventRecursion.unlock();
+        }
+        if(endPoint.x() > (scene->width() - stepSize)){// && EventRecursion.tryLock())){
+           //std::cout << "too close to endPoint.x" << std::endl;
+           scene->setSceneRect(0,0,scene->width() + stepSize, scene->height());
+           scene->drawAxes();
+           //EventRecursion.unlock();
+        }
+
+        if(endPoint.y() > (scene->height() - stepSize)){// && EventRecursion.tryLock())){
+            //std::cout << "too close to endPoint.y" << std::endl;
+            scene->setSceneRect(0,0,scene->width(), scene->height()+stepSize);
+            scene->drawAxes();
+            //EventRecursion.unlock();
+        }
+        //std::cout<< "scene size: " << scene->width() << " " << scene->height() << std::endl;
+    }
+
 bool mapView::eventFilter(QObject * object, QEvent * event){
         //return true if you want to stop the event from going to other objects
         //return false if you you do not want to kill the event.
         //event filter order parent->child->child'sChild->etc...
 
+        checkSceneBorder();
 
-    QPointF startPoint = mapToScene(QPoint(0,0));
-    QPointF endPoint = mapToScene(QPoint(width(),height()));
-
-    std::cout << startPoint.x() << " | " << startPoint.y() << std::endl;
-
-    if(startPoint.x() < 200){
-       std::cout << "too close to startPoint.x" << std::endl;
-
-       //scene->addOriginOffset(10,0);
-       //centerOn(QPoint(10,0)+((startPoint+endPoint)/2)+startPoint);
-
-    }
-    if(startPoint.y() < 200){
-        std::cout << "too close to startPoint.y" << std::endl;
-        //scene->addOriginOffset(0,10);
-        //centerOn(QPoint(0,10)+((startPoint+endPoint)/2)+startPoint);
-    }
-
-    if(endPoint.x() > (scene->width() - 200)){
-       std::cout << "too close to endPoint.x" << std::endl;
-    }
-
-    if(endPoint.y() > (scene->height() - 200)){
-        std::cout << "too close to endPoint.y" << std::endl;
-    }
 
     switch(event->type()){
 
@@ -199,12 +221,9 @@ bool mapView::eventFilter(QObject * object, QEvent * event){
                return true;}
            break;
 
-       case QEvent::GraphicsSceneMouseRelease:
-          std::cout << "PORN" << std::endl;
-
-          break;
        case QEvent::GraphicsSceneMouseMove:
            {
+           //NOTE: this will give scene pos without the offset (aka, not real map pos)
            //Example code for scene mouse pos:
            //QGraphicsSceneMouseEvent * gsme = static_cast<QGraphicsSceneMouseEvent*>(event);
            //std::cout<< "mouse pos in scene is: x" << gsme->scenePos().x() << " y" << gsme->scenePos().y() << std::endl;

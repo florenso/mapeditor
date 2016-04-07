@@ -197,5 +197,16 @@ void MainWindow::on_zoomSpeedSlider_valueChanged(int value)
 
 void MainWindow::on_actionAddOffset_triggered()
 {
-    ui->graphicsView->scene->setNewOriginOffset(100,100);
+
+
+    QPointF center = ui->graphicsView->mapToScene(ui->graphicsView->viewport()->rect().center());
+    ui->graphicsView->scene->addOriginOffset(0,100);
+    ui->graphicsView->centerOn(QPointF(0,100)+center);
+
 }
+
+void MainWindow::on_goNavigate_clicked()
+{
+    ui->graphicsView->centerOn(ui->inputX->text().toInt()+ui->graphicsView->scene->getOriginOffset().x(),ui->inputY->text().toInt()+ui->graphicsView->scene->getOriginOffset().y());
+}
+
