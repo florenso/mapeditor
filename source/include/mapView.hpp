@@ -24,11 +24,7 @@
 #include <QString>
 #include <iostream>
 #include <string>
-
 #include "viewScene.hpp"
-
-
-
 
 class mapView: public QGraphicsView
 {
@@ -39,11 +35,12 @@ public:
     //! Deconstroctor of the mapView.
     ~mapView();   
 
-
-
     //! Checks to the mouse is located in the view.
     bool mouseInMapView(QPoint p);
 
+    void selectTiles(QList<QGraphicsItem *> items);
+    void deselectTiles();
+    QList<BoxInfo *> updateSelection();
 
     void increaseScale(qreal inc = 0.025f);
     void decreaseScale(qreal dec = 0.025f);
@@ -56,22 +53,24 @@ public:
     int getRotation();
 
     viewScene * scene;
-
+    //mapEditor * editor;
 private:
+
+
+protected:
+    //! Catches all events and returns true when a event is caught
+    bool event(QEvent *event);
+    bool eventFilter(QObject *object, QEvent *event);
     void updateTransform();
     int windowWidth;
-    int windowHeight;  
+    int windowHeight;
     int rotation  = 0;
     qreal zoomSpeed = 0.05f;
     qreal maxScale  = 5.0f;
     qreal minScale  = 0.1f;
     qreal scaleSize = (maxScale / 2) - minScale;
     int scrollStepSize=10;
-
-protected:
-    //! Catches all events and returns true when a event is caught
-    bool event(QEvent *event);
-    bool eventFilter(QObject *object, QEvent *event);
+    QList<RectInfo *> selectedTiles;
     };
 
 #endif // MAPVIEW_HPP

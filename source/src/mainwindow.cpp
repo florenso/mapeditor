@@ -11,7 +11,7 @@
 #include <QEnterEvent>
 #include <QEvent>
 #include <QGraphicsSceneMouseEvent>
-#include "../include/mapEditor.hpp"
+//#include "../include/mapEditor.hpp"
 
 
 MainWindow::MainWindow(QWidget *parent) :
@@ -29,6 +29,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->graphicsView->setMouseTracking(true);
 
     Map map = Map();
+    //editor = new mapEditor(ui->graphicsView, map);
     ui->graphicsView->scene->drawMap(map);
 
     //TODO: check if we need both eventfilters (check MainWindow::eventFilter(...) )
@@ -79,10 +80,6 @@ void MainWindow::on_zoomResetButton_clicked()
     ui->zoomResetButton->setText(QString::number(ui->graphicsView->getScale())+ " %");
 }
 
-
-
-
-
 void MainWindow::on_actionPan_toggled(bool activatePan)
 {
     if(activatePan){
@@ -100,6 +97,7 @@ void MainWindow::on_actionSelectMode_toggled(bool activateSelect)
         if(activateSelect){
                 ui->actionPan->setChecked(false);
                 ui->graphicsView->setDragMode(QGraphicsView::RubberBandDrag);
+                ui->graphicsView->setRubberBandSelectionMode(Qt::IntersectsItemShape);
             }
         else{
                 ui->graphicsView->setDragMode(QGraphicsView::NoDrag);
@@ -124,7 +122,7 @@ bool MainWindow::eventFilter(QObject *, QEvent *event)
                 break;
             }
         default:
-            std::cout << "mapview event filter event type " << event->type() << std::endl;
+            //std::cout << "mapview event filter event type " << event->type() << std::endl;
             break;
         }
     fflush(stdout);

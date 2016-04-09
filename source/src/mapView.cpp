@@ -28,6 +28,7 @@ mapView::mapView(QWidget *parent):
     std::cout << "new Viewer with size: " << windowWidth << " x " << windowHeight << std::endl;
     scene->setSceneRect( 0, 0, windowWidth, windowHeight);
     setScene(scene);
+    //editor = new mapEditor(this);
     show();
 
     //set default scale
@@ -103,35 +104,56 @@ void mapView::setZoomSpeed(qreal speed){
     zoomSpeed = speed;
 }
 
+void mapView::selectTiles(QList<QGraphicsItem *> items){
+    for(QGraphicsItem * item : items){
+        std::cout << "Item: " << item->pos().x() << " x " << item->pos().y() << std::endl;
+    }
+}
+
+void mapView::deselectTiles(){
+    for(QGraphicsItem * tile : scene->selectedItems()){
+        tile->setSelected(false);
+    }
+}
+
+QList<RectInfo *> mapView::updateSelection(){
+    QList selection;
+    for(QGraphicsItem * item : scene->selectedItems()){
+        int x = item->pos().x();
+        int y = item->pos().y();
+        int w = item->boundingRect().width();
+        int h = item->boundingRect().height();
+        std::cout << "item: " << x << y << w << h << std::endl;
+        //selection.append();
+    }
+    return selection;
+}
+
 bool mapView::event(QEvent *event)
 {
-        switch(event->type()){
-                case QEvent::KeyPress:{
-                    QKeyEvent * ke = static_cast<QKeyEvent*>(event);
-                    std::cout << "key pressed in @ event filter in mainwindow " << ke->key() << std::endl;
-                        if(ke->key() == Qt::Key_Down){
-                                int val = verticalScrollBar()->value();
-                                verticalScrollBar()->setValue(val+scrollStepSize);
-                            }
-                        else if(ke->key() == Qt::Key_Up){
-                                int val = verticalScrollBar()->value();
-                                verticalScrollBar()->setValue(val-scrollStepSize);
-                            }
-                        else if(ke->key() == Qt::Key_Right){
-                                int val = horizontalScrollBar()->value();
-                                horizontalScrollBar()->setValue(val+scrollStepSize);
-                            }
-                        else if(ke->key() == Qt::Key_Left){
-                                int val = horizontalScrollBar()->value();
-                                horizontalScrollBar()->setValue(val-scrollStepSize);
-                            }
-                    break;}
-
-                default:
-            break;
+    switch(event->type()){
+        case QEvent::KeyPress:{
+            QKeyEvent * ke = static_cast<QKeyEvent*>(event);
+            std::cout << "key pressed in @ event filter in mainwindow " << ke->key() << std::endl;
+            if(ke->key() == Qt::Key_Down){
+                int val = verticalScrollBar()->value();
+                verticalScrollBar()->setValue(val+scrollStepSize);
+            }else if(ke->key() == Qt::Key_Up){
+                int val = verticalScrollBar()->value();
+                verticalScrollBar()->setValue(val-scrollStepSize);
+            }else if(ke->key() == Qt::Key_Right){
+                int val = horizontalScrollBar()->value();
+                horizontalScrollBar()->setValue(val+scrollStepSize);
+            }else if(ke->key() == Qt::Key_Left){
+                int val = horizontalScrollBar()->value();
+                horizontalScrollBar()->setValue(val-scrollStepSize);
             }
-        //std::cout<<"map view event type"<< event->type()<<std::endl;
-        //fflush(stdout);
+            break;}
+        default:
+            break;
+    }
+    //std::cout<<"map view event type"<< event->type()<<std::endl;
+    //fflush(stdout);
     return QObject::event(event);
 }
 
@@ -155,17 +177,15 @@ bool mapView::eventFilter(QObject * object, QEvent * event){
            else if(object == horizontalScrollBar()){//catch horizontal scroll
                return true;}
            break;
-
        case QEvent::GraphicsSceneMouseMove:
-           {
-           //Example code for scene mouse pos:
+       {    //Example code for scene mouse pos:
            //QGraphicsSceneMouseEvent * gsme = static_cast<QGraphicsSceneMouseEvent*>(event);
            //std::cout<< "mouse pos in scene is: x" << gsme->scenePos().x() << " y" << gsme->scenePos().y() << std::endl;
+
            return true;
-           break;
-           }
+           break;}
         default:
-        break;
+            break;
     }
     return false;
 }

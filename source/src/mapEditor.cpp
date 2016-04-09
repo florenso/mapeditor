@@ -1,22 +1,28 @@
 #include "../include/mapEditor.hpp"
 
-mapEditor::mapEditor(QWidget *parent) : mapView(parent)
+
+mapEditor::mapEditor(QWidget *parent) :
+    mapView(parent)
     {
-        //construct new editor
+        //saveBuffer = RectInfo_from_map_using_tiles(map, 50, 50);
     }
 
 void mapEditor::createTile(){
     //create new Tile
+
 }
 
 void mapEditor::removeTile(){
     //Remove Tile
 }
 
-void mapEditor::editTile(){
-    //edit Tile
+void mapEditor::editTile(QString type){
+
+    for(auto & tile: selectedTiles){
+       // RectInfo newTile = new RectInfo(Coordinate tile->pos(), , int sizey, MapTypes::TileType new_state);
+    }
 }
 
-Map mapEditor::getBuffer(){
-    return saveBuffer;
+void mapEditor::getBuffer(){
+    //return map;
 }

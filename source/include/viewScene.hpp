@@ -16,8 +16,6 @@
 class viewScene : public QGraphicsScene
     {
     Q_OBJECT
-private:
-    std::map<MapTypes::TileType, QColor> tileColors;
 public:
     explicit viewScene(QObject *parent = 0);
 
@@ -33,9 +31,6 @@ public:
     //! Clears all the objects in the scene.
     void clear();
 
-    void drawMap(Map &map);
-
-    MapTypes::TileType getTileColor(QString s);
 
 signals:
 

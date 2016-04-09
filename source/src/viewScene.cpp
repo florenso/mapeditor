@@ -2,10 +2,10 @@
 
 viewScene::viewScene(QObject *parent) : QGraphicsScene(parent)
     {
-        tileColors[MapTypes::TileType::EMPTY]=Qt::white;
-        tileColors[MapTypes::TileType::BLOCKED]=Qt::black;
+        tileColors[MapTypes::TileType::EMPTY]=Qt::green;
+        tileColors[MapTypes::TileType::BLOCKED]=Qt::red;
         tileColors[MapTypes::TileType::MIXED]=Qt::yellow;
-        tileColors[MapTypes::TileType::UNKNOWN]=Qt::gray;
+        tileColors[MapTypes::TileType::UNKNOWN]=Qt::blue;
     }
 
 void viewScene::drawTile(int x, int y, int width, int height, QColor color){
@@ -14,6 +14,7 @@ void viewScene::drawTile(int x, int y, int width, int height, QColor color){
     block->setRect(0, 0, width, height);
     block->setBrush(* new QBrush(color));
     block->setPos(x, y);
+    block->setFlag(QGraphicsItem::ItemIsSelectable, true);
     addItem(block);
 }
 
