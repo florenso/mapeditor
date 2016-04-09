@@ -195,23 +195,22 @@ void mapView::loadMapFile(string file)
     {
         //delete(map);
         map = new r2d2::BoxMap;
-        int generate_box_count = 1;
+        int generate_box_count = 20;
         for (int i = 0; i < generate_box_count; i++) {
             map->set_box_info(
                     r2d2::Box{
                             r2d2::Coordinate{
                                     ((rand() % 20)-10) * r2d2::Length::METER,
                                     ((rand() % 20)-10) * r2d2::Length::METER,
-                                    r2d2::Length::METER
+                                    0 * r2d2::Length::METER
                             },
                             r2d2::Coordinate{
                                     ((rand() % 20)-10) * r2d2::Length::METER,
                                     ((rand() % 20)-10) * r2d2::Length::METER,
-                                    r2d2::Length::METER
+                                    1* r2d2::Length::METER
                             }
                     },
-                    //r2d2::BoxInfo{rand() % 2 == 0, rand() % 2 == 0, rand() % 2 == 0}
-                        r2d2::BoxInfo{true,false,false}
+                    r2d2::BoxInfo{rand() % 2 == 0, rand() % 2 == 0, rand() % 2 == 0}
             );
         }
         drawMap();
@@ -282,45 +281,33 @@ MapTypes::TileType mapView::getTileType(r2d2::BoxInfo & tileInfo){
 
 
 void mapView::drawMap(){
-        scene->drawTile(-100,-100,200,200,Qt::green);
+        //scene->drawTile(-100,-100,200,200,Qt::green);
         int tileSize=10;
         //TODO:clear scene
         r2d2::Box map_bounding_box = map->get_map_bounding_box();
-        //double test = map_bounding_box.get_top_right().get_x()/r2d2::Length::CENTIMETER;
         int xAxisMin = round(map_bounding_box.get_bottom_left().get_x()/r2d2::Length::CENTIMETER);
         int yAxisMin = round(map_bounding_box.get_bottom_left().get_y()/r2d2::Length::CENTIMETER);
         int xAxisMax = round(map_bounding_box.get_top_right().get_x()/r2d2::Length::CENTIMETER);
         int yAxisMax = round(map_bounding_box.get_top_right().get_y()/r2d2::Length::CENTIMETER);
         //TODO: set new origin offset in viewScene::draw stuff when out of scene
-        //scene->setNewOriginOffset(abs(xAxisMin),abs(yAxisMin));
+        scene->setNewOriginOffset(abs(xAxisMin),abs(yAxisMin));
         r2d2::Translation tileSizeTranslation(r2d2::Length::CENTIMETER * tileSize,
                                               r2d2::Length::CENTIMETER * tileSize,
                                               r2d2::Length::CENTIMETER * 0);
         std::cout << "map size " << xAxisMin << std::endl;
+        int dis = abs(xAxisMin-xAxisMax);
         for (int x = xAxisMin; x < xAxisMax; x+=tileSize){
             for(int y = yAxisMin; y < yAxisMax; y+=tileSize){
-                    //std::cout << "new tile @ x"<< x << " y"<<y<<std::endl;
                     r2d2::Coordinate topRight{r2d2::Length::CENTIMETER * x,
                                     r2d2::Length::CENTIMETER * y,
-                                    r2d2::Length::CENTIMETER * 0};
+                                    r2d2::Length::CENTIMETER * 1};
                     r2d2::Box tileBox(topRight,tileSizeTranslation);
                     r2d2::BoxInfo tileInfo = map->get_box_info(tileBox);
                     scene->drawTile(x,y,tileSize,tileSize,tileColors[getTileType(tileInfo)]);
                 }
-            std::cout << "new tile row @ x"<< x <<std::endl;
+            float qw = ((float)x-(float)xAxisMin)/(float)dis;
+            int woop = qw*100;
+            std::cout << "loading map"<< woop << "%"<<std::endl;
             }
     }
-//    std::vector<std::vector<RectInfo> > rectList = RectInfo_from_map_using_tiles(map, 50, 50);
-//    for (int y = 0; y <= rectList.size()-1; y++){
-//        for(int x = 0; x <= rectList[y].size()-1; x++){
-//            RectInfo current = rectList[y][x];
 
-//            Coordinate left_up = current.get_left_up();
-//            Coordinate right_down = current.get_right_down();
-//            //std::cout<<"De current: " << tileColors[current.get_state()];
-//            drawTile((int)left_up.get_x(), (int)left_up.get_y(), (int)(right_down.get_x() - left_up.get_x()),
-//                                        (int)(left_up.get_y() - right_down.get_y()), tileColors[current.get_state()] );
-//        }
-
-//    }
-//}
