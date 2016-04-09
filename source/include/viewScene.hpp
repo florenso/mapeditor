@@ -9,14 +9,33 @@
 #include <QGraphicsRectItem>
 #include <map>
 #include <iostream>
-#include "map_utils.hpp"
-#include "stubs.hpp"
+//#include "map_utils.hpp"
+//#include "stubs.hpp"
 #include <map>
+#include <QPoint>
+#include <QPen>
 
 class viewScene : public QGraphicsScene
     {
     Q_OBJECT
+
+private:
+
+    QPoint originOffset{0,0};
+
+
+    QGraphicsLineItem * xAxis = addLine(0,0,0,0);
+    QGraphicsLineItem * yAxis = addLine(0,0,0,0);
+
 public:
+
+    void drawAxes();
+    QPoint getOriginOffset();
+
+    void addOriginOffset(int unsigned x, int unsigned y);
+
+    void setNewOriginOffset(int unsigned xOffset,int unsigned yOffset);
+
     explicit viewScene(QObject *parent = 0);
 
     //! Draws a tile with position x,y and size width,height on the scene.
@@ -30,7 +49,6 @@ public:
 
     //! Clears all the objects in the scene.
     void clear();
-
 
 signals:
 

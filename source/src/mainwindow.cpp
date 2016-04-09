@@ -25,12 +25,12 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->graphicsView->horizontalScrollBar()->installEventFilter(this);
 
     //install event filter for graphicsView
-    ui->graphicsView->installEventFilter(this);
-    ui->graphicsView->setMouseTracking(true);
+    //ui->graphicsView->installEventFilter(this);
 
-    Map map = Map();
-    //editor = new mapEditor(ui->graphicsView, map);
-    ui->graphicsView->scene->drawMap(map);
+
+
+    //Map map = Map();
+    //ui->graphicsView->scene->drawMap(map);
 
     //TODO: check if we need both eventfilters (check MainWindow::eventFilter(...) )
     ui->graphicsView->scene->installEventFilter(this);
@@ -60,17 +60,20 @@ void MainWindow::on_actionLoad_triggered()
     QFileDialog dialog(this);
     dialog.setFileMode(QFileDialog::AnyFile);
     dialog.exec();
+
+    std::cout << "TODO, make load file not a dummy" << std::endl;
+    ui->graphicsView->loadMapFile("load_test");
 }
 
 void MainWindow::on_zoomInButton_clicked()
 {
-    ui->graphicsView->increaseScale(0.1f);//TODO: magic value
+    ui->graphicsView->increaseScale();
     ui->zoomResetButton->setText(QString::number(ui->graphicsView->getScale())+ " %");
 }
 
 void MainWindow::on_zoomOutButtom_clicked()
 {
-    ui->graphicsView->decreaseScale(0.1f);//TODO: magic value
+    ui->graphicsView->decreaseScale();//TODO: magic value
     ui->zoomResetButton->setText(QString::number(ui->graphicsView->getScale())+ " %");
 }
 
@@ -110,8 +113,9 @@ bool MainWindow::eventFilter(QObject *, QEvent *event)
         case QEvent::GraphicsSceneMouseMove:
             {
                 QGraphicsSceneMouseEvent * gsme = static_cast<QGraphicsSceneMouseEvent*>(event);
-                ui->xposLabel->setText(QString::number(gsme->scenePos().x()));
-                ui->yposLabel->setText(QString::number(gsme->scenePos().y()));
+                ui->xposLabel->setText(QString::number(gsme->scenePos().x() - ui->graphicsView->scene->getOriginOffset().x()));
+                ui->yposLabel->setText(QString::number(gsme->scenePos().y() - ui->graphicsView->scene->getOriginOffset().y()));
+                //std::cout << ui->graphicsView->scene->
                 return false;
                 break;
             }
@@ -190,4 +194,9 @@ void MainWindow::on_zoomSpeedSlider_valueChanged(int value)
     ui->graphicsView->setZoomSpeed(qreal(float(value)/1000));
 }
 
+
+void MainWindow::on_goNavigate_clicked()
+{
+    ui->graphicsView->centerOn(ui->inputX->text().toInt()+ui->graphicsView->scene->getOriginOffset().x(),ui->inputY->text().toInt()+ui->graphicsView->scene->getOriginOffset().y());
+}
 

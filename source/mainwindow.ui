@@ -121,6 +121,9 @@
       <height>600</height>
      </size>
     </property>
+    <property name="mouseTracking">
+     <bool>true</bool>
+    </property>
     <property name="verticalScrollBarPolicy">
      <enum>Qt::ScrollBarAlwaysOff</enum>
     </property>
@@ -1090,7 +1093,7 @@
      <string>↷</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="pushButton_2">
+   <widget class="QPushButton" name="goNavigate">
     <property name="geometry">
      <rect>
       <x>720</x>
@@ -1304,7 +1307,7 @@
    <zorder>rotateLeftButton</zorder>
    <zorder>resetRotationButton</zorder>
    <zorder>rotateRightButton</zorder>
-   <zorder>pushButton_2</zorder>
+   <zorder>goNavigate</zorder>
    <zorder>zoomSpeedSlider</zorder>
    <zorder>line_6</zorder>
    <zorder>line_7</zorder>
@@ -1346,9 +1349,16 @@
     <addaction name="actionPan"/>
     <addaction name="actionSelectMode"/>
    </widget>
+   <widget class="QMenu" name="menuDebug">
+    <property name="title">
+     <string>debug</string>
+    </property>
+    <addaction name="actionAddOffset"/>
+   </widget>
    <addaction name="menuFile"/>
    <addaction name="menuTools"/>
    <addaction name="menuHelp"/>
+   <addaction name="menuDebug"/>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
   <action name="actionLoad">
@@ -1399,6 +1409,11 @@
     <string>SelectMode</string>
    </property>
   </action>
+  <action name="actionAddOffset">
+   <property name="text">
+    <string>addOffset</string>
+   </property>
+  </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <customwidgets>
@@ -1432,7 +1447,7 @@
   <tabstop>rotateRightButton</tabstop>
   <tabstop>inputX</tabstop>
   <tabstop>inputY</tabstop>
-  <tabstop>pushButton_2</tabstop>
+  <tabstop>goNavigate</tabstop>
  </tabstops>
  <resources/>
  <connections/>

@@ -5,8 +5,8 @@
 
 #include "mapView.hpp"
 #include "stubs.hpp"
-#include "RectInfo.hpp"
 #include "../../../map/source/include/MapInterface.hpp"
+
 
 class mapEditor : public mapView
 {
@@ -16,12 +16,14 @@ public:
     void removeTile();
     void editTile(QString type);
     void getBuffer(); //will return map but is disabled for now
+
 signals:
 
 public slots:
 
 private:
     std::vector<std::vector<RectInfo> > saveBuffer;
+    //Map saveBuffer;
     };
 
 #endif // MAPEDITOR_HPP

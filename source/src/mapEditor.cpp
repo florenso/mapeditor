@@ -23,6 +23,7 @@ void mapEditor::editTile(QString type){
     }
 }
 
-void mapEditor::getBuffer(){
-    //return map;
-}
+//Map mapEditor::getBuffer(){
+//    return saveBuffer;
+//}
+
