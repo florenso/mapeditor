@@ -28,6 +28,11 @@ mapView::mapView(QWidget *parent):
         windowHeight = height();
     }
     */    
+        tileColors[MapTypes::TileType::EMPTY]=Qt::white;
+        tileColors[MapTypes::TileType::BLOCKED]=Qt::black;
+        tileColors[MapTypes::TileType::MIXED]=Qt::yellow;
+        tileColors[MapTypes::TileType::UNKNOWN]=Qt::gray;
+
 
     scene = new viewScene;
     std::cout << "new Viewer with size: " << windowWidth << " x " << windowHeight << std::endl;
@@ -185,6 +190,11 @@ void mapView::checkSceneBorder(){
         //std::cout<< "scene size: " << scene->width() << " " << scene->height() << std::endl;
     }
 
+void mapView::loadMapFile(string file)
+    {
+        map->load(file);
+    }
+
 bool mapView::eventFilter(QObject * object, QEvent * event){
         //return true if you want to stop the event from going to other objects
         //return false if you you do not want to kill the event.
@@ -233,3 +243,58 @@ bool mapView::eventFilter(QObject * object, QEvent * event){
     }
     return false;
 }
+
+MapTypes::TileType mapView::getTileType(r2d2::BoxInfo & tileInfo){
+    bool nav = tileInfo.get_has_navigatable();
+    bool obs = tileInfo.get_has_obstacle();
+    bool unk = tileInfo.get_has_unknown();
+    if(nav && !obs && !unk){
+        return MapTypes::TileType::EMPTY;}
+    else if (!nav && obs && !unk){
+            return MapTypes::TileType::BLOCKED;}
+    else if (!nav && !obs && unk){
+            return MapTypes::TileType::UNKNOWN;}
+    else{return MapTypes::TileType::MIXED;}
+}
+
+
+
+void mapView::drawMap(r2d2::SaveLoadMap & map){
+        int tileSize=1;
+        //TODO:clear scene
+        r2d2::Box map_bounding_box = map.get_map_bounding_box();
+        //double test = map_bounding_box.get_top_right().get_x()/r2d2::Length::CENTIMETER;
+        int xAxisMin = round(map_bounding_box.get_bottom_left().get_x()/r2d2::Length::CENTIMETER);
+        int yAxisMin = round(map_bounding_box.get_top_right().get_y()/r2d2::Length::CENTIMETER);
+        int xAxisMax = round(map_bounding_box.get_top_right().get_x()/r2d2::Length::CENTIMETER);
+        int yAxisMax = round(map_bounding_box.get_top_right().get_y()/r2d2::Length::CENTIMETER);
+        //TODO: set new origin offset in viewScene::draw stuff when out of scene
+        scene->setNewOriginOffset(abs(xAxisMin),abs(yAxisMin));
+        r2d2::Translation tileSizeTranslation(r2d2::Length::CENTIMETER * tileSize,
+                                              r2d2::Length::CENTIMETER * tileSize,
+                                              r2d2::Length::CENTIMETER * 0);
+        for (int x = xAxisMin; x < xAxisMax; x+=tileSize){
+            for(int y = yAxisMin; y < yAxisMax; y+=tileSize){
+                    r2d2::Coordinate topRight{r2d2::Length::CENTIMETER * x,
+                                    r2d2::Length::CENTIMETER * y,
+                                    r2d2::Length::CENTIMETER * 0};
+                    r2d2::Box tileBox(topRight,tileSizeTranslation);
+                    r2d2::BoxInfo tileInfo = map.get_box_info(tileBox);
+                    scene->drawTile(x,y,tileSize,tileSize,tileColors[getTileType(tileInfo)]);
+                }
+            }
+    }
+//    std::vector<std::vector<RectInfo> > rectList = RectInfo_from_map_using_tiles(map, 50, 50);
+//    for (int y = 0; y <= rectList.size()-1; y++){
+//        for(int x = 0; x <= rectList[y].size()-1; x++){
+//            RectInfo current = rectList[y][x];
+
+//            Coordinate left_up = current.get_left_up();
+//            Coordinate right_down = current.get_right_down();
+//            //std::cout<<"De current: " << tileColors[current.get_state()];
+//            drawTile((int)left_up.get_x(), (int)left_up.get_y(), (int)(right_down.get_x() - left_up.get_x()),
+//                                        (int)(left_up.get_y() - right_down.get_y()), tileColors[current.get_state()] );
+//        }
+
+//    }
+//}

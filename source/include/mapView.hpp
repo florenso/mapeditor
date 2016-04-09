@@ -16,6 +16,11 @@
 
 #ifndef MAPVIEW_HPP
 #define MAPVIEW_HPP
+#include "../../../map/source/include/MapInterface.hpp"
+#include "../../../adt/source/include/Box.hpp"
+#include "../../../adt/source/include/Coordinate.hpp"
+#include "../../../adt/source/include/Translation.hpp"
+#include "../../../adt/source/include/Length.hpp"
 #include <QGraphicsWidget>
 #include <QGraphicsScene>
 #include <QGraphicsView>
@@ -28,7 +33,11 @@
 #include "viewScene.hpp"
 
 
-
+namespace MapTypes{
+    enum class TileType {
+        UNKNOWN, MIXED, BLOCKED, EMPTY
+    };
+}
 
 class mapView: public QGraphicsView
 {
@@ -38,7 +47,6 @@ public:
 
     //! Deconstroctor of the mapView.
     ~mapView();   
-
 
     void increaseScale(qreal inc = 0.025f);
     void decreaseScale(qreal dec = 0.025f);
@@ -53,7 +61,17 @@ public:
 
     viewScene * scene;
 
+    std::map<MapTypes::TileType, QColor> tileColors;
+    //std::map<bool, QColor> tileColors;
+
+    void loadMapFile(string file);
+
+    void drawMap(r2d2::SaveLoadMap & map);
+    MapTypes::TileType getTileType(r2d2::BoxInfo & tileInfo);
+
 private:
+
+
     void updateTransform();
     int windowWidth;
     int windowHeight;  
@@ -63,7 +81,7 @@ private:
     qreal minScale  = 0.1f;
     qreal scaleSize = (maxScale / 2) - minScale;
     int scrollStepSize=10;
-
+    r2d2::SaveLoadMap * map;
 
 protected:
     //! Catches all events and returns true when a event is caught

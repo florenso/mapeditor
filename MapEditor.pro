@@ -20,7 +20,13 @@ SOURCES += source/src/main.cpp \
     source/src/mapEditor.cpp \
     source/src/mapView.cpp \
     source/src/RectInfo.cpp \
-    source/src/viewScene.cpp
+    source/src/viewScene.cpp \
+    ../adt/source/src/Length.cpp \
+    ../adt/source/src/Translation.cpp \
+    ../adt/source/src/Box.cpp \
+    ../adt/source/src/Coordinate.cpp \
+    ../map/source/src/MapInterface.cpp
+
 
 HEADERS  += source/include/mainwindow.hpp \
     source/include/map_utils.hpp \
@@ -29,6 +35,13 @@ HEADERS  += source/include/mainwindow.hpp \
     source/include/RectInfo.hpp \
     source/include/stubs.hpp \
     source/include/viewScene.hpp \
+    ../adt/source/include/Length.hpp \
+    ../adt/source/include/Translation.hpp \
+    ../adt/source/include/Box.hpp \
+    ../adt/source/include/Coordinate.hpp \
+    ../map/source/include/MapInterface.hpp
+
+
 
 
 FORMS    += source/mainwindow.ui

@@ -9,8 +9,8 @@
 #include <QGraphicsRectItem>
 #include <map>
 #include <iostream>
-#include "map_utils.hpp"
-#include "stubs.hpp"
+//#include "map_utils.hpp"
+//#include "stubs.hpp"
 #include <map>
 #include <QPoint>
 #include <QPen>
@@ -21,8 +21,6 @@ class viewScene : public QGraphicsScene
 private:
 
     QPoint originOffset{0,0};
-
-    std::map<MapTypes::TileType, QColor> tileColors;
 
 
     QGraphicsLineItem * xAxis = addLine(0,0,0,0);
@@ -51,9 +49,7 @@ public:
     //! Clears all the objects in the scene.
     void clear();
 
-    void drawMap(Map &map);
 
-    MapTypes::TileType getTileColor(QString s);
 
 signals:
 

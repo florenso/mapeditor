@@ -17,6 +17,6 @@ void mapEditor::editTile(){
     //edit Tile
 }
 
-Map mapEditor::getBuffer(){
-    return saveBuffer;
-}
+//Map mapEditor::getBuffer(){
+//    return saveBuffer;
+//}

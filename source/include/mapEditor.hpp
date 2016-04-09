@@ -7,7 +7,7 @@
 #include <QObject>
 #include <QWidget>
 #include "mapView.hpp"
-#include "stubs.hpp"
+//#include "stubs.hpp"
 
 class mapEditor : public mapView
     {
@@ -17,13 +17,13 @@ public:
     void createTile();
     void removeTile();
     void editTile();
-    Map getBuffer();
+    //Map getBuffer();
 signals:
 
 public slots:
 
 private:
-    Map saveBuffer;
+    //Map saveBuffer;
     };
 
 #endif // MAPEDITOR_HPP
