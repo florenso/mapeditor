@@ -35,6 +35,7 @@ mapView::mapView(QWidget *parent):
 
 
     scene = new viewScene;
+
     std::cout << "new Viewer with size: " << windowWidth << " x " << windowHeight << std::endl;
     scene->setSceneRect( 0, 0, windowWidth, windowHeight);
     setScene(scene);
@@ -55,7 +56,7 @@ mapView::~mapView(){
 }
 
 
-void mapView::increaseScale(qreal inc){
+void mapView::increaseScale(){
     scaleSize += zoomSpeed;
     if(scaleSize > maxScale){
 
@@ -66,7 +67,7 @@ void mapView::increaseScale(qreal inc){
     //checkSceneBorder();
 }
 
-void mapView::decreaseScale(qreal dec){
+void mapView::decreaseScale(){
     scaleSize -= zoomSpeed;
     if(scaleSize < minScale){
         scaleSize = minScale;
@@ -192,7 +193,28 @@ void mapView::checkSceneBorder(){
 
 void mapView::loadMapFile(string file)
     {
-        map->load(file);
+        //delete(map);
+        map = new r2d2::BoxMap;
+        int generate_box_count = 1;
+        for (int i = 0; i < generate_box_count; i++) {
+            map->set_box_info(
+                    r2d2::Box{
+                            r2d2::Coordinate{
+                                    ((rand() % 20)-10) * r2d2::Length::METER,
+                                    ((rand() % 20)-10) * r2d2::Length::METER,
+                                    r2d2::Length::METER
+                            },
+                            r2d2::Coordinate{
+                                    ((rand() % 20)-10) * r2d2::Length::METER,
+                                    ((rand() % 20)-10) * r2d2::Length::METER,
+                                    r2d2::Length::METER
+                            }
+                    },
+                    //r2d2::BoxInfo{rand() % 2 == 0, rand() % 2 == 0, rand() % 2 == 0}
+                        r2d2::BoxInfo{true,false,false}
+            );
+        }
+        drawMap();
     }
 
 bool mapView::eventFilter(QObject * object, QEvent * event){
@@ -259,29 +281,33 @@ MapTypes::TileType mapView::getTileType(r2d2::BoxInfo & tileInfo){
 
 
 
-void mapView::drawMap(r2d2::SaveLoadMap & map){
-        int tileSize=1;
+void mapView::drawMap(){
+        scene->drawTile(-100,-100,200,200,Qt::green);
+        int tileSize=10;
         //TODO:clear scene
-        r2d2::Box map_bounding_box = map.get_map_bounding_box();
+        r2d2::Box map_bounding_box = map->get_map_bounding_box();
         //double test = map_bounding_box.get_top_right().get_x()/r2d2::Length::CENTIMETER;
         int xAxisMin = round(map_bounding_box.get_bottom_left().get_x()/r2d2::Length::CENTIMETER);
-        int yAxisMin = round(map_bounding_box.get_top_right().get_y()/r2d2::Length::CENTIMETER);
+        int yAxisMin = round(map_bounding_box.get_bottom_left().get_y()/r2d2::Length::CENTIMETER);
         int xAxisMax = round(map_bounding_box.get_top_right().get_x()/r2d2::Length::CENTIMETER);
         int yAxisMax = round(map_bounding_box.get_top_right().get_y()/r2d2::Length::CENTIMETER);
         //TODO: set new origin offset in viewScene::draw stuff when out of scene
-        scene->setNewOriginOffset(abs(xAxisMin),abs(yAxisMin));
+        //scene->setNewOriginOffset(abs(xAxisMin),abs(yAxisMin));
         r2d2::Translation tileSizeTranslation(r2d2::Length::CENTIMETER * tileSize,
                                               r2d2::Length::CENTIMETER * tileSize,
                                               r2d2::Length::CENTIMETER * 0);
+        std::cout << "map size " << xAxisMin << std::endl;
         for (int x = xAxisMin; x < xAxisMax; x+=tileSize){
             for(int y = yAxisMin; y < yAxisMax; y+=tileSize){
+                    //std::cout << "new tile @ x"<< x << " y"<<y<<std::endl;
                     r2d2::Coordinate topRight{r2d2::Length::CENTIMETER * x,
                                     r2d2::Length::CENTIMETER * y,
                                     r2d2::Length::CENTIMETER * 0};
                     r2d2::Box tileBox(topRight,tileSizeTranslation);
-                    r2d2::BoxInfo tileInfo = map.get_box_info(tileBox);
+                    r2d2::BoxInfo tileInfo = map->get_box_info(tileBox);
                     scene->drawTile(x,y,tileSize,tileSize,tileColors[getTileType(tileInfo)]);
                 }
+            std::cout << "new tile row @ x"<< x <<std::endl;
             }
     }
 //    std::vector<std::vector<RectInfo> > rectList = RectInfo_from_map_using_tiles(map, 50, 50);

@@ -17,6 +17,7 @@
 #ifndef MAPVIEW_HPP
 #define MAPVIEW_HPP
 #include "../../../map/source/include/MapInterface.hpp"
+#include "../../../map/source/include/BoxMap.hpp"
 #include "../../../adt/source/include/Box.hpp"
 #include "../../../adt/source/include/Coordinate.hpp"
 #include "../../../adt/source/include/Translation.hpp"
@@ -48,8 +49,8 @@ public:
     //! Deconstroctor of the mapView.
     ~mapView();   
 
-    void increaseScale(qreal inc = 0.025f);
-    void decreaseScale(qreal dec = 0.025f);
+    void increaseScale();
+    void decreaseScale();
     void increaseRotation(int inc = 90);
     void decreaseRotation(int dec = 90);
     void resetRotation();
@@ -66,7 +67,7 @@ public:
 
     void loadMapFile(string file);
 
-    void drawMap(r2d2::SaveLoadMap & map);
+    void drawMap();
     MapTypes::TileType getTileType(r2d2::BoxInfo & tileInfo);
 
 private:

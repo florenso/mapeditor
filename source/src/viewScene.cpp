@@ -40,7 +40,7 @@ viewScene::viewScene(QObject *parent) : QGraphicsScene(parent)
     }
 
 void viewScene::drawTile(int x, int y, int width, int height, QColor color){
-    std::cout << "New tile: x " << x << " y " << y << " w " << width << " h " << height<< std::endl;
+    //std::cout << "New tile: x " << x << " y " << y << " w " << width << " h " << height<< std::endl;
     QGraphicsRectItem *block = new QGraphicsRectItem;
     block->setRect(0, 0, width, height);
     block->setBrush(* new QBrush(color));

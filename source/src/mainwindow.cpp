@@ -66,13 +66,13 @@ void MainWindow::on_actionLoad_triggered()
 
 void MainWindow::on_zoomInButton_clicked()
 {
-    ui->graphicsView->increaseScale(0.1f);//TODO: magic value
+    ui->graphicsView->increaseScale();
     ui->zoomResetButton->setText(QString::number(ui->graphicsView->getScale())+ " %");
 }
 
 void MainWindow::on_zoomOutButtom_clicked()
 {
-    ui->graphicsView->decreaseScale(0.1f);//TODO: magic value
+    ui->graphicsView->decreaseScale();//TODO: magic value
     ui->zoomResetButton->setText(QString::number(ui->graphicsView->getScale())+ " %");
 }
 
