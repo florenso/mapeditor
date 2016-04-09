@@ -114,7 +114,7 @@ bool MainWindow::eventFilter(QObject *, QEvent *event)
             {
                 QGraphicsSceneMouseEvent * gsme = static_cast<QGraphicsSceneMouseEvent*>(event);
                 ui->xposLabel->setText(QString::number(gsme->scenePos().x() - ui->graphicsView->scene->getOriginOffset().x()));
-                ui->yposLabel->setText(QString::number(gsme->scenePos().y() - ui->graphicsView->scene->getOriginOffset().y()));
+                ui->yposLabel->setText(QString::number(-1*(gsme->scenePos().y() - ui->graphicsView->scene->getOriginOffset().y())));
                 //std::cout << ui->graphicsView->scene->
                 return false;
                 break;
