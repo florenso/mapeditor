@@ -63,13 +63,16 @@ public:
     viewScene * scene;
 
     std::map<MapTypes::TileType, QColor> tileColors;
-    //std::map<bool, QColor> tileColors;
 
+    //this has a temp function, it generates a map for testing
     void loadMapFile(string file);
 
+    //focuses viewport on origin of map and (re)draws the map
     void drawMap();
+
     MapTypes::TileType getTileType(r2d2::BoxInfo & tileInfo);
 
+    void drawBox(r2d2::Box box, int tileSize = 10);
 private:
 
 
@@ -83,7 +86,6 @@ private:
     qreal scaleSize = (maxScale / 2) - minScale;
     int scrollStepSize=10;
     r2d2::SaveLoadMap * map;
-
 protected:
     //! Catches all events and returns true when a event is caught
     bool event(QEvent *event);

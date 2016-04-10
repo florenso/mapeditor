@@ -14,6 +14,10 @@
 #include <map>
 #include <QPoint>
 #include <QPen>
+#include "../../../adt/source/include/Box.hpp"
+#include "../../../adt/source/include/Coordinate.hpp"
+#include "../../../adt/source/include/Translation.hpp"
+#include "../../../adt/source/include/Length.hpp"
 
 class viewScene : public QGraphicsScene
     {
@@ -51,6 +55,7 @@ public:
 
 
 
+    void drawTile(r2d2::Box box, QColor color);
 signals:
 
 public slots:

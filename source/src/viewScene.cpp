@@ -16,11 +16,11 @@ void viewScene::setNewOriginOffset(int unsigned xOffset,int unsigned yOffset)
 
 void viewScene::drawAxes()
     {
-        //drawTile(-10,-10,20,20,QColor(100,0,0));
         delete (xAxis);
         delete (yAxis);
-        xAxis = addLine(0,originOffset.y(),width(),originOffset.y());
-        yAxis = addLine(originOffset.x(),0,originOffset.x(),height());
+        QPen pen(Qt::red);
+        xAxis = addLine(0,originOffset.y(),width(),originOffset.y(),pen);
+        yAxis = addLine(originOffset.x(),0,originOffset.x(),height(),pen);
     }
 
 QPoint viewScene::getOriginOffset()
@@ -38,6 +38,24 @@ viewScene::viewScene(QObject *parent) : QGraphicsScene(parent)
 
         //drawAxes();
     }
+
+
+//this code has been debugged...
+void viewScene::drawTile(r2d2::Box box,QColor color){
+        //box.get_axis_size().
+        int x = round(box.get_bottom_left().get_x()/r2d2::Length::CENTIMETER)+originOffset.x();
+        int y = (round(box.get_bottom_left().get_y()/r2d2::Length::CENTIMETER)*-1)+originOffset.y();
+        int width = round(box.get_axis_size().get_x()/r2d2::Length::CENTIMETER);
+        int height = round(box.get_axis_size().get_y()/r2d2::Length::CENTIMETER)*-1;
+        //int width = round(box.get_top_right().get_x()/r2d2::Length::CENTIMETER)-round(box.get_bottom_left().get_x()/r2d2::Length::CENTIMETER);
+        //int height = (round(box.get_top_right().get_y()/r2d2::Length::CENTIMETER)+round(box.get_bottom_left().get_y()/r2d2::Length::CENTIMETER))*-1;
+    QGraphicsRectItem *block = new QGraphicsRectItem;
+    block->setRect(0, 0, width, height);
+    block->setBrush(* new QBrush(color));
+    block->setPos(x, y);
+    addItem(block);
+    }
+
 
 void viewScene::drawTile(int x, int y, int width, int height, QColor color){
         y*=-1;
@@ -75,6 +93,7 @@ void viewScene::clear(){
     foreach( QGraphicsItem * item, list ){
         removeItem(item);
     }
+    drawAxes();
 }
 
 
