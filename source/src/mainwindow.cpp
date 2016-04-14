@@ -202,3 +202,9 @@ void MainWindow::on_goNavigate_clicked()
     ui->graphicsView->centerOn(ui->inputX->text().toInt()+ui->graphicsView->scene->getOriginOffset().x(),ui->inputY->text().toInt()+ui->graphicsView->scene->getOriginOffset().y());
 }
 
+
+void MainWindow::on_actionDebug_triggered()
+{
+   int test = ui->graphicsView->scene->items().length();
+   std::cout << "items in scene items list: " << test << std::endl;
+}

@@ -30,6 +30,7 @@ private:
     QGraphicsLineItem * xAxis = addLine(0,0,0,0);
     QGraphicsLineItem * yAxis = addLine(0,0,0,0);
 
+    QRectF box_tile_2_qrect(r2d2::Box box);
 public:
 
     void drawAxes();

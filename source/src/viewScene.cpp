@@ -16,9 +16,9 @@ void viewScene::setNewOriginOffset(int unsigned xOffset,int unsigned yOffset)
 
 void viewScene::drawAxes()
     {
-        delete (xAxis);
-        delete (yAxis);
         QPen pen(Qt::red);
+        delete xAxis;
+        delete yAxis;
         xAxis = addLine(0,originOffset.y(),width(),originOffset.y(),pen);
         yAxis = addLine(originOffset.x(),0,originOffset.x(),height(),pen);
     }
@@ -38,29 +38,26 @@ viewScene::viewScene(QObject *parent) : QGraphicsScene(parent)
 
         //drawAxes();
     }
+QRectF viewScene::box_tile_2_qrect(r2d2::Box box){
+        return QRectF(
+                    round(box.get_bottom_left().get_x()/r2d2::Length::CENTIMETER)+originOffset.x(),
+                    (round(box.get_bottom_left().get_y()/r2d2::Length::CENTIMETER)*-1)+originOffset.y(),
+                    round(box.get_axis_size().get_x()/r2d2::Length::CENTIMETER),
+                    round(box.get_axis_size().get_y()/r2d2::Length::CENTIMETER)*-1);
 
+    }
 
-//this code has been debugged...
 void viewScene::drawTile(r2d2::Box box,QColor color){
-        //box.get_axis_size().
-        int x = round(box.get_bottom_left().get_x()/r2d2::Length::CENTIMETER)+originOffset.x();
-        int y = (round(box.get_bottom_left().get_y()/r2d2::Length::CENTIMETER)*-1)+originOffset.y();
-        int width = round(box.get_axis_size().get_x()/r2d2::Length::CENTIMETER);
-        int height = round(box.get_axis_size().get_y()/r2d2::Length::CENTIMETER)*-1;
-        //int width = round(box.get_top_right().get_x()/r2d2::Length::CENTIMETER)-round(box.get_bottom_left().get_x()/r2d2::Length::CENTIMETER);
-        //int height = (round(box.get_top_right().get_y()/r2d2::Length::CENTIMETER)+round(box.get_bottom_left().get_y()/r2d2::Length::CENTIMETER))*-1;
-    QGraphicsRectItem *block = new QGraphicsRectItem;
-    block->setRect(0, 0, width, height);
+    QGraphicsRectItem *block = new QGraphicsRectItem(box_tile_2_qrect(box));
     block->setBrush(* new QBrush(color));
-    block->setPos(x, y);
     addItem(block);
     }
 
 
 void viewScene::drawTile(int x, int y, int width, int height, QColor color){
+        std::cout << "you should not use this drawTile method...." << std::endl;
         y*=-1;
         height*=-1;
-    //std::cout << "New tile: x " << x << " y " << y << " w " << width << " h " << height<< std::endl;
     QGraphicsRectItem *block = new QGraphicsRectItem;
     block->setRect(0, 0, width, height);
     block->setBrush(* new QBrush(color));
