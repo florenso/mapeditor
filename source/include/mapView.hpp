@@ -90,6 +90,8 @@ protected:
     //! Catches all events and returns true when a event is caught
     bool event(QEvent *event);
     bool eventFilter(QObject *object, QEvent *event);
+    int z_bottom = 0;
+    int z_top = 1;
     };
 
 #endif // MAPVIEW_HPP

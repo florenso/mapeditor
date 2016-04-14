@@ -202,12 +202,12 @@ void mapView::loadMapFile(string file)
                             r2d2::Coordinate{
                                     ((rand() % 10)-5) * r2d2::Length::METER,
                                     ((rand() % 10)-5) * r2d2::Length::METER,
-                                    0 * r2d2::Length::METER
+                                    z_bottom * r2d2::Length::CENTIMETER
                             },
                             r2d2::Coordinate{
                                     ((rand() % 10)-5) * r2d2::Length::METER,
                                     ((rand() % 10)-5) * r2d2::Length::METER,
-                                    1* r2d2::Length::METER
+                                    z_top * r2d2::Length::CENTIMETER
                             }
                     },
 
@@ -284,13 +284,13 @@ void mapView::drawBox(r2d2::Box box,int tileSize){
         int yAxisMax = round(box.get_top_right().get_y()/r2d2::Length::CENTIMETER);
         r2d2::Translation tileSizeTranslation(r2d2::Length::CENTIMETER * tileSize,
                                               r2d2::Length::CENTIMETER * tileSize,
-                                              r2d2::Length::CENTIMETER * 1);
+                                              r2d2::Length::CENTIMETER * z_top);
         int dis = abs(xAxisMin-xAxisMax);
         for (int x = xAxisMin; x < xAxisMax; x+=tileSize){
             for(int y = yAxisMin; y < yAxisMax; y+=tileSize){
                     r2d2::Coordinate bottemLeft{r2d2::Length::CENTIMETER * x,
                                     r2d2::Length::CENTIMETER * y,
-                                    r2d2::Length::CENTIMETER * 0};
+                                    r2d2::Length::CENTIMETER * z_bottom};
                     r2d2::Box tileBox(bottemLeft,tileSizeTranslation);
                     r2d2::BoxInfo tileInfo = map->get_box_info(tileBox);
                     scene->drawTile(tileBox,tileColors[getTileType(tileInfo)]);
@@ -315,20 +315,20 @@ void mapView::drawMap(){
 //        const r2d2::Coordinate bottemLeft1{
 //                        r2d2::Length::CENTIMETER * ceil(((scene->getOriginOffset().x() - startPoint.x()+10)*-1)/10)*10,
 //                        r2d2::Length::CENTIMETER * ceil((scene->getOriginOffset().y() - endPoint.y()-10)/10)*10,
-//                        r2d2::Length::CENTIMETER * 0};
+//                        r2d2::Length::CENTIMETER * z_bottom};
 //        const r2d2::Translation boxSize{
 //                        r2d2::Length::CENTIMETER * (width()/2),
 //                        r2d2::Length::CENTIMETER * (height()/2),
-//                        r2d2::Length::CENTIMETER * 1};
+//                        r2d2::Length::CENTIMETER * z_top};
 
         const r2d2::Coordinate bottemLeft1{
                         r2d2::Length::CENTIMETER * -400,
                         r2d2::Length::CENTIMETER * -400,
-                        r2d2::Length::CENTIMETER * 0};
+                        r2d2::Length::CENTIMETER * z_bottom};
         const r2d2::Translation boxSize{
                         r2d2::Length::CENTIMETER * 800,
                         r2d2::Length::CENTIMETER * 800,
-                        r2d2::Length::CENTIMETER * 1};
+                        r2d2::Length::CENTIMETER * z_top};
 
 
 
