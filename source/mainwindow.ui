@@ -1282,6 +1282,42 @@
      <string>Y:</string>
     </property>
    </widget>
+   <widget class="QLabel" name="label_Z">
+    <property name="geometry">
+     <rect>
+      <x>650</x>
+      <y>740</y>
+      <width>16</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="acceptDrops">
+     <bool>true</bool>
+    </property>
+    <property name="text">
+     <string>Z</string>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="input_z_bot">
+    <property name="geometry">
+     <rect>
+      <x>670</x>
+      <y>740</y>
+      <width>16</width>
+      <height>16</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="input_z_top">
+    <property name="geometry">
+     <rect>
+      <x>690</x>
+      <y>740</y>
+      <width>16</width>
+      <height>16</height>
+     </rect>
+    </property>
+   </widget>
    <zorder>zoomInButton</zorder>
    <zorder>zoomOutButtom</zorder>
    <zorder>graphicsView</zorder>
@@ -1312,6 +1348,9 @@
    <zorder>xposLabel</zorder>
    <zorder>yposLabel</zorder>
    <zorder>label_8</zorder>
+   <zorder>label_Z</zorder>
+   <zorder>input_z_bot</zorder>
+   <zorder>input_z_top</zorder>
   </widget>
   <widget class="QMenuBar" name="menuBar">
    <property name="geometry">
@@ -1319,7 +1358,7 @@
      <x>0</x>
      <y>0</y>
      <width>1000</width>
-     <height>26</height>
+     <height>21</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">

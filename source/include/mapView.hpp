@@ -59,6 +59,8 @@ public:
     int getScale();
     int getRotation();
     void checkSceneBorder();
+    void set_z_bottom(float value);
+    void set_z_top(float value);
 
     viewScene * scene;
 
@@ -90,8 +92,8 @@ protected:
     //! Catches all events and returns true when a event is caught
     bool event(QEvent *event);
     bool eventFilter(QObject *object, QEvent *event);
-    int z_bottom = 0;
-    int z_top = 1;
+    float z_bottom = 0;
+    float z_top = 1;
     };
 
 #endif // MAPVIEW_HPP
