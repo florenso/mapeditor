@@ -1,2 +1,1 @@
 MAPEDITOR
-.idea/
