@@ -192,28 +192,8 @@ void mapView::checkSceneBorder(){
 
 void mapView::loadMapFile(string file)
     {
-        //delete(map);
         map = new r2d2::BoxMap;
-        int generate_box_count = 10;
-        for (int i = 0; i < generate_box_count; i++) {
-                int num = rand();
-            map->set_box_info(
-                    r2d2::Box{
-                            r2d2::Coordinate{
-                                    ((rand() % 10)-5) * r2d2::Length::METER,
-                                    ((rand() % 10)-5) * r2d2::Length::METER,
-                                    z_bottom * r2d2::Length::CENTIMETER
-                            },
-                            r2d2::Coordinate{
-                                    ((rand() % 10)-5) * r2d2::Length::METER,
-                                    ((rand() % 10)-5) * r2d2::Length::METER,
-                                    z_top * r2d2::Length::CENTIMETER
-                            }
-                    },
-
-                    r2d2::BoxInfo{(num%3)>1, ((num-1)%3)>1, ((num-2)%3)>1}
-            );
-        }
+        map->load(file);
         drawMap();
     }
 
