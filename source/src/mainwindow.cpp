@@ -58,10 +58,11 @@ void MainWindow::on_actionLoad_triggered()
 {
     QFileDialog dialog(this);
     dialog.setFileMode(QFileDialog::AnyFile);
-    dialog.exec();
-
-    std::cout << "TODO, make load file not a dummy" << std::endl;
-    ui->graphicsView->loadMapFile("load_test");
+    QStringList fileNames;
+    if (dialog.exec()){
+        fileNames = dialog.selectedFiles();
+        ui->graphicsView->loadMapFile(fileNames.first().toUtf8().constData());
+    }
 }
 
 void MainWindow::on_zoomInButton_clicked()
