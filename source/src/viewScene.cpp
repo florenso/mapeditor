@@ -38,13 +38,27 @@ viewScene::viewScene(QObject *parent) : QGraphicsScene(parent)
 
         //drawAxes();
     }
+
+QPointF viewScene::box_coordinate_2_qpoint(r2d2::Coordinate coordinate){
+        return QPointF((coordinate.get_x()/r2d2::Length::CENTIMETER)+originOffset.x(),
+        ((coordinate.get_y()/r2d2::Length::CENTIMETER)*-1)+originOffset.y());
+    }
+
 QRectF viewScene::box_tile_2_qrect(r2d2::Box box){
         return QRectF(
-                    round(box.get_bottom_left().get_x()/r2d2::Length::CENTIMETER)+originOffset.x(),
-                    (round(box.get_bottom_left().get_y()/r2d2::Length::CENTIMETER)*-1)+originOffset.y(),
-                    round(box.get_axis_size().get_x()/r2d2::Length::CENTIMETER),
-                    round(box.get_axis_size().get_y()/r2d2::Length::CENTIMETER)*-1);
+                    (box.get_bottom_left().get_x()/r2d2::Length::CENTIMETER)+originOffset.x(),
+                    ((box.get_bottom_left().get_y()/r2d2::Length::CENTIMETER)*-1)+originOffset.y(),
+                    (box.get_axis_size().get_x()/r2d2::Length::CENTIMETER),
+                    (box.get_axis_size().get_y()/r2d2::Length::CENTIMETER)*-1);
+    }
 
+r2d2::Coordinate viewScene::qpoint_2_box_coordinate(QPointF point){
+        std::cout << "carlos heeft zijn werk nog niet gedaan" << std::endl;
+        return r2d2::Coordinate();
+    }
+r2d2::Box viewScene::qrect_2_box_coordinate(QRectF rect){
+        std::cout << "carlos heeft zijn werk nog niet gedaan" << std::endl;
+        return r2d2::Box();
     }
 
 void viewScene::drawTile(r2d2::Box box,QColor color){
