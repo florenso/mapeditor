@@ -16,14 +16,14 @@ public:
     void removeTile();
     void editTile(QString type);
     void getBuffer(); //will return map but is disabled for now
+    void displayEdit();
 
 signals:
 
 public slots:
 
 private:
-    std::vector<std::vector<RectInfo> > saveBuffer;
-    //Map saveBuffer;
+    std::vector<std::pair<r2d2::Box *, r2d2::BoxInfo> > saveBuffer;
     };
 
 #endif // MAPEDITOR_HPP

@@ -52,10 +52,10 @@ public:
 
     void selectTiles(QList<QGraphicsItem *> items);
     void deselectTiles();
-    //QList<BoxInfo *> updateSelection();
+    void updateSelection();
 
-    void increaseScale(qreal inc = 0.025f);
-    void decreaseScale(qreal dec = 0.025f);
+    void increaseScale();
+    void decreaseScale();
 
     void increaseRotation(int inc = 90);
     void decreaseRotation(int dec = 90);
@@ -73,16 +73,14 @@ public:
     void drawMap();
     MapTypes::TileType getTileType(r2d2::BoxInfo & tileInfo);
     viewScene * scene;
-
-    //mapEditor * editor;
 private:
-    r2d2::SaveLoadMap * map;
 
 protected:
     //! Catches all events and returns true when a event is caught
+
+    r2d2::SaveLoadMap * map;
     bool event(QEvent *event);
     bool eventFilter(QObject *object, QEvent *event);
-
     void updateTransform();
     int windowWidth;
     int windowHeight;
@@ -93,7 +91,7 @@ protected:
     qreal scaleSize = (maxScale / 2) - minScale;
     int scrollStepSize=10;
 
-    //QList<RectInfo *> selectedTiles;
+    QList<r2d2::Box*> selectedBoxes;
     };
 
 #endif // MAPVIEW_HPP

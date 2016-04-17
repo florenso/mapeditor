@@ -330,12 +330,12 @@
          </property>
          <item>
           <property name="text">
-           <string>Free</string>
+           <string>Navigatable</string>
           </property>
          </item>
          <item>
           <property name="text">
-           <string>Blocked</string>
+           <string>Obstacle</string>
           </property>
          </item>
          <item>
@@ -1325,7 +1325,7 @@
      <x>0</x>
      <y>0</y>
      <width>1000</width>
-     <height>21</height>
+     <height>31</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -1407,6 +1407,9 @@
    </property>
    <property name="text">
     <string>SelectMode</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+A</string>
    </property>
   </action>
   <action name="actionAddOffset">

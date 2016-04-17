@@ -139,7 +139,7 @@ bool MainWindow::eventFilter(QObject *, QEvent *event)
 //testcode
 void MainWindow::on_pushButton_clicked()
 {
-    int x = ui->xpos->value();
+    /*int x = ui->xpos->value();
     int y = ui->ypos->value();
     int w = ui->width->value();
     int h = ui->Height->value();
@@ -149,7 +149,10 @@ void MainWindow::on_pushButton_clicked()
     //viewer->drawTile(x, y, w, h, type);
 
     ui->graphicsView->scene->drawTile(x, y, w, h, type);
-
+    */
+    ui->graphicsView->updateSelection();
+    ui->graphicsView->editTile(ui->type->currentText());
+    ui->graphicsView->displayEdit();
 }
 
 void MainWindow::on_placeTagButton_clicked()
@@ -199,4 +202,3 @@ void MainWindow::on_goNavigate_clicked()
 {
     ui->graphicsView->centerOn(ui->inputX->text().toInt()+ui->graphicsView->scene->getOriginOffset().x(),ui->inputY->text().toInt()+ui->graphicsView->scene->getOriginOffset().y());
 }
-

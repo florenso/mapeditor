@@ -47,6 +47,9 @@ public:
     //! Draws a the text value on the scene on position x,y.
     void setTag(int x, int y, QString value);
 
+    //! delete selected items
+    void deleteSelectedItems();
+
     //! Clears all the objects in the scene.
     void clear();
 

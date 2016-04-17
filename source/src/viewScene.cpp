@@ -77,4 +77,10 @@ void viewScene::clear(){
     }
 }
 
-
+//remove only the selected items
+void viewScene::deleteSelectedItems(){
+    QList<QGraphicsItem *> list = selectedItems();
+    foreach( QGraphicsItem * item, list ){
+        removeItem(item);
+    }
+}

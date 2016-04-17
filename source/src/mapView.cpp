@@ -85,7 +85,7 @@ int mapView::getScale(){
 }
 
 void mapView::resetScale(){
-    scaleSize = (maxScale / 2) - minScale;
+    scaleSize = (maxScale / 2);
     updateTransform();
 }
 
@@ -134,17 +134,33 @@ void mapView::deselectTiles(){
     }
 }
 
-QList<RectInfo *> mapView::updateSelection(){
-    QList selection;
+void mapView::updateSelection(){
+    selectedBoxes.clear();
+    QPoint offset = scene->getOriginOffset();
     for(QGraphicsItem * item : scene->selectedItems()){
-        int x = item->pos().x();
-        int y = item->pos().y();
-        int w = item->boundingRect().width();
-        int h = item->boundingRect().height();
-        std::cout << "item: " << x << y << w << h << std::endl;
-        //selection.append();
+        //get coordinates of bottom left (bl) and top right (tr)
+        std::cout << "scene pos: " << item->pos().x() << " " << item->pos().y() << std::endl;
+        std::cout << "pos: " << item->scenePos().x() << " " << item->scenePos().y() << std::endl;
+        //QPointF bottomLeft = item->boundingRect().bottomLeft();
+
+        int width = item->boundingRect().width();
+        int height = item->boundingRect().height();
+
+        QPointF bottomLeft(item->pos().x() - offset.x(), item->pos().y() - offset.y() - height);
+        QPointF topRight(item->pos().x() - offset.x() + width, item->pos().y() - offset.y());
+
+        r2d2::Box * box = new r2d2::Box(
+            r2d2::Coordinate(r2d2::Length::CENTIMETER * bottomLeft.x(),
+                             r2d2::Length::CENTIMETER * bottomLeft.y(),
+                             r2d2::Length::CENTIMETER * 0),
+            r2d2::Coordinate(r2d2::Length::CENTIMETER * topRight.x(),
+                             r2d2::Length::CENTIMETER * topRight.y(),
+                             r2d2::Length::CENTIMETER * 1)
+            );
+        std::cout << "item: " << bottomLeft.x() << "x" << bottomLeft.y() << " : " << topRight.x() <<"x"<< topRight.y() << std::endl;
+
+        selectedBoxes.append(box);
     }
-    return selection;
 }
 
 bool mapView::event(QEvent *event)
@@ -220,18 +236,18 @@ void mapView::loadMapFile(string file)
     {
         //delete(map);
         map = new r2d2::BoxMap;
-        int generate_box_count = 20;
+        int generate_box_count = 10;
         for (int i = 0; i < generate_box_count; i++) {
             map->set_box_info(
                     r2d2::Box{
                             r2d2::Coordinate{
-                                    ((rand() % 20)-10) * r2d2::Length::METER,
-                                    ((rand() % 20)-10) * r2d2::Length::METER,
+                                    ((rand() % 10)-5) * r2d2::Length::METER,
+                                    ((rand() % 10)-5) * r2d2::Length::METER,
                                     0 * r2d2::Length::METER
                             },
                             r2d2::Coordinate{
-                                    ((rand() % 20)-10) * r2d2::Length::METER,
-                                    ((rand() % 20)-10) * r2d2::Length::METER,
+                                    ((rand() % 10)-5) * r2d2::Length::METER,
+                                    ((rand() % 10)-5) * r2d2::Length::METER,
                                     1* r2d2::Length::METER
                             }
                     },
@@ -302,17 +318,15 @@ MapTypes::TileType mapView::getTileType(r2d2::BoxInfo & tileInfo){
     else{return MapTypes::TileType::MIXED;}
 }
 
-
-
 void mapView::drawMap(){
         //scene->drawTile(-100,-100,200,200,Qt::green);
         int tileSize=10;
         //TODO:clear scene
         r2d2::Box map_bounding_box = map->get_map_bounding_box();
-        int xAxisMin = round(map_bounding_box.get_bottom_left().get_x()/r2d2::Length::CENTIMETER);
-        int yAxisMin = round(map_bounding_box.get_bottom_left().get_y()/r2d2::Length::CENTIMETER);
-        int xAxisMax = round(map_bounding_box.get_top_right().get_x()/r2d2::Length::CENTIMETER);
-        int yAxisMax = round(map_bounding_box.get_top_right().get_y()/r2d2::Length::CENTIMETER);
+        xAxisMin = round(map_bounding_box.get_bottom_left().get_x()/r2d2::Length::CENTIMETER);
+        yAxisMin = round(map_bounding_box.get_bottom_left().get_y()/r2d2::Length::CENTIMETER);
+        xAxisMax = round(map_bounding_box.get_top_right().get_x()/r2d2::Length::CENTIMETER);
+        yAxisMax = round(map_bounding_box.get_top_right().get_y()/r2d2::Length::CENTIMETER);
         //TODO: set new origin offset in viewScene::draw stuff when out of scene
         scene->setNewOriginOffset(abs(xAxisMin),abs(yAxisMin));
         r2d2::Translation tileSizeTranslation(r2d2::Length::CENTIMETER * tileSize,
@@ -333,5 +347,7 @@ void mapView::drawMap(){
             int woop = qw*100;
             std::cout << "loading map"<< woop << "%"<<std::endl;
             }
+        centerOn(scene->getOriginOffset());
     }
+
 
