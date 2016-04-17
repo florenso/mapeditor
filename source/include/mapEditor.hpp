@@ -23,7 +23,7 @@ signals:
 public slots:
 
 private:
-    std::vector<std::pair<r2d2::Box *, r2d2::BoxInfo> > saveBuffer;
+    std::vector<std::pair<r2d2::Box, r2d2::BoxInfo> > saveBuffer;
     };
 
 #endif // MAPEDITOR_HPP

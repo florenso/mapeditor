@@ -59,10 +59,11 @@ void MainWindow::on_actionLoad_triggered()
 {
     QFileDialog dialog(this);
     dialog.setFileMode(QFileDialog::AnyFile);
-    dialog.exec();
-
-    std::cout << "TODO, make load file not a dummy" << std::endl;
-    ui->graphicsView->loadMapFile("load_test");
+    QStringList fileNames;
+    if (dialog.exec()){
+        fileNames = dialog.selectedFiles();
+        ui->graphicsView->loadMapFile(fileNames.first().toUtf8().constData());
+    }
 }
 
 void MainWindow::on_zoomInButton_clicked()
@@ -87,6 +88,7 @@ void MainWindow::on_actionPan_toggled(bool activatePan)
 {
     if(activatePan){
             ui->actionSelectMode->setChecked(false);
+            ui->graphicsView->setSelectable(false);
             ui->graphicsView->setDragMode(QGraphicsView::ScrollHandDrag);
         }
     else{
@@ -99,6 +101,7 @@ void MainWindow::on_actionSelectMode_toggled(bool activateSelect)
 
         if(activateSelect){
                 ui->actionPan->setChecked(false);
+                ui->graphicsView->setSelectable(true);
                 ui->graphicsView->setDragMode(QGraphicsView::RubberBandDrag);
                 ui->graphicsView->setRubberBandSelectionMode(Qt::IntersectsItemShape);
             }
@@ -202,3 +205,10 @@ void MainWindow::on_goNavigate_clicked()
 {
     ui->graphicsView->centerOn(ui->inputX->text().toInt()+ui->graphicsView->scene->getOriginOffset().x(),ui->inputY->text().toInt()+ui->graphicsView->scene->getOriginOffset().y());
 }
+
+void MainWindow::on_actionDebug_triggered()
+{
+   int test = ui->graphicsView->scene->items().length();
+   std::cout << "items in scene items list: " << test << std::endl;
+}
+

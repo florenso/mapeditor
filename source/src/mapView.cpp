@@ -18,16 +18,7 @@ mapView::mapView(QWidget *parent):
     QGraphicsView(parent),
     windowWidth(1000),
     windowHeight(1000)
-{
-    /*//if no height or with given, set to view size
-
-    if(width == 0){
-      windowWidth = width();
-    }
-    if(height == 0){
-        windowHeight = height();
-    }
-    */    
+{  
         tileColors[MapTypes::TileType::EMPTY]=Qt::white;
         tileColors[MapTypes::TileType::BLOCKED]=Qt::black;
         tileColors[MapTypes::TileType::MIXED]=Qt::yellow;
@@ -45,17 +36,24 @@ mapView::mapView(QWidget *parent):
     //set default scale
     resetScale();
     scene->installEventFilter(this);
-
-    scene->drawAxes();
     verticalScrollBar()->installEventFilter(this);
     horizontalScrollBar()->installEventFilter(this);
     setMouseTracking(true);
+
+    scene->clear();
+    scene->addOriginOffset(250,250);
+    centerOn(QPointF(0,0)+scene->getOriginOffset());
 }
 
 mapView::~mapView(){
     delete scene;
 }
 
+void mapView::setSelectable(bool state){
+    for(QGraphicsItem * item: items()){
+        item->setFlag(QGraphicsItem::ItemIsSelectable, state);
+    }
+}
 
 void mapView::increaseScale(){
     scaleSize += zoomSpeed;
@@ -137,19 +135,26 @@ void mapView::deselectTiles(){
 void mapView::updateSelection(){
     selectedBoxes.clear();
     QPoint offset = scene->getOriginOffset();
+    std::cout << offset.x() << std::endl;
     for(QGraphicsItem * item : scene->selectedItems()){
         //get coordinates of bottom left (bl) and top right (tr)
-        std::cout << "scene pos: " << item->pos().x() << " " << item->pos().y() << std::endl;
-        std::cout << "pos: " << item->scenePos().x() << " " << item->scenePos().y() << std::endl;
-        //QPointF bottomLeft = item->boundingRect().bottomLeft();
+        QRectF rect = item->boundingRect();
+        int width = rect.width();
+        int height = rect.height();
 
-        int width = item->boundingRect().width();
-        int height = item->boundingRect().height();
+        /* code from scene that gives insight why this doesn't work
+         * (box.get_bottom_left().get_x()/r2d2::Length::CENTIMETER)+originOffset.x(),
+         * ((box.get_bottom_left().get_y()/r2d2::Length::CENTIMETER)*-1)+originOffset.y(),
+         * (box.get_axis_size().get_x()/r2d2::Length::CENTIMETER),
+         * (box.get_axis_size().get_y()/r2d2::Length::CENTIMETER)*-1);
+         */
 
-        QPointF bottomLeft(item->pos().x() - offset.x(), item->pos().y() - offset.y() - height);
-        QPointF topRight(item->pos().x() - offset.x() + width, item->pos().y() - offset.y());
+        //QPointF bottomLeft(item->pos().x() - offset.x(), (item->pos().y() - offset.y()) - height);
+        //QPointF topRight(item->pos().x() - offset.x() + width, (item->pos().y() - offset.y()));
+        QPointF bottomLeft(rect.bottomLeft());
 
-        r2d2::Box * box = new r2d2::Box(
+        QPointF topRight(rect.topRight());
+        r2d2::Box box(
             r2d2::Coordinate(r2d2::Length::CENTIMETER * bottomLeft.x(),
                              r2d2::Length::CENTIMETER * bottomLeft.y(),
                              r2d2::Length::CENTIMETER * 0),
@@ -157,7 +162,7 @@ void mapView::updateSelection(){
                              r2d2::Length::CENTIMETER * topRight.y(),
                              r2d2::Length::CENTIMETER * 1)
             );
-        std::cout << "item: " << bottomLeft.x() << "x" << bottomLeft.y() << " : " << topRight.x() <<"x"<< topRight.y() << std::endl;
+        //std::cout << "item: " << bottomLeft.x() << "x" << bottomLeft.y() << " : " << topRight.x() <<"x"<< topRight.y() << std::endl;
 
         selectedBoxes.append(box);
     }
@@ -187,7 +192,6 @@ bool mapView::event(QEvent *event)
                                 int val = horizontalScrollBar()->value();
                                 horizontalScrollBar()->setValue(val-scrollStepSize);
                             }
-                        //checkSceneBorder();
                     break;}
 
                 default:
@@ -209,7 +213,6 @@ void mapView::checkSceneBorder(){
            scene->addOriginOffset(stepSize,0);
            centerOn(QPointF(stepSize,0)+center);//causes an event (recursion)
            EventRecursion.unlock();
-
         }
         if(startPoint.y() < stepSize && EventRecursion.tryLock()){
             //std::cout << "too close to startPoint.y" << std::endl;
@@ -229,31 +232,12 @@ void mapView::checkSceneBorder(){
             scene->setSceneRect(0,0,scene->width(), scene->height()+stepSize);
             scene->drawAxes();
         }
-        //std::cout<< "scene size: " << scene->width() << " " << scene->height() << std::endl;
     }
 
 void mapView::loadMapFile(string file)
     {
-        //delete(map);
         map = new r2d2::BoxMap;
-        int generate_box_count = 10;
-        for (int i = 0; i < generate_box_count; i++) {
-            map->set_box_info(
-                    r2d2::Box{
-                            r2d2::Coordinate{
-                                    ((rand() % 10)-5) * r2d2::Length::METER,
-                                    ((rand() % 10)-5) * r2d2::Length::METER,
-                                    0 * r2d2::Length::METER
-                            },
-                            r2d2::Coordinate{
-                                    ((rand() % 10)-5) * r2d2::Length::METER,
-                                    ((rand() % 10)-5) * r2d2::Length::METER,
-                                    1* r2d2::Length::METER
-                            }
-                    },
-                    r2d2::BoxInfo{rand() % 2 == 0, rand() % 2 == 0, rand() % 2 == 0}
-            );
-        }
+        map->load(file);
         drawMap();
     }
 
@@ -298,7 +282,6 @@ bool mapView::eventFilter(QObject * object, QEvent * event){
            return true;
            break;
            }
-
         default:
             break;
     }
@@ -318,36 +301,63 @@ MapTypes::TileType mapView::getTileType(r2d2::BoxInfo & tileInfo){
     else{return MapTypes::TileType::MIXED;}
 }
 
-void mapView::drawMap(){
-        //scene->drawTile(-100,-100,200,200,Qt::green);
-        int tileSize=10;
-        //TODO:clear scene
-        r2d2::Box map_bounding_box = map->get_map_bounding_box();
-        xAxisMin = round(map_bounding_box.get_bottom_left().get_x()/r2d2::Length::CENTIMETER);
-        yAxisMin = round(map_bounding_box.get_bottom_left().get_y()/r2d2::Length::CENTIMETER);
-        xAxisMax = round(map_bounding_box.get_top_right().get_x()/r2d2::Length::CENTIMETER);
-        yAxisMax = round(map_bounding_box.get_top_right().get_y()/r2d2::Length::CENTIMETER);
-        //TODO: set new origin offset in viewScene::draw stuff when out of scene
-        scene->setNewOriginOffset(abs(xAxisMin),abs(yAxisMin));
+void mapView::drawBox(r2d2::Box box,int tileSize){
+        int xAxisMin = round(box.get_bottom_left().get_x()/r2d2::Length::CENTIMETER);
+        int yAxisMin = round(box.get_bottom_left().get_y()/r2d2::Length::CENTIMETER);
+        int xAxisMax = round(box.get_top_right().get_x()/r2d2::Length::CENTIMETER);
+        int yAxisMax = round(box.get_top_right().get_y()/r2d2::Length::CENTIMETER);
         r2d2::Translation tileSizeTranslation(r2d2::Length::CENTIMETER * tileSize,
                                               r2d2::Length::CENTIMETER * tileSize,
-                                              r2d2::Length::CENTIMETER * 0);
-        std::cout << "map size " << xAxisMin << std::endl;
+                                              r2d2::Length::CENTIMETER * z_top);
         int dis = abs(xAxisMin-xAxisMax);
         for (int x = xAxisMin; x < xAxisMax; x+=tileSize){
             for(int y = yAxisMin; y < yAxisMax; y+=tileSize){
-                    r2d2::Coordinate topRight{r2d2::Length::CENTIMETER * x,
+                    r2d2::Coordinate bottemLeft{r2d2::Length::CENTIMETER * x,
                                     r2d2::Length::CENTIMETER * y,
-                                    r2d2::Length::CENTIMETER * 1};
-                    r2d2::Box tileBox(topRight,tileSizeTranslation);
+                                    r2d2::Length::CENTIMETER * z_bottom};
+                    r2d2::Box tileBox(bottemLeft,tileSizeTranslation);
                     r2d2::BoxInfo tileInfo = map->get_box_info(tileBox);
-                    scene->drawTile(x,y,tileSize,tileSize,tileColors[getTileType(tileInfo)]);
+                    scene->drawTile(tileBox,tileColors[getTileType(tileInfo)]);
                 }
-            float qw = ((float)x-(float)xAxisMin)/(float)dis;
-            int woop = qw*100;
-            std::cout << "loading map"<< woop << "%"<<std::endl;
+            int loadingPercentage = (((float)x-(float)xAxisMin)/(float)dis)*100;
+            //std::cout << "loading "<< loadingPercentage << "%"<<std::endl;
             }
         centerOn(scene->getOriginOffset());
+        scene->drawAxes();
+    }
+
+
+
+void mapView::drawMap(){
+        scene->clear();
+        resetScale();
+        scene->addOriginOffset(250,250);
+        centerOn(QPointF(0,0)+scene->getOriginOffset());
+
+        //this is not almost working code...
+//        QPointF startPoint = mapToScene(QPoint(0,0));
+//        QPointF endPoint = mapToScene(QPoint(width(),height()));
+//        const r2d2::Coordinate bottemLeft1{
+//                        r2d2::Length::CENTIMETER * ceil(((scene->getOriginOffset().x() - startPoint.x()+10)*-1)/10)*10,
+//                        r2d2::Length::CENTIMETER * ceil((scene->getOriginOffset().y() - endPoint.y()-10)/10)*10,
+//                        r2d2::Length::CENTIMETER * z_bottom};
+//        const r2d2::Translation boxSize{
+//                        r2d2::Length::CENTIMETER * (width()/2),
+//                        r2d2::Length::CENTIMETER * (height()/2),
+//                        r2d2::Length::CENTIMETER * z_top};
+
+        const r2d2::Coordinate bottemLeft1{
+                        r2d2::Length::CENTIMETER * -400,
+                        r2d2::Length::CENTIMETER * -400,
+                        r2d2::Length::CENTIMETER * z_bottom};
+        const r2d2::Translation boxSize{
+                        r2d2::Length::CENTIMETER * 800,
+                        r2d2::Length::CENTIMETER * 800,
+                        r2d2::Length::CENTIMETER * z_top};
+
+
+
+        drawBox(r2d2::Box(bottemLeft1,boxSize));;
     }
 
 

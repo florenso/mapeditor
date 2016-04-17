@@ -66,15 +66,22 @@ public:
     int getRotation();
     void checkSceneBorder();
     std::map<MapTypes::TileType, QColor> tileColors;
-    //std::map<bool, QColor> tileColors;
 
+    //this has a temp function, it generates a map for testing
     void loadMapFile(string file);
 
+    //focuses viewport on origin of map and (re)draws the map
     void drawMap();
-    MapTypes::TileType getTileType(r2d2::BoxInfo & tileInfo);
-    viewScene * scene;
-private:
 
+    MapTypes::TileType getTileType(r2d2::BoxInfo & tileInfo);
+
+    viewScene * scene;
+    void setSelectable(bool state);
+
+    void drawBox(r2d2::Box box, int tileSize = 10);
+private:
+    int windowWidth;
+    int windowHeight;
 protected:
     //! Catches all events and returns true when a event is caught
 
@@ -82,16 +89,16 @@ protected:
     bool event(QEvent *event);
     bool eventFilter(QObject *object, QEvent *event);
     void updateTransform();
-    int windowWidth;
-    int windowHeight;
+
     int rotation  = 0;
     qreal zoomSpeed = 0.05f;
     qreal maxScale  = 5.0f;
     qreal minScale  = 0.1f;
     qreal scaleSize = (maxScale / 2) - minScale;
     int scrollStepSize=10;
-
-    QList<r2d2::Box*> selectedBoxes;
+    int z_bottom = 0;
+    int z_top = 1;
+    QList<r2d2::Box> selectedBoxes;
     };
 
 #endif // MAPVIEW_HPP

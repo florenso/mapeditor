@@ -1325,7 +1325,7 @@
      <x>0</x>
      <y>0</y>
      <width>1000</width>
-     <height>31</height>
+     <height>26</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -1354,6 +1354,7 @@
      <string>debug</string>
     </property>
     <addaction name="actionAddOffset"/>
+    <addaction name="actionDebug"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menuTools"/>
@@ -1415,6 +1416,14 @@
   <action name="actionAddOffset">
    <property name="text">
     <string>addOffset</string>
+   </property>
+  </action>
+  <action name="actionDebug">
+   <property name="text">
+    <string>print debug info in cout</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+P</string>
    </property>
   </action>
  </widget>

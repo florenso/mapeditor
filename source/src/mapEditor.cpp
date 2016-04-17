@@ -13,7 +13,7 @@ void mapEditor::createTile(){
 }
 
 void mapEditor::removeTile(){
-    //Remove Tile
+    //editTile("Unknown");
 }
 
 void mapEditor::editTile(QString type){
@@ -24,35 +24,32 @@ void mapEditor::editTile(QString type){
         info = r2d2::BoxInfo(false, false, true);
     }else if(type == "Obstacle"){
         info = r2d2::BoxInfo(true, false, false);
+    }else if(type == "Mixed"){
+        info = r2d2::BoxInfo(true, true, true);
     }else{
-        info = r2d2::BoxInfo(false, true, false);
+        info = r2d2::BoxInfo(false, false, false);
     }
 
-    //store temporary tile
-    for(r2d2::Box * tile: selectedBoxes){
-        //const std::pair<tile, info>;
-        saveBuffer.push_back(std::pair<r2d2::Box *, r2d2::BoxInfo>(tile, info));
+    //store
+    for(const r2d2::Box tile: selectedBoxes){
+        saveBuffer.push_back(std::pair<r2d2::Box, r2d2::BoxInfo>(tile, info));
+        map->set_box_info(tile, info);
     }
-
+    //remove comment to delete old graphicsItems (should be done)
+    scene->deleteSelectedItems();
+    deselectTiles();
     std::cout << "Saved Tiles: " << saveBuffer.size() << std::endl;
 }
 
 void mapEditor::displayEdit(){
     int tileSize=10;
     scene->clearSelection();
-    for(std::pair<r2d2::Box *, r2d2::BoxInfo> box: saveBuffer){
-        //drawBox here
-        /*qreal xPosition = box.first->get_bottom_left().get_x();
-        qreal yPosition = box.first->get - tileSize;*/
-        scene->drawTile(static_cast<int>(box.first->get_bottom_left().get_x()), static_cast<int>(box.first->get_bottom_left().get_y() - tileSize), getTileType(box.second) );
+
+    while(!saveBuffer.empty()){
+        std::pair<r2d2::Box, r2d2::BoxInfo> box = saveBuffer.back();
+        saveBuffer.pop_back();
+        drawBox(box.first, tileSize);
     }
-
-    r2d2::Translation tileSizeTranslation(r2d2::Length::CENTIMETER * tileSize,
-                                          r2d2::Length::CENTIMETER * tileSize,
-                                          r2d2::Length::CENTIMETER * 0);
-
-
-
 }
 
 //std::vector<std::pair<r2d2::Box, r2d2::BoxInfo>> mapEditor::getBuffer(){

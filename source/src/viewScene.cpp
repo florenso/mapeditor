@@ -16,11 +16,11 @@ void viewScene::setNewOriginOffset(int unsigned xOffset,int unsigned yOffset)
 
 void viewScene::drawAxes()
     {
-        //drawTile(-10,-10,20,20,QColor(100,0,0));
-        delete (xAxis);
-        delete (yAxis);
-        xAxis = addLine(0,originOffset.y(),width(),originOffset.y());
-        yAxis = addLine(originOffset.x(),0,originOffset.x(),height());
+        QPen pen(Qt::red);
+        delete xAxis;
+        delete yAxis;
+        xAxis = addLine(0,originOffset.y(),width(),originOffset.y(),pen);
+        yAxis = addLine(originOffset.x(),0,originOffset.x(),height(),pen);
     }
 
 QPoint viewScene::getOriginOffset()
@@ -38,10 +38,40 @@ viewScene::viewScene(QObject *parent) : QGraphicsScene(parent)
         //drawAxes();
     }
 
+QPointF viewScene::box_coordinate_2_qpoint(r2d2::Coordinate coordinate){
+        return QPointF((coordinate.get_x()/r2d2::Length::CENTIMETER)+originOffset.x(),
+        ((coordinate.get_y()/r2d2::Length::CENTIMETER)*-1)+originOffset.y());
+    }
+
+QRectF viewScene::box_tile_2_qrect(r2d2::Box box){
+        return QRectF(
+                    (box.get_bottom_left().get_x()/r2d2::Length::CENTIMETER)+originOffset.x(),
+                    ((box.get_bottom_left().get_y()/r2d2::Length::CENTIMETER)*-1)+originOffset.y(),
+                    (box.get_axis_size().get_x()/r2d2::Length::CENTIMETER),
+                    (box.get_axis_size().get_y()/r2d2::Length::CENTIMETER)*-1);
+    }
+
+r2d2::Coordinate viewScene::qpoint_2_box_coordinate(QPointF point){
+        std::cout << "carlos heeft zijn werk nog niet gedaan" << std::endl;
+        return r2d2::Coordinate();
+    }
+r2d2::Box viewScene::qrect_2_box_coordinate(QRectF rect){
+        std::cout << "carlos heeft zijn werk nog niet gedaan" << std::endl;
+        return r2d2::Box();
+    }
+
+void viewScene::drawTile(r2d2::Box box,QColor color){
+    QGraphicsRectItem *block = new QGraphicsRectItem(box_tile_2_qrect(box));
+    block->setBrush(* new QBrush(color));
+    //std::cout << "New: x:" << block->pos().x() << " y: " << block->pos().y() << std::endl;
+    addItem(block);
+    }
+
+
 void viewScene::drawTile(int x, int y, int width, int height, QColor color){
+        std::cout << "you should not use this drawTile method...." << std::endl;
         y*=-1;
         height*=-1;
-    //std::cout << "New tile: x " << x << " y " << y << " w " << width << " h " << height<< std::endl;
     QGraphicsRectItem *block = new QGraphicsRectItem;
     block->setRect(0, 0, width, height);
     block->setBrush(* new QBrush(color));
@@ -75,6 +105,7 @@ void viewScene::clear(){
     foreach( QGraphicsItem * item, list ){
         removeItem(item);
     }
+    drawAxes();
 }
 
 //remove only the selected items

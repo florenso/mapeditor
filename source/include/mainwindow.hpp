@@ -92,6 +92,8 @@ private slots:
 
     void on_goNavigate_clicked();
 
+    void on_actionDebug_triggered();
+
 private:
     Ui::MainWindow *ui;
 };
