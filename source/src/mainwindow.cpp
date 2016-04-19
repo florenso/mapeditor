@@ -93,6 +93,7 @@ void MainWindow::on_actionPan_toggled(bool activatePan)
         }
     else{
             ui->graphicsView->setDragMode(QGraphicsView::NoDrag);
+            ui->graphicsView->setSelectable(true);
         }
 }
 
@@ -107,6 +108,7 @@ void MainWindow::on_actionSelectMode_toggled(bool activateSelect)
             }
         else{
                 ui->graphicsView->setDragMode(QGraphicsView::NoDrag);
+                ui->graphicsView->setSelectable(false);
             }
 }
 
