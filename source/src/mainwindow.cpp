@@ -116,8 +116,9 @@ bool MainWindow::eventFilter(QObject *, QEvent *event)
         case QEvent::GraphicsSceneMouseMove:
             {
                 QGraphicsSceneMouseEvent * gsme = static_cast<QGraphicsSceneMouseEvent*>(event);
-                ui->xposLabel->setText(QString::number(gsme->scenePos().x() - ui->graphicsView->scene->getOriginOffset().x()));
-                ui->yposLabel->setText(QString::number(-1*(gsme->scenePos().y() - ui->graphicsView->scene->getOriginOffset().y())));
+                r2d2::Coordinate mouse_pos_in_map=ui->graphicsView->scene->qpoint_2_box_coordinate(gsme->scenePos());
+                ui->xposLabel->setText(QString::number(mouse_pos_in_map.get_x()/r2d2::Length::CENTIMETER));
+                ui->yposLabel->setText(QString::number(mouse_pos_in_map.get_y()/r2d2::Length::CENTIMETER));
                 //std::cout << ui->graphicsView->scene->
                 return false;
                 break;
