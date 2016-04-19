@@ -119,6 +119,16 @@ void mapView::updateTransform(){
     scale(scaleSize, scaleSize);
 }
 
+void mapView::set_z_bottom(float value)
+{
+    z_bottom = value;
+}
+
+void mapView::set_z_top(float value){
+    z_top = value;
+}
+
+
 void mapView::setZoomSpeed(qreal speed){
     zoomSpeed = speed;
 }
