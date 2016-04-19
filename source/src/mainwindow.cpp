@@ -116,8 +116,9 @@ bool MainWindow::eventFilter(QObject *, QEvent *event)
         case QEvent::GraphicsSceneMouseMove:
             {
                 QGraphicsSceneMouseEvent * gsme = static_cast<QGraphicsSceneMouseEvent*>(event);
-                ui->xposLabel->setText(QString::number(gsme->scenePos().x() - ui->graphicsView->scene->getOriginOffset().x()));
-                ui->yposLabel->setText(QString::number(-1*(gsme->scenePos().y() - ui->graphicsView->scene->getOriginOffset().y())));
+                r2d2::Coordinate mouse_pos_in_map=ui->graphicsView->scene->qpoint_2_box_coordinate(gsme->scenePos());
+                ui->xposLabel->setText(QString::number(mouse_pos_in_map.get_x()/r2d2::Length::CENTIMETER));
+                ui->yposLabel->setText(QString::number(mouse_pos_in_map.get_y()/r2d2::Length::CENTIMETER));
                 //std::cout << ui->graphicsView->scene->
                 return false;
                 break;
@@ -211,4 +212,39 @@ void MainWindow::on_actionDebug_triggered()
 {
    int test = ui->graphicsView->scene->items().length();
    std::cout << "items in scene items list: " << test << std::endl;
+
+
+   QRectF testrect(10,10,10,10);
+
+   std::cout<< "testrect: " <<
+   testrect.left() << " " <<
+   testrect.right() << " " <<
+   testrect.bottom() << " " <<
+   testrect.top() << std::endl;
+
+
+   r2d2::Box testbox = ui->graphicsView->scene->qrect_2_box_coordinate(testrect);
+
+   std::cout << "testbox: " <<
+   testbox.get_bottom_left().get_x() << " " <<
+   testbox.get_top_right().get_x() << " " <<
+   testbox.get_bottom_left().get_y() << " " <<
+   testbox.get_top_right().get_y() << std::endl;
+
+   QRectF testrect2 = ui->graphicsView->scene->box_tile_2_qrect(testbox);
+
+   std::cout<< "testrect2: " <<
+   testrect2.left() << " " <<
+   testrect2.right() << " " <<
+   testrect2.bottom() << " " <<
+   testrect2.top() << std::endl;
+
+   testbox = ui->graphicsView->scene->qrect_2_box_coordinate(testrect);
+
+      std::cout << "testbox2: " <<
+      testbox.get_bottom_left().get_x() << " " <<
+      testbox.get_top_right().get_x() << " " <<
+      testbox.get_bottom_left().get_y() << " " <<
+      testbox.get_top_right().get_y() << std::endl;
+
 }
