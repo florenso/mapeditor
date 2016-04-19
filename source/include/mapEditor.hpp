@@ -11,7 +11,7 @@
 
 class mapEditor : public mapView
     {
-    Q_OBJECT
+    //Q_OBJECT
 public:
     explicit mapEditor(QWidget *parent = 0);
     void createTile();
