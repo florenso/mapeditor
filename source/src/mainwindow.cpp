@@ -140,32 +140,6 @@ bool MainWindow::eventFilter(QObject *, QEvent *event)
 
 
 
-//testcode
-void MainWindow::on_pushButton_clicked()
-{
-        std::cout << "this button has no use...." << std::endl;
-//    int x = ui->xpos->value();
-//    int y = ui->ypos->value();
-//    int w = ui->width->value();
-//    int h = ui->Height->value();
-
-//    QString type(ui->type->currentText());
-
-    //This is not the propper function....
-    // also, the program never draws a new tile.... (only updates tiles)
-    //ui->graphicsView->scene->drawTile(x, y, w, h, type);
-
-}
-
-void MainWindow::on_placeTagButton_clicked()
-{
-    int x = ui->xposTag->value();
-    int y = ui->yposTag->value();
-
-    QString tag(ui->tagName->text());
-    ui->graphicsView->scene->setTag(x, y, tag);
-}
-
 void MainWindow::on_clearButton_clicked()
 {
     ui->graphicsView->scene->clear();

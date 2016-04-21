@@ -74,30 +74,6 @@ void viewScene::drawTile(r2d2::Box box,QColor color){
     addItem(block);
     }
 
-
-void viewScene::drawLine(int x1, int y1, int x2, int y2, QRgb color){
-        std::cout << "old function..., throwing exception @ viewScene::drawLine" << std::endl;
-        throw(30);
-        y1*=-1;
-        y2*=-1;
-    //Bad method needs rework
-    QGraphicsRectItem *block = new QGraphicsRectItem;
-    block->setRect(0, 0, x2-x1, y2-y1);
-    block->setBrush(* new QBrush(color));
-    block->setPos(x1, y1);
-    addItem(block);
-    //setScene(scene);
-    //show();
-}
-
-void viewScene::setTag(int x, int y, QString value){
-        std::cout << "old function..., throwing exception @ viewScene::setTag" << std::endl;
-        throw(30);
-        y*=-1;
-    QGraphicsTextItem *item = addText(value);
-    item->setPos(x+originOffset.x(), y+originOffset.y());
-}
-
 void viewScene::clear(){
     QList<QGraphicsItem *> list = items();
     foreach( QGraphicsItem * item, list ){
