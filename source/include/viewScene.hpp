@@ -9,8 +9,6 @@
 #include <QGraphicsRectItem>
 #include <map>
 #include <iostream>
-//#include "map_utils.hpp"
-//#include "stubs.hpp"
 #include <map>
 #include <QPoint>
 #include <QPen>
@@ -18,7 +16,6 @@
 #include "../../../adt/source/include/Coordinate.hpp"
 #include "../../../adt/source/include/Translation.hpp"
 #include "../../../adt/source/include/Length.hpp"
-#include <functional>
 
 class viewScene : public QGraphicsScene
     {
