@@ -140,6 +140,17 @@ bool MainWindow::eventFilter(QObject *, QEvent *event)
 
 
 
+//testcode
+void MainWindow::on_pushButton_clicked()
+{
+
+}
+
+void MainWindow::on_placeTagButton_clicked()
+{
+
+}
+
 void MainWindow::on_clearButton_clicked()
 {
     ui->graphicsView->scene->clear();
