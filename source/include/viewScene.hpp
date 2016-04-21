@@ -18,6 +18,7 @@
 #include "../../../adt/source/include/Coordinate.hpp"
 #include "../../../adt/source/include/Translation.hpp"
 #include "../../../adt/source/include/Length.hpp"
+#include <functional>
 
 class viewScene : public QGraphicsScene
     {
@@ -41,9 +42,6 @@ public:
     void setNewOriginOffset(int unsigned xOffset,int unsigned yOffset);
 
     explicit viewScene(QObject *parent = 0);
-
-    //! Draws a tile with position x,y and size width,height on the scene.
-    void drawTile(int x, int y, int width, int height, QColor color);
 
     //! Draws a line from position x1,y1 to position x2,y2 on the scene.
     void drawLine(int x1, int y1, int x2, int y2, QRgb color);

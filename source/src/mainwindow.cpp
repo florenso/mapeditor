@@ -143,16 +143,17 @@ bool MainWindow::eventFilter(QObject *, QEvent *event)
 //testcode
 void MainWindow::on_pushButton_clicked()
 {
-    int x = ui->xpos->value();
-    int y = ui->ypos->value();
-    int w = ui->width->value();
-    int h = ui->Height->value();
+        std::cout << "this button has no use...." << std::endl;
+//    int x = ui->xpos->value();
+//    int y = ui->ypos->value();
+//    int w = ui->width->value();
+//    int h = ui->Height->value();
 
-    QString type(ui->type->currentText());
+//    QString type(ui->type->currentText());
 
-    //viewer->drawTile(x, y, w, h, type);
-
-    ui->graphicsView->scene->drawTile(x, y, w, h, type);
+    //This is not the propper function....
+    // also, the program never draws a new tile.... (only updates tiles)
+    //ui->graphicsView->scene->drawTile(x, y, w, h, type);
 
 }
 
