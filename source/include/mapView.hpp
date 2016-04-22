@@ -50,7 +50,6 @@ public:
     //! Checks to the mouse is located in the view.
     bool mouseInMapView(QPoint p);
 
-    void selectTiles(QList<QGraphicsItem *> items);
     void deselectTiles();
     void updateSelection();
 
@@ -65,6 +64,11 @@ public:
     int getScale();
     int getRotation();
     void checkSceneBorder();
+    void set_z_bottom(float value);
+    void set_z_top(float value);
+
+    viewScene * scene;
+
     std::map<MapTypes::TileType, QColor> tileColors;
 
     //this has a temp function, it generates a map for testing
@@ -75,7 +79,7 @@ public:
 
     MapTypes::TileType getTileType(r2d2::BoxInfo & tileInfo);
 
-    viewScene * scene;
+    //viewScene * scene;
     void setSelectable(bool state);
 
     void drawBox(r2d2::Box box, int tileSize = 10);

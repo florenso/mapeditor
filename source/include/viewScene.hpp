@@ -31,7 +31,7 @@ private:
     QGraphicsLineItem * xAxis = addLine(0,0,0,0);
     QGraphicsLineItem * yAxis = addLine(0,0,0,0);
 
-    QRectF box_tile_2_qrect(r2d2::Box box);
+
 public:
 
     void drawAxes();
@@ -60,9 +60,9 @@ public:
 
     void drawTile(r2d2::Box box, QColor color);
     QPointF box_coordinate_2_qpoint(r2d2::Coordinate);
-    r2d2::Coordinate qpoint_2_box_coordinate(QPointF point);
-    r2d2::Box qrect_2_box_coordinate(QRectF rect);
-
+    QRectF box_tile_2_qrect(r2d2::Box box);
+    r2d2::Coordinate qpoint_2_box_coordinate(QPointF point, double z = 0);
+    r2d2::Box qrect_2_box_coordinate(QRectF rect, double min_z = 0, double max_z = 1);
 signals:
 
 public slots:

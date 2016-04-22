@@ -116,14 +116,18 @@ void mapView::updateTransform(){
     scale(scaleSize, scaleSize);
 }
 
-void mapView::setZoomSpeed(qreal speed){
-    zoomSpeed = speed;
+void mapView::set_z_bottom(float value)
+{
+    z_bottom = value;
 }
 
-void mapView::selectTiles(QList<QGraphicsItem *> items){
-    for(QGraphicsItem * item : items){
-        std::cout << "Item: " << item->pos().x() << " x " << item->pos().y() << std::endl;
-    }
+void mapView::set_z_top(float value){
+    z_top = value;
+}
+
+
+void mapView::setZoomSpeed(qreal speed){
+    zoomSpeed = speed;
 }
 
 void mapView::deselectTiles(){
@@ -139,8 +143,9 @@ void mapView::updateSelection(){
     for(QGraphicsItem * item : scene->selectedItems()){
         //get coordinates of bottom left (bl) and top right (tr)
         QRectF rect = item->boundingRect();
-        int width = rect.width();
-        int height = rect.height();
+
+        /*int width = rect.width();
+        int height = rect.height();*/
 
         /* code from scene that gives insight why this doesn't work
          * (box.get_bottom_left().get_x()/r2d2::Length::CENTIMETER)+originOffset.x(),
@@ -151,7 +156,7 @@ void mapView::updateSelection(){
 
         //QPointF bottomLeft(item->pos().x() - offset.x(), (item->pos().y() - offset.y()) - height);
         //QPointF topRight(item->pos().x() - offset.x() + width, (item->pos().y() - offset.y()));
-        QPointF bottomLeft(rect.bottomLeft());
+        /*QPointF bottomLeft(rect.bottomLeft());
 
         QPointF topRight(rect.topRight());
         r2d2::Box box(
@@ -163,7 +168,9 @@ void mapView::updateSelection(){
                              r2d2::Length::CENTIMETER * 1)
             );
         //std::cout << "item: " << bottomLeft.x() << "x" << bottomLeft.y() << " : " << topRight.x() <<"x"<< topRight.y() << std::endl;
+        */
 
+        r2d2::Box box = scene->qrect_2_box_coordinate(rect);
         selectedBoxes.append(box);
     }
 }

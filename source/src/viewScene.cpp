@@ -51,13 +51,18 @@ QRectF viewScene::box_tile_2_qrect(r2d2::Box box){
                     (box.get_axis_size().get_y()/r2d2::Length::CENTIMETER)*-1);
     }
 
-r2d2::Coordinate viewScene::qpoint_2_box_coordinate(QPointF point){
-        std::cout << "carlos heeft zijn werk nog niet gedaan" << std::endl;
-        return r2d2::Coordinate();
+r2d2::Coordinate viewScene::qpoint_2_box_coordinate(QPointF point, double z){
+        return r2d2::Coordinate(
+                    (point.x() - getOriginOffset().x())*r2d2::Length::CENTIMETER,
+                    ((point.y() - getOriginOffset().y()))*-1*r2d2::Length::CENTIMETER,
+                    z*r2d2::Length::CENTIMETER
+                    );
     }
-r2d2::Box viewScene::qrect_2_box_coordinate(QRectF rect){
-        std::cout << "carlos heeft zijn werk nog niet gedaan" << std::endl;
-        return r2d2::Box();
+
+r2d2::Box viewScene::qrect_2_box_coordinate(QRectF rect,double min_z,double max_z){
+
+        return r2d2::Box(qpoint_2_box_coordinate(rect.bottomLeft(),min_z),
+                         qpoint_2_box_coordinate(rect.topRight(),max_z));
     }
 
 void viewScene::drawTile(r2d2::Box box,QColor color){
