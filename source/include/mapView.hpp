@@ -40,6 +40,13 @@ namespace MapTypes{
     };
 }
 
+//! The class that represents a map viewer, which shows an interactive r2d2::map.
+/*!
+ * The mapView class epresents a map viewer, which shows an interactive r2d2::map.
+ * It allows users to move around the viewer and also lets the user zoom in
+ * and rotate the map.
+ * For new functionality, this class should be extended.
+ */
 class mapView: public QGraphicsView
 {
 public:
