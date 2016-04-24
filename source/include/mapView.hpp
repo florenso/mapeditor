@@ -61,6 +61,7 @@ public:
     void checkSceneBorder();
     void set_z_bottom(float value);
     void set_z_top(float value);
+    void saveMapFile(std::string filename);
 
     viewScene * scene;
 
@@ -88,6 +89,7 @@ private:
     qreal scaleSize = (maxScale / 2) - minScale;
     int scrollStepSize=10;
     r2d2::SaveLoadMap * map;
+
 protected:
     //! Catches all events and returns true when a event is caught
     bool event(QEvent *event);

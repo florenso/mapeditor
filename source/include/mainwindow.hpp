@@ -26,6 +26,7 @@
 #include <QInputEvent>
 #include <QEnterEvent>
 #include <QEvent>
+#include <string>
 
 namespace Ui {
 class MainWindow;
@@ -90,6 +91,8 @@ private slots:
 
 private:
     Ui::MainWindow *ui;
+    r2d2::SaveLoadMap * map;
+    std::string fileName_std = "";
 };
 
 #endif // MAINWINDOW_HPP

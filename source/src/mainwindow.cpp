@@ -12,6 +12,7 @@
 #include <QEvent>
 #include <QGraphicsSceneMouseEvent>
 #include "..\include\mapEditor.hpp"
+#include "../../../map/source/include/BoxMap.hpp"
 
 
 MainWindow::MainWindow(QWidget *parent) :
@@ -49,9 +50,16 @@ void MainWindow::on_actionRoboRescue_wiki_triggered()
 
 void MainWindow::on_actionSave_as_triggered()
 {
-    QFileDialog dialog(this);
-    dialog.setFileMode(QFileDialog::AnyFile);
-    dialog.exec();
+    QString fileName = QFileDialog::getSaveFileName(this, tr("Save File"));
+    fileName_std = fileName.toUtf8().constData();
+    std::cout << fileName_std;
+
+
+
+    ui->graphicsView->saveMapFile(fileName_std);
+
+
+
 }
 
 void MainWindow::on_actionLoad_triggered()
@@ -61,6 +69,7 @@ void MainWindow::on_actionLoad_triggered()
     QStringList fileNames;
     if (dialog.exec()){
         fileNames = dialog.selectedFiles();
+        fileName_std = fileNames.first().toUtf8().constData();
         ui->graphicsView->loadMapFile(fileNames.first().toUtf8().constData());
     }
 }
@@ -147,6 +156,16 @@ void MainWindow::on_clearButton_clicked()
 
 void MainWindow::on_actionSave_triggered()
 {
+
+    if(fileName_std == ""){
+        QString fileName = QFileDialog::getSaveFileName(this, tr("Save File"));
+        fileName_std = fileName.toUtf8().constData();
+        std::cout << fileName_std;
+    }
+
+     ui->graphicsView->saveMapFile(fileName_std);
+
+
 
 }
 
