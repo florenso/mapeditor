@@ -143,7 +143,7 @@ bool MainWindow::eventFilter(QObject *, QEvent *event)
 
 
 
-//testcode
+
 void MainWindow::on_pushButton_clicked()
 {
     /*int x = ui->xpos->value();
@@ -168,7 +168,7 @@ void MainWindow::on_placeTagButton_clicked()
     int y = ui->yposTag->value();
 
     QString tag(ui->tagName->text());
-    ui->graphicsView->scene->setTag(x, y, tag);
+    //ui->graphicsView->scene->setTag(x, y, tag);
 }
 
 void MainWindow::on_clearButton_clicked()

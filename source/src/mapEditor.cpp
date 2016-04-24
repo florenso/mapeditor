@@ -31,7 +31,7 @@ void mapEditor::editTile(QString type){
     }
 
     //store
-    for(const r2d2::Box tile: selectedBoxes){
+    for(r2d2::Box tile: selectedBoxes){
         saveBuffer.push_back(std::pair<r2d2::Box, r2d2::BoxInfo>(tile, info));
         map->set_box_info(tile, info);
     }
@@ -51,7 +51,3 @@ void mapEditor::displayEdit(){
         drawBox(box.first, tileSize);
     }
 }
-
-//std::vector<std::pair<r2d2::Box, r2d2::BoxInfo>> mapEditor::getBuffer(){
-//    return saveBuffer;
-//}

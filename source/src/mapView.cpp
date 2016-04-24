@@ -51,7 +51,9 @@ mapView::~mapView(){
 
 void mapView::setSelectable(bool state){
     for(QGraphicsItem * item: items()){
-        item->setFlag(QGraphicsItem::ItemIsSelectable, state);
+        if(scene->isTile(item)){
+            item->setFlag(QGraphicsItem::ItemIsSelectable, state);
+        }
     }
 }
 
@@ -138,14 +140,14 @@ void mapView::deselectTiles(){
 
 void mapView::updateSelection(){
     selectedBoxes.clear();
-    QPoint offset = scene->getOriginOffset();
-    std::cout << offset.x() << std::endl;
+    //QPoint offset = scene->getOriginOffset();
+    //std::cout << offset.x() << std::endl;
     for(QGraphicsItem * item : scene->selectedItems()){
         //get coordinates of bottom left (bl) and top right (tr)
+        QPointF pos = item->pos();
         QRectF rect = item->boundingRect();
-
-        /*int width = rect.width();
-        int height = rect.height();*/
+        int width = rect.width();
+        int height = rect.height();
 
         /* code from scene that gives insight why this doesn't work
          * (box.get_bottom_left().get_x()/r2d2::Length::CENTIMETER)+originOffset.x(),
@@ -169,8 +171,9 @@ void mapView::updateSelection(){
             );
         //std::cout << "item: " << bottomLeft.x() << "x" << bottomLeft.y() << " : " << topRight.x() <<"x"<< topRight.y() << std::endl;
         */
-
-        r2d2::Box box = scene->qrect_2_box_coordinate(rect);
+        r2d2::Coordinate leftBottom = scene->qpoint_2_box_coordinate(QPointF(pos.x(), pos.y() - height), 0);
+        r2d2::Coordinate rightTop = scene->qpoint_2_box_coordinate(QPointF(pos.x() + width, pos.y()), 1);
+        r2d2::Box box(leftBottom, rightTop);
         selectedBoxes.append(box);
     }
 }

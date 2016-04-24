@@ -1,5 +1,10 @@
 #include "../include/viewScene.hpp"
 
+viewScene::viewScene(QObject *parent) : QGraphicsScene(parent)
+    {
+
+    }
+
 void viewScene::setNewOriginOffset(int unsigned xOffset,int unsigned yOffset)
     {
        QPoint oldOffset = originOffset;
@@ -33,11 +38,6 @@ void viewScene::addOriginOffset(unsigned int x, unsigned int y)
         setNewOriginOffset(originOffset.x()+x,originOffset.y()+y);
     }
 
-viewScene::viewScene(QObject *parent) : QGraphicsScene(parent)
-    {
-        //drawAxes();
-    }
-
 QPointF viewScene::box_coordinate_2_qpoint(r2d2::Coordinate coordinate){
         return QPointF((coordinate.get_x()/r2d2::Length::CENTIMETER)+originOffset.x(),
         ((coordinate.get_y()/r2d2::Length::CENTIMETER)*-1)+originOffset.y());
@@ -66,44 +66,13 @@ r2d2::Box viewScene::qrect_2_box_coordinate(QRectF rect,double min_z,double max_
     }
 
 void viewScene::drawTile(r2d2::Box box,QColor color){
-    QGraphicsRectItem *block = new QGraphicsRectItem(box_tile_2_qrect(box));
+    QRectF tempRect = box_tile_2_qrect(box);
+    QGraphicsRectItem *block = new QGraphicsRectItem;
     block->setBrush(* new QBrush(color));
-    //std::cout << "New: x:" << block->pos().x() << " y: " << block->pos().y() << std::endl;
+    block->setRect(0,0,tempRect.width(),tempRect.height());
+    block->setPos(tempRect.x(),tempRect.y());
     addItem(block);
     }
-
-
-void viewScene::drawTile(int x, int y, int width, int height, QColor color){
-        std::cout << "you should not use this drawTile method...." << std::endl;
-        y*=-1;
-        height*=-1;
-    QGraphicsRectItem *block = new QGraphicsRectItem;
-    block->setRect(0, 0, width, height);
-    block->setBrush(* new QBrush(color));
-    block->setFlag(QGraphicsItem::ItemIsSelectable, true);
-    block->setPos(x+originOffset.x(), y+originOffset.y());
-    addItem(block);
-}
-
-//DOES NOT WORK
-void viewScene::drawLine(int x1, int y1, int x2, int y2, QRgb color){
-        y1*=-1;
-        y2*=-1;
-    //Bad method needs rework
-    QGraphicsRectItem *block = new QGraphicsRectItem;
-    block->setRect(0, 0, x2-x1, y2-y1);
-    block->setBrush(* new QBrush(color));
-    block->setPos(x1, y1);
-    addItem(block);
-    //setScene(scene);
-    //show();
-}
-
-void viewScene::setTag(int x, int y, QString value){
-        y*=-1;
-    QGraphicsTextItem *item = addText(value);
-    item->setPos(x+originOffset.x(), y+originOffset.y());
-}
 
 void viewScene::clear(){
     QList<QGraphicsItem *> list = items();
@@ -111,6 +80,14 @@ void viewScene::clear(){
         removeItem(item);
     }
     drawAxes();
+}
+
+bool viewScene::isTile(QGraphicsItem * item){
+    if(!(item == xAxis || item == yAxis)){
+        return true;
+    }else{
+        return false;
+    }
 }
 
 //remove only the selected items

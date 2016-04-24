@@ -69,14 +69,9 @@ private slots:
     //! Enables the drag mode for the map viewer
     void on_actionPan_toggled(bool);
 
-    void on_pushButton_clicked();
-
-    void on_placeTagButton_clicked();
-
     void on_clearButton_clicked();
 
     void on_actionSave_triggered();
-
 
     void on_zoomResetButton_clicked();
 
@@ -93,6 +88,10 @@ private slots:
     void on_goNavigate_clicked();
 
     void on_actionDebug_triggered();
+
+    void on_pushButton_clicked();
+
+    void on_placeTagButton_clicked();
 
 private:
     Ui::MainWindow *ui;
