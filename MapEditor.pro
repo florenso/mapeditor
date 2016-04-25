@@ -8,6 +8,8 @@ QT       += core gui
 
 CONFIG += c++11
 
+RC_FILE = source/mapeditor.rc
+
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 TARGET = MapEditor
