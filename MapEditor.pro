@@ -9,6 +9,7 @@ QT       += core gui
 CONFIG += c++11
 
 RC_FILE = source/mapeditor.rc
+ICON = source/mapeditor.icns
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
