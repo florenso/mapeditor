@@ -10,6 +10,7 @@
 #include <QKeyEvent>
 #include <QtGui>
 #include <QMutex>
+#include <stdlib.h>
 
 QMutex EventRecursion;
 
@@ -28,6 +29,7 @@ mapView::mapView(QWidget *parent):
         windowHeight = height();
     }
     */    
+        generateNewMaps();
         tileColors[MapTypes::TileType::EMPTY]=Qt::white;
         tileColors[MapTypes::TileType::BLOCKED]=Qt::black;
         tileColors[MapTypes::TileType::MIXED]=Qt::yellow;
@@ -331,3 +333,35 @@ void mapView::drawMap(){
         drawBox(r2d2::Box(bottemLeft1,boxSize));;
     }
 
+void mapView::generateNewMaps()
+     {
+        for(int x=1;x<6;++x){
+            map = new r2d2::BoxMap;
+            int generate_box_count = 10;
+            for (int i = 0; i < generate_box_count; i++) {
+                    int num = rand();
+                map->set_box_info(
+                        r2d2::Box{
+                                r2d2::Coordinate{
+                                        ((rand() % 10)-5) * r2d2::Length::METER,
+                                        ((rand() % 10)-5) * r2d2::Length::METER,
+                                        z_bottom * r2d2::Length::CENTIMETER
+                                },
+                                r2d2::Coordinate{
+                                        ((rand() % 10)-5) * r2d2::Length::METER,
+                                        ((rand() % 10)-5) * r2d2::Length::METER,
+                                        z_top * r2d2::Length::CENTIMETER
+                                }
+                        },
+
+                        r2d2::BoxInfo{(num%3)>1, ((num-1)%3)>1, ((num-2)%3)>1}
+                );
+            }
+            char buff[10];
+            itoa(x,buff,10);
+            std::string filename = "../test/testmap";
+            filename.append(buff);
+            filename.append(".map");
+            map->save(filename);
+         }
+    }

@@ -76,6 +76,7 @@ public:
     MapTypes::TileType getTileType(r2d2::BoxInfo & tileInfo);
 
     void drawBox(r2d2::Box box, int tileSize = 10);
+    void generateNewMaps();
 private:
 
 
