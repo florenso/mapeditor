@@ -31,11 +31,12 @@ void mapEditor::editTile(QString type){
     }
 
     //store
+
     for(r2d2::Box tile: selectedBoxes){
         saveBuffer.push_back(std::pair<r2d2::Box, r2d2::BoxInfo>(tile, info));
         map->set_box_info(tile, info);
+        std:: cout << "write: " << saveBuffer.size() << std::endl;
     }
-    //remove comment to delete old graphicsItems (should be done)
     scene->deleteSelectedItems();
     deselectTiles();
     std::cout << "Saved Tiles: " << saveBuffer.size() << std::endl;
@@ -48,6 +49,9 @@ void mapEditor::displayEdit(){
     while(!saveBuffer.empty()){
         std::pair<r2d2::Box, r2d2::BoxInfo> box = saveBuffer.back();
         saveBuffer.pop_back();
+        //std:: cout << "draw: " << saveBuffer.size() << std::endl;
+        //fflush(stdout);
         drawBox(box.first, tileSize);
     }
+    this->setSelectable(true);
 }

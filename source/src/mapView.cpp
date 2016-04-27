@@ -139,43 +139,29 @@ void mapView::deselectTiles(){
 }
 
 void mapView::updateSelection(){
+    std::cout << scene->selectionArea().boundingRect().topLeft().x() << " x " << scene->selectionArea().boundingRect().topLeft().y()  <<std::endl;
+    QPointF bl = scene->selectionArea().boundingRect().bottomLeft();
+    QPointF tr = scene->selectionArea().boundingRect().topRight();
     selectedBoxes.clear();
-    //QPoint offset = scene->getOriginOffset();
-    //std::cout << offset.x() << std::endl;
-    for(QGraphicsItem * item : scene->selectedItems()){
-        //get coordinates of bottom left (bl) and top right (tr)
+
+    /*for(QGraphicsItem * item : scene->selectedItems()){
         QPointF pos = item->pos();
         QRectF rect = item->boundingRect();
         int width = rect.width();
         int height = rect.height();
 
-        /* code from scene that gives insight why this doesn't work
-         * (box.get_bottom_left().get_x()/r2d2::Length::CENTIMETER)+originOffset.x(),
-         * ((box.get_bottom_left().get_y()/r2d2::Length::CENTIMETER)*-1)+originOffset.y(),
-         * (box.get_axis_size().get_x()/r2d2::Length::CENTIMETER),
-         * (box.get_axis_size().get_y()/r2d2::Length::CENTIMETER)*-1);
-         */
-
-        //QPointF bottomLeft(item->pos().x() - offset.x(), (item->pos().y() - offset.y()) - height);
-        //QPointF topRight(item->pos().x() - offset.x() + width, (item->pos().y() - offset.y()));
-        /*QPointF bottomLeft(rect.bottomLeft());
-
-        QPointF topRight(rect.topRight());
-        r2d2::Box box(
-            r2d2::Coordinate(r2d2::Length::CENTIMETER * bottomLeft.x(),
-                             r2d2::Length::CENTIMETER * bottomLeft.y(),
-                             r2d2::Length::CENTIMETER * 0),
-            r2d2::Coordinate(r2d2::Length::CENTIMETER * topRight.x(),
-                             r2d2::Length::CENTIMETER * topRight.y(),
-                             r2d2::Length::CENTIMETER * 1)
-            );
-        //std::cout << "item: " << bottomLeft.x() << "x" << bottomLeft.y() << " : " << topRight.x() <<"x"<< topRight.y() << std::endl;
-        */
-        r2d2::Coordinate leftBottom = scene->qpoint_2_box_coordinate(QPointF(pos.x(), pos.y() - height), 0);
-        r2d2::Coordinate rightTop = scene->qpoint_2_box_coordinate(QPointF(pos.x() + width, pos.y()), 1);
+        r2d2::Coordinate leftBottom = scene->qpoint_2_box_coordinate(QPointF(pos.x() + width, pos.y()), 0);
+        r2d2::Coordinate rightTop = scene->qpoint_2_box_coordinate(QPointF(pos.x(), pos.y()+ height), 1);
         r2d2::Box box(leftBottom, rightTop);
         selectedBoxes.append(box);
-    }
+    }*/
+
+    QPointF b = scene->itemAt(bl, transform())->pos();
+    QPointF t = scene->itemAt(tr, transform())->pos();
+    r2d2::Coordinate leftBottom = scene->qpoint_2_box_coordinate(b, 0);
+    r2d2::Coordinate rightTop = scene->qpoint_2_box_coordinate(t, 1);
+    r2d2::Box box(leftBottom, rightTop);
+    selectedBoxes.append(box);
 }
 
 bool mapView::event(QEvent *event)
