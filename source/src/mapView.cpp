@@ -142,26 +142,31 @@ void mapView::updateSelection(){
     std::cout << scene->selectionArea().boundingRect().topLeft().x() << " x " << scene->selectionArea().boundingRect().topLeft().y()  <<std::endl;
     QPointF bl = scene->selectionArea().boundingRect().bottomLeft();
     QPointF tr = scene->selectionArea().boundingRect().topRight();
-    selectedBoxes.clear();
+    if(scene->selectedItems().size() > 0){
+        selectedBoxes.clear();
+            QRectF rect = scene->selectedItems()[0]->boundingRect();
+            float width = rect.width();
+            float height = rect.height();
+        /*
+        for(QGraphicsItem * item : scene->selectedItems()){
+            QPointF pos = item->pos();
+            QRectF rect = item->boundingRect();
+            int width = rect.width();
+            int height = rect.height();
 
-    /*for(QGraphicsItem * item : scene->selectedItems()){
-        QPointF pos = item->pos();
-        QRectF rect = item->boundingRect();
-        int width = rect.width();
-        int height = rect.height();
-
-        r2d2::Coordinate leftBottom = scene->qpoint_2_box_coordinate(QPointF(pos.x() + width, pos.y()), 0);
-        r2d2::Coordinate rightTop = scene->qpoint_2_box_coordinate(QPointF(pos.x(), pos.y()+ height), 1);
+            r2d2::Coordinate leftBottom = scene->qpoint_2_box_coordinate(QPointF(pos.x() + width, pos.y()), 0);
+            r2d2::Coordinate rightTop = scene->qpoint_2_box_coordinate(QPointF(pos.x(), pos.y()+ height), 1);
+            r2d2::Box box(leftBottom, rightTop);
+            selectedBoxes.append(box);
+        }*/
+        // Should work but it doesn't, because of dep. MapInterface!
+        QPointF b = scene->itemAt(bl, transform())->pos();
+        QPointF t = scene->itemAt(tr, transform())->pos();
+        r2d2::Coordinate leftBottom = scene->qpoint_2_box_coordinate(QPointF(b.x(), b.y() + 10.0f), 0);
+        r2d2::Coordinate rightTop = scene->qpoint_2_box_coordinate(QPointF(t.x() + 10.0f, t.y() - 10.0f), 1);
         r2d2::Box box(leftBottom, rightTop);
         selectedBoxes.append(box);
-    }*/
-
-    QPointF b = scene->itemAt(bl, transform())->pos();
-    QPointF t = scene->itemAt(tr, transform())->pos();
-    r2d2::Coordinate leftBottom = scene->qpoint_2_box_coordinate(b, 0);
-    r2d2::Coordinate rightTop = scene->qpoint_2_box_coordinate(t, 1);
-    r2d2::Box box(leftBottom, rightTop);
-    selectedBoxes.append(box);
+     }
 }
 
 bool mapView::event(QEvent *event)

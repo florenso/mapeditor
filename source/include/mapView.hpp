@@ -6,13 +6,13 @@
 //!     - Koen de Guijter
 //!
 //! \context
-//!		- part of TH7-8 assignment 2016 / Project: MapEditer
+//!		- part of TH7-8 assignment 2016 / Project: MapEditor
 //!
 //! this class contains the methods to navigate,read and translates a map to avalible draw functions for a scene.
 //!
 //**************************************
 
-//TODO: deze klasse moet een mapinterface hebben!!!
+//TODO: deze klasse moet een werkende mapinterface hebben!!!
 
 #ifndef MAPVIEW_HPP
 #define MAPVIEW_HPP
