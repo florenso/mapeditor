@@ -19,11 +19,12 @@ mapView::mapView(QWidget *parent):
     windowWidth(1000),
     windowHeight(1000)
 {  
-        tileColors[MapTypes::TileType::EMPTY]=Qt::white;
-        tileColors[MapTypes::TileType::BLOCKED]=Qt::black;
-        tileColors[MapTypes::TileType::MIXED]=Qt::yellow;
-        tileColors[MapTypes::TileType::UNKNOWN]=Qt::gray;
+    tileColors[MapTypes::TileType::EMPTY]=Qt::green;
+    tileColors[MapTypes::TileType::BLOCKED]=Qt::red;
+    tileColors[MapTypes::TileType::MIXED]=Qt::yellow;
+    tileColors[MapTypes::TileType::UNKNOWN]=Qt::gray;
 
+    setViewportUpdateMode(QGraphicsView::FullViewportUpdate);
 
     scene = new viewScene;
 
@@ -144,10 +145,10 @@ void mapView::updateSelection(){
     QPointF tr = scene->selectionArea().boundingRect().topRight();
     if(scene->selectedItems().size() > 0){
         selectedBoxes.clear();
-            QRectF rect = scene->selectedItems()[0]->boundingRect();
-            float width = rect.width();
-            float height = rect.height();
-        /*
+        QRectF rect = scene->selectedItems()[0]->boundingRect();
+        float width = rect.width();
+        float height = rect.height();
+        /* old method item for item, keep in dev for legacy reasons and speed testing
         for(QGraphicsItem * item : scene->selectedItems()){
             QPointF pos = item->pos();
             QRectF rect = item->boundingRect();
@@ -159,7 +160,7 @@ void mapView::updateSelection(){
             r2d2::Box box(leftBottom, rightTop);
             selectedBoxes.append(box);
         }*/
-        // Should work but it doesn't, because of dep. MapInterface!
+        //new method stores complete box
         QPointF b = scene->itemAt(bl, transform())->pos();
         QPointF t = scene->itemAt(tr, transform())->pos();
         r2d2::Coordinate leftBottom = scene->qpoint_2_box_coordinate(QPointF(b.x(), b.y() + 10.0f), 0);
@@ -172,8 +173,6 @@ void mapView::updateSelection(){
 bool mapView::event(QEvent *event)
 {
         switch(event->type()){
-
-
                 case QEvent::KeyPress:{
                     QKeyEvent * ke = static_cast<QKeyEvent*>(event);
                    // std::cout << "key pressed in @ event filter in mainwindow " << ke->key() << std::endl;
@@ -302,7 +301,7 @@ MapTypes::TileType mapView::getTileType(r2d2::BoxInfo & tileInfo){
     else{return MapTypes::TileType::MIXED;}
 }
 
-void mapView::drawBox(r2d2::Box box,int tileSize){
+void mapView::drawBox(r2d2::Box box, int tileSize, bool centeron){
         int xAxisMin = round(box.get_bottom_left().get_x()/r2d2::Length::CENTIMETER);
         int yAxisMin = round(box.get_bottom_left().get_y()/r2d2::Length::CENTIMETER);
         int xAxisMax = round(box.get_top_right().get_x()/r2d2::Length::CENTIMETER);
@@ -323,7 +322,9 @@ void mapView::drawBox(r2d2::Box box,int tileSize){
             int loadingPercentage = (((float)x-(float)xAxisMin)/(float)dis)*100;
             //std::cout << "loading "<< loadingPercentage << "%"<<std::endl;
             }
-        centerOn(scene->getOriginOffset());
+        if(centeron){
+            centerOn(scene->getOriginOffset());
+        }
         scene->drawAxes();
     }
 

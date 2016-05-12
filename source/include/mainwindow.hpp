@@ -89,9 +89,12 @@ private slots:
 
     void on_actionDebug_triggered();
 
-    void on_pushButton_clicked();
+    void on_Set_clicked();
 
     void on_placeTagButton_clicked();
+
+    void on_Delete_pressed();
+
 
 private:
     Ui::MainWindow *ui;

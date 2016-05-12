@@ -4,7 +4,6 @@
 mapEditor::mapEditor(QWidget *parent) :
     mapView(parent)
     {
-        //saveBuffer = RectInfo_from_map_using_tiles(map, 50, 50);
     }
 
 void mapEditor::removeTile(){
@@ -19,10 +18,10 @@ void mapEditor::editTile(QString type){
         info = r2d2::BoxInfo(false, false, true);
     }else if(type == "Obstacle"){
         info = r2d2::BoxInfo(true, false, false);
-    }else if(type == "Mixed"){
-        info = r2d2::BoxInfo(true, true, true);
+    }else if(type == "Unknown"){
+        info = r2d2::BoxInfo(false, true, false);
     }else{
-        info = r2d2::BoxInfo(false, false, false);
+        info = r2d2::BoxInfo(true, false, true);
     }
 
     //store
@@ -44,9 +43,7 @@ void mapEditor::displayEdit(){
     while(!saveBuffer.empty()){
         std::pair<r2d2::Box, r2d2::BoxInfo> box = saveBuffer.back();
         saveBuffer.pop_back();
-       //std:: cout << "nav: " << box.second.has_navigatable() << " block: " << box.second.has_obstacle() << " unk: " << box.second.has_unknown()  << std::endl;
-        fflush(stdout);
-        drawBox(box.first, tileSize);
+        drawBox(box.first, tileSize, false);
     }
     this->setSelectable(true);
 }

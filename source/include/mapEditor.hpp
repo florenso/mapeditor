@@ -8,8 +8,8 @@
 //!
 //! \file   mapEditor.hpp
 //! \author Jop van Buuren, 1658718
-//!         Koen de Guijter, 0000000
-//! \date   Created: 06-06-2016
+//!         Koen de Guijter, 1671103
+//! \date   Created: 06-04-2016
 //! \date   Last Modified: 08-05-2016
 //! \brief  Header for mapEditor
 //!

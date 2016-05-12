@@ -144,19 +144,8 @@ bool MainWindow::eventFilter(QObject *, QEvent *event)
 
 
 
-void MainWindow::on_pushButton_clicked()
+void MainWindow::on_Set_clicked()
 {
-    /*int x = ui->xpos->value();
-    int y = ui->ypos->value();
-    int w = ui->width->value();
-    int h = ui->Height->value();
-
-    QString type(ui->type->currentText());
-
-    //viewer->drawTile(x, y, w, h, type);
-
-    ui->graphicsView->scene->drawTile(x, y, w, h, type);
-    */
     ui->graphicsView->updateSelection();
     ui->graphicsView->editTile(ui->type->currentText());
     ui->graphicsView->displayEdit();
@@ -254,3 +243,10 @@ void MainWindow::on_actionDebug_triggered()
 
 }
 
+
+void MainWindow::on_Delete_pressed()
+{
+    ui->graphicsView->updateSelection();
+    ui->graphicsView->removeTile();
+    ui->graphicsView->displayEdit();
+}
