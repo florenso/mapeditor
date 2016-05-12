@@ -15,6 +15,7 @@
 #include "../../../map/source/include/BoxMap.hpp"
 
 
+
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
@@ -27,6 +28,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
     //install event filter for graphicsView
     //ui->graphicsView->installEventFilter(this);
+
 
 
     //Map map = Map();
@@ -92,18 +94,16 @@ void MainWindow::on_zoomResetButton_clicked()
     ui->zoomResetButton->setText(QString::number(ui->graphicsView->getScale())+ " %");
 }
 
-
-
-
-
 void MainWindow::on_actionPan_toggled(bool activatePan)
 {
     if(activatePan){
             ui->actionSelectMode->setChecked(false);
+            ui->graphicsView->setSelectable(false);
             ui->graphicsView->setDragMode(QGraphicsView::ScrollHandDrag);
         }
     else{
             ui->graphicsView->setDragMode(QGraphicsView::NoDrag);
+            ui->graphicsView->setSelectable(true);
         }
 }
 
@@ -112,10 +112,13 @@ void MainWindow::on_actionSelectMode_toggled(bool activateSelect)
 
         if(activateSelect){
                 ui->actionPan->setChecked(false);
+                ui->graphicsView->setSelectable(true);
                 ui->graphicsView->setDragMode(QGraphicsView::RubberBandDrag);
+                ui->graphicsView->setRubberBandSelectionMode(Qt::IntersectsItemShape);
             }
         else{
                 ui->graphicsView->setDragMode(QGraphicsView::NoDrag);
+                ui->graphicsView->setSelectable(false);
             }
 }
 
@@ -139,7 +142,7 @@ bool MainWindow::eventFilter(QObject *, QEvent *event)
                 break;
             }
         default:
-            std::cout << "mapview event filter event type " << event->type() << std::endl;
+            //std::cout << "mapview event filter event type " << event->type() << std::endl;
             break;
         }
     fflush(stdout);
@@ -148,6 +151,23 @@ bool MainWindow::eventFilter(QObject *, QEvent *event)
 }
 
 
+
+
+void MainWindow::on_Set_clicked()
+{
+    ui->graphicsView->updateSelection();
+    ui->graphicsView->editTile(ui->type->currentText());
+    ui->graphicsView->displayEdit();
+}
+
+void MainWindow::on_placeTagButton_clicked()
+{
+    int x = ui->xposTag->value();
+    int y = ui->yposTag->value();
+
+    QString tag(ui->tagName->text());
+    //ui->graphicsView->scene->setTag(x, y, tag);
+}
 
 void MainWindow::on_clearButton_clicked()
 {
@@ -201,7 +221,6 @@ void MainWindow::on_goNavigate_clicked()
 
 }
 
-
 void MainWindow::on_actionDebug_triggered()
 {
    int test = ui->graphicsView->scene->items().length();
@@ -241,4 +260,12 @@ void MainWindow::on_actionDebug_triggered()
       testbox.get_bottom_left().get_y() << " " <<
       testbox.get_top_right().get_y() << std::endl;
 
+}
+
+
+void MainWindow::on_Delete_pressed()
+{
+    ui->graphicsView->updateSelection();
+    ui->graphicsView->removeTile();
+    ui->graphicsView->displayEdit();
 }

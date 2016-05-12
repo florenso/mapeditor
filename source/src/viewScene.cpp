@@ -54,7 +54,7 @@ QRectF viewScene::box_tile_2_qrect(r2d2::Box box){
 r2d2::Coordinate viewScene::qpoint_2_box_coordinate(QPointF point, double z){
         return r2d2::Coordinate(
                     (point.x() - getOriginOffset().x())*r2d2::Length::CENTIMETER,
-                    (-1*(point.y() - getOriginOffset().y()))*r2d2::Length::CENTIMETER,
+                    ((point.y() - getOriginOffset().y()))*-1*r2d2::Length::CENTIMETER,
                     z*r2d2::Length::CENTIMETER
                     );
     }
@@ -82,4 +82,18 @@ void viewScene::clear(){
     drawAxes();
 }
 
+bool viewScene::isTile(QGraphicsItem * item){
+    if(!(item == xAxis || item == yAxis)){
+        return true;
+    }else{
+        return false;
+    }
+}
 
+//remove only the selected items
+void viewScene::deleteSelectedItems(){
+    QList<QGraphicsItem *> list = selectedItems();
+    foreach( QGraphicsItem * item, list ){
+        removeItem(item);
+    }
+}

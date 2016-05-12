@@ -20,6 +20,7 @@
 class viewScene : public QGraphicsScene
     {
     Q_OBJECT
+
 private:
 
     QPoint originOffset{0,0};
@@ -46,12 +47,16 @@ public:
     //! Draws a the text value on the scene on position x,y.
     void setTag(int x, int y, QString value);
 
+    //! delete selected items
+    void deleteSelectedItems();
+
     //! Clears all the objects in the scene.
     void clear();
 
-
-
     void drawTile(r2d2::Box box, QColor color);
+
+    bool isTile(QGraphicsItem * item);
+
     QPointF box_coordinate_2_qpoint(r2d2::Coordinate);
     QRectF box_tile_2_qrect(r2d2::Box box);
     r2d2::Coordinate qpoint_2_box_coordinate(QPointF point, double z = 0);

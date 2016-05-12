@@ -14,7 +14,8 @@
 #define MAINWINDOW_HPP
 
 #include <QMainWindow>
-#include "mapView.hpp"
+//#include "mapView.hpp"
+#include "mapEditor.hpp"
 #include "stubs.hpp"
 #include <QDesktopServices>
 #include <QFileDialog>
@@ -88,6 +89,13 @@ private slots:
     void on_goNavigate_clicked();
 
     void on_actionDebug_triggered();
+
+    void on_Set_clicked();
+
+    void on_placeTagButton_clicked();
+
+    void on_Delete_pressed();
+
 
 private:
     Ui::MainWindow *ui;
