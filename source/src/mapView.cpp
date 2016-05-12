@@ -241,6 +241,12 @@ void mapView::loadMapFile(string file)
         drawMap();
     }
 
+void mapView::saveMapFile(std::string file){
+    map = new r2d2::BoxMap;
+    map->save(file);
+
+}
+
 bool mapView::eventFilter(QObject * object, QEvent * event){
         //return true if you want to stop the event from going to other objects
         //return false if you you do not want to kill the event.

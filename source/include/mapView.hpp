@@ -192,6 +192,7 @@ public:
     //!
     //! \param  float value is the desired z top value
     void set_z_top(float value);
+    void saveMapFile(std::string filename);
 
     //! viewscene scene on which we draw
     viewScene * scene;
