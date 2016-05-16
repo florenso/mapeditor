@@ -43,7 +43,10 @@ mapView::mapView(QWidget *parent):
 
     scene->clear();
     scene->addOriginOffset(250,250);
-    centerOn(QPointF(0,0)+scene->getOriginOffset());
+    centerOn(scene->box_coordinate_2_qpoint(r2d2::Coordinate(
+                                                0*r2d2::Length::CENTIMETER,
+                                                0*r2d2::Length::CENTIMETER,
+                                                0*r2d2::Length::CENTIMETER)));
 }
 
 mapView::~mapView(){
@@ -331,7 +334,10 @@ void mapView::drawBox(r2d2::Box box, int tileSize, bool centeron){
             */
             }
         if(centeron){
-            centerOn(scene->getOriginOffset());
+            centerOn(scene->box_coordinate_2_qpoint(r2d2::Coordinate(
+                                                        0*r2d2::Length::CENTIMETER,
+                                                        0*r2d2::Length::CENTIMETER,
+                                                        0*r2d2::Length::CENTIMETER)));
         }
         scene->drawAxes();
     }
@@ -342,7 +348,10 @@ void mapView::drawMap(){
         scene->clear();
         resetScale();
         scene->addOriginOffset(250,250);
-        centerOn(QPointF(0,0)+scene->getOriginOffset());
+        centerOn(scene->box_coordinate_2_qpoint(r2d2::Coordinate(
+                                                    0*r2d2::Length::CENTIMETER,
+                                                    0*r2d2::Length::CENTIMETER,
+                                                    0*r2d2::Length::CENTIMETER)));
 
         //this is not almost working code...
 //        QPointF startPoint = mapToScene(QPoint(0,0));
