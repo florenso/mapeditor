@@ -215,7 +215,12 @@ void MainWindow::on_zoomSpeedSlider_valueChanged(int value)
 
 void MainWindow::on_goNavigate_clicked()
 {
-    ui->graphicsView->centerOn(ui->inputX->text().toInt()+ui->graphicsView->scene->getOriginOffset().x(),ui->inputY->text().toInt()+ui->graphicsView->scene->getOriginOffset().y());
+    //ui->graphicsView->centerOn(ui->inputX->text().toInt()+ui->graphicsView->scene->getOriginOffset().x(),ui->inputY->text().toInt()+ui->graphicsView->scene->getOriginOffset().y());
+    r2d2::Coordinate pos(
+                ui->inputX->text().toInt()*r2d2::Length::CENTIMETER,
+                ui->inputY->text().toInt()*r2d2::Length::CENTIMETER,
+                0*r2d2::Length::CENTIMETER);
+    ui->graphicsView->centerOn(ui->graphicsView->scene->box_coordinate_2_qpoint(pos));
     ui->graphicsView->set_z_top(ui->input_z_bot->text().toFloat());
     ui->graphicsView->set_z_bottom(ui->input_z_top->text().toFloat());
 
