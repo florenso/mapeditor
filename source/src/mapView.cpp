@@ -145,10 +145,8 @@ void mapView::updateSelection(){
     QPointF tr = scene->selectionArea().boundingRect().topRight();
     if(scene->selectedItems().size() > 0){
         selectedBoxes.clear();
-        QRectF rect = scene->selectedItems()[0]->boundingRect();
-        float width = rect.width();
-        float height = rect.height();
         /* old method item for item, keep in dev for legacy reasons and speed testing
+        QRectF rect = scene->selectedItems()[0]->boundingRect();
         for(QGraphicsItem * item : scene->selectedItems()){
             QPointF pos = item->pos();
             QRectF rect = item->boundingRect();
@@ -315,7 +313,9 @@ void mapView::drawBox(r2d2::Box box, int tileSize, bool centeron){
         r2d2::Translation tileSizeTranslation(r2d2::Length::CENTIMETER * tileSize,
                                               r2d2::Length::CENTIMETER * tileSize,
                                               r2d2::Length::CENTIMETER * z_top);
+        /* var for calculating loading progress, keep in dev for posible new feature, debugging and speed testing
         int dis = abs(xAxisMin-xAxisMax);
+        */
         for (int x = xAxisMin; x < xAxisMax; x+=tileSize){
             for(int y = yAxisMin; y < yAxisMax; y+=tileSize){
                     r2d2::Coordinate bottemLeft{r2d2::Length::CENTIMETER * x,
@@ -325,8 +325,10 @@ void mapView::drawBox(r2d2::Box box, int tileSize, bool centeron){
                     r2d2::BoxInfo tileInfo = map->get_box_info(tileBox);
                     scene->drawTile(tileBox,tileColors[getTileType(tileInfo)]);
                 }
+            /* calculating loading progress, keep in dev for posible new feature, debugging and speed testing
             int loadingPercentage = (((float)x-(float)xAxisMin)/(float)dis)*100;
-            //std::cout << "loading "<< loadingPercentage << "%"<<std::endl;
+            std::cout << "loading "<< loadingPercentage << "%"<<std::endl;
+            */
             }
         if(centeron){
             centerOn(scene->getOriginOffset());

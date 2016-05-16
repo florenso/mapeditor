@@ -164,9 +164,9 @@ void MainWindow::on_placeTagButton_clicked()
 {
     int x = ui->xposTag->value();
     int y = ui->yposTag->value();
-
+    r2d2::Coordinate pos(x*r2d2::Length::CENTIMETER,y*r2d2::Length::CENTIMETER,0*r2d2::Length::CENTIMETER);
     QString tag(ui->tagName->text());
-    //ui->graphicsView->scene->setTag(x, y, tag);
+    ui->graphicsView->scene->setTag(pos, tag);
 }
 
 void MainWindow::on_clearButton_clicked()

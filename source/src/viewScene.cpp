@@ -97,3 +97,8 @@ void viewScene::deleteSelectedItems(){
         removeItem(item);
     }
 }
+
+void viewScene::setTag(r2d2::Coordinate pos, QString value){
+    QGraphicsTextItem *item = addText(value);
+    item->setPos(box_coordinate_2_qpoint(pos));
+}
