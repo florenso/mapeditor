@@ -46,14 +46,8 @@ void MainWindow::on_actionSave_as_triggered()
 {
     QString fileName = QFileDialog::getSaveFileName(this, tr("Save File"));
     fileName_std = fileName.toUtf8().constData();
-    std::cout << fileName_std;
-
-
-
+    //std::cout << fileName_std;
     ui->graphicsView->saveMapFile(fileName_std);
-
-
-
 }
 
 void MainWindow::on_actionLoad_triggered()
@@ -101,7 +95,6 @@ void MainWindow::on_actionPan_toggled(bool activatePan)
 
 void MainWindow::on_actionSelectMode_toggled(bool activateSelect)
 {
-
         if(activateSelect){
                 ui->actionPan->setChecked(false);
                 ui->graphicsView->setSelectable(true);
@@ -133,8 +126,10 @@ bool MainWindow::eventFilter(QObject *, QEvent *event)
                 break;
             }
         default:
-            //std::cout << "mapview event filter event type " << event->type() << std::endl;
-            //fflush(stdout);
+            /* keep in code for debug purposes
+            std::cout << "mapview event filter event type " << event->type() << std::endl;
+            fflush(stdout);
+            */
             break;
         }
     return false;
@@ -169,7 +164,7 @@ void MainWindow::on_actionSave_triggered()
     if(fileName_std == ""){
         QString fileName = QFileDialog::getSaveFileName(this, tr("Save File"));
         fileName_std = fileName.toUtf8().constData();
-        std::cout << fileName_std;
+        //std::cout << fileName_std;
     }
      ui->graphicsView->saveMapFile(fileName_std);
 }
@@ -214,7 +209,6 @@ void MainWindow::on_actionDebug_triggered()
    int test = ui->graphicsView->scene->items().length();
    std::cout << "items in scene items list: " << test << std::endl;
 
-
    QRectF testrect(10,10,10,10);
 
    std::cout<< "testrect: " <<
@@ -222,7 +216,6 @@ void MainWindow::on_actionDebug_triggered()
    testrect.right() << " " <<
    testrect.bottom() << " " <<
    testrect.top() << std::endl;
-
 
    r2d2::Box testbox = ui->graphicsView->scene->qrect_2_box_coordinate(testrect);
 
