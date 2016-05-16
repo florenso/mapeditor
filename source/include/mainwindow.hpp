@@ -16,7 +16,6 @@
 #include <QMainWindow>
 //#include "mapView.hpp"
 #include "mapEditor.hpp"
-#include "stubs.hpp"
 #include <QDesktopServices>
 #include <QFileDialog>
 #include <QUrl>

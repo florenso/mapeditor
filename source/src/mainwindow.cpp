@@ -26,14 +26,6 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->graphicsView->verticalScrollBar()->installEventFilter(this);
     ui->graphicsView->horizontalScrollBar()->installEventFilter(this);
 
-    //install event filter for graphicsView
-    //ui->graphicsView->installEventFilter(this);
-
-
-
-    //Map map = Map();
-    //ui->graphicsView->scene->drawMap(map);
-
     //TODO: check if we need both eventfilters (check MainWindow::eventFilter(...) )
     ui->graphicsView->scene->installEventFilter(this);
     ui->graphicsView->installEventFilter(this);
@@ -131,7 +123,6 @@ bool MainWindow::eventFilter(QObject *, QEvent *event)
                 r2d2::Coordinate mouse_pos_in_map=ui->graphicsView->scene->qpoint_2_box_coordinate(gsme->scenePos());
                 ui->xposLabel->setText(QString::number(mouse_pos_in_map.get_x()/r2d2::Length::CENTIMETER));
                 ui->yposLabel->setText(QString::number(mouse_pos_in_map.get_y()/r2d2::Length::CENTIMETER));
-                //std::cout << ui->graphicsView->scene->
                 return false;
                 break;
             }
@@ -143,10 +134,9 @@ bool MainWindow::eventFilter(QObject *, QEvent *event)
             }
         default:
             //std::cout << "mapview event filter event type " << event->type() << std::endl;
+            //fflush(stdout);
             break;
         }
-    fflush(stdout);
-    //TODO: i have no clue what this return method does(for all event related methods), should be figured out....
     return false;
 }
 
@@ -176,17 +166,12 @@ void MainWindow::on_clearButton_clicked()
 
 void MainWindow::on_actionSave_triggered()
 {
-
     if(fileName_std == ""){
         QString fileName = QFileDialog::getSaveFileName(this, tr("Save File"));
         fileName_std = fileName.toUtf8().constData();
         std::cout << fileName_std;
     }
-
      ui->graphicsView->saveMapFile(fileName_std);
-
-
-
 }
 
 void MainWindow::on_rotateLeftButton_clicked()
@@ -212,10 +197,8 @@ void MainWindow::on_zoomSpeedSlider_valueChanged(int value)
     ui->graphicsView->setZoomSpeed(qreal(float(value)/1000));
 }
 
-
 void MainWindow::on_goNavigate_clicked()
 {
-    //ui->graphicsView->centerOn(ui->inputX->text().toInt()+ui->graphicsView->scene->getOriginOffset().x(),ui->inputY->text().toInt()+ui->graphicsView->scene->getOriginOffset().y());
     r2d2::Coordinate pos(
                 ui->inputX->text().toInt()*r2d2::Length::CENTIMETER,
                 ui->inputY->text().toInt()*r2d2::Length::CENTIMETER,
@@ -266,7 +249,6 @@ void MainWindow::on_actionDebug_triggered()
       testbox.get_top_right().get_y() << std::endl;
 
 }
-
 
 void MainWindow::on_Delete_pressed()
 {
