@@ -42,5 +42,6 @@ HEADERS  += source/include/mainwindow.hpp \
     ../map/source/include/BoxMap.hpp
 
 INCLUDEPATH += ../adt/source/include/
+INCLUDEPATH += source/include/
 
 FORMS    += source/mainwindow.ui
