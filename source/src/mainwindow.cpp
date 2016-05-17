@@ -11,7 +11,7 @@
 #include <QEnterEvent>
 #include <QEvent>
 #include <QGraphicsSceneMouseEvent>
-#include "..\include\mapEditor.hpp"
+#include "../include/mapEditor.hpp"
 #include "../../../map/source/include/BoxMap.hpp"
 
 
