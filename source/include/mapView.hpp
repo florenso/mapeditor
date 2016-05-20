@@ -282,7 +282,7 @@ protected:
     int scrollStepSize=10;
     qreal zoomSpeed = 0.05f;
     qreal maxScale  = 5.0f;
-    qreal minScale  = 0.1f;
+    qreal minScale  = 0.5f;
 
     //! Scalesize default is half of the scale range
     qreal scaleSize = (maxScale / 2) - minScale;

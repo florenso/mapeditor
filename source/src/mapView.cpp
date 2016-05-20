@@ -355,15 +355,13 @@ void mapView::drawMap(){
 //                        r2d2::Length::CENTIMETER * z_top};
 
         const r2d2::Coordinate bottemLeft1{
-                        r2d2::Length::CENTIMETER * -400,
-                        r2d2::Length::CENTIMETER * -400,
+                        r2d2::Length::CENTIMETER * startMapPosition,
+                        r2d2::Length::CENTIMETER * startMapPosition,
                         r2d2::Length::CENTIMETER * z_bottom};
         const r2d2::Translation boxSize{
-                        r2d2::Length::CENTIMETER * 800,
-                        r2d2::Length::CENTIMETER * 800,
+                        r2d2::Length::CENTIMETER * extendedMapSize,
+                        r2d2::Length::CENTIMETER * extendedMapSize,
                         r2d2::Length::CENTIMETER * z_top};
-
-
 
         drawBox(r2d2::Box(bottemLeft1,boxSize));;
     }
