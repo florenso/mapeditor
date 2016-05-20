@@ -277,12 +277,20 @@ protected:
     //!         as a transform over the current scene
     void updateTransform();
 
+    //! \brief  Extends the map.
+    void extendMap();
+
     //! Transform variables
     int rotation  = 0;
     int scrollStepSize=10;
     qreal zoomSpeed = 0.05f;
     qreal maxScale  = 5.0f;
     qreal minScale  = 0.5f;
+
+    //! Map size variables
+    int startMapPosition = -800;
+    int extendedMapSize = 1600;
+    int maximumMapSize = 3200;
 
     //! Scalesize default is half of the scale range
     qreal scaleSize = (maxScale / 2) - minScale;

@@ -42,7 +42,7 @@ mapView::mapView(QWidget *parent):
     setMouseTracking(true);
 
     scene->clear();
-    scene->addOriginOffset(250,250);
+    scene->addOriginOffset(500,500);
     centerOn(QPointF(0,0)+scene->getOriginOffset());
 }
 
@@ -66,6 +66,7 @@ void mapView::increaseScale(){
     }
 
     updateTransform();
+    extendMap();
     //checkSceneBorder();
 }
 
@@ -76,7 +77,9 @@ void mapView::decreaseScale(){
 
     }
     updateTransform();
+    extendMap();
     //checkSceneBorder();
+
 }
 
 int mapView::getScale(){
@@ -212,6 +215,7 @@ void mapView::checkSceneBorder(){
            QPointF center = mapToScene(viewport()->rect().center());
            scene->addOriginOffset(stepSize,0);
            centerOn(QPointF(stepSize,0)+center);//causes an event (recursion)
+
            EventRecursion.unlock();
         }
         if(startPoint.y() < stepSize && EventRecursion.tryLock()){
@@ -328,19 +332,32 @@ void mapView::drawBox(r2d2::Box box, int tileSize, bool centeron){
             int loadingPercentage = (((float)x-(float)xAxisMin)/(float)dis)*100;
             //std::cout << "loading "<< loadingPercentage << "%"<<std::endl;
             }
-        if(centeron){
-            centerOn(scene->getOriginOffset());
-        }
+        //if(centeron){
+        //    centerOn(scene->getOriginOffset());
+        //}
         scene->drawAxes();
     }
 
-
+void mapView::extendMap(){
+    QPointF bottomRight = mapToScene(viewport()->rect().bottomRight());
+    if( bottomRight.x() > extendedMapSize || bottomRight.y() > extendedMapSize){
+        startMapPosition += -400;
+        extendedMapSize += 800;
+        if(extendedMapSize >= maximumMapSize){
+            extendedMapSize = maximumMapSize;
+            startMapPosition = -(maximumMapSize / 2);
+        }
+        else{
+            drawMap();
+        }
+    }
+}
 
 void mapView::drawMap(){
         scene->clear();
-        resetScale();
-        scene->addOriginOffset(250,250);
-        centerOn(QPointF(0,0)+scene->getOriginOffset());
+        //resetScale();
+        //scene->addOriginOffset(250,250);
+        //centerOn(QPointF(0,0)+scene->getOriginOffset());
 
         //this is not almost working code...
 //        QPointF startPoint = mapToScene(QPoint(0,0));
@@ -363,7 +380,7 @@ void mapView::drawMap(){
                         r2d2::Length::CENTIMETER * extendedMapSize,
                         r2d2::Length::CENTIMETER * z_top};
 
-        drawBox(r2d2::Box(bottemLeft1,boxSize));;
-    }
+        drawBox(r2d2::Box(bottemLeft1,boxSize));
+}
 
 
