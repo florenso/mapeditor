@@ -28,8 +28,11 @@ SOURCES += source/src/main.cpp \
     ../adt/source/src/Translation.cpp \
     ../adt/source/src/Box.cpp \
     ../adt/source/src/Coordinate.cpp \
+    ../adt/source/src/Angle.cpp \
     ../map/source/src/MapInterface.cpp \
-    ../map/source/src/BoxMap.cpp
+    ../map/source/src/BoxMap.cpp \
+    source/src/polarviewview.cpp \
+    ../polarview/source/src/DistanceReading.cpp
 
 
 HEADERS  += source/include/mainwindow.hpp \
@@ -39,13 +42,19 @@ HEADERS  += source/include/mainwindow.hpp \
     source/include/RectInfo.hpp \
     source/include/stubs.hpp \
     source/include/viewScene.hpp \
+    source/include/polarviewview.hpp \
     ../adt/source/include/Length.hpp \
     ../adt/source/include/Translation.hpp \
     ../adt/source/include/Box.hpp \
+    ../adt/source/include/Angle.hpp \
     ../adt/source/include/Coordinate.hpp \
     ../map/source/include/MapInterface.hpp \
-    ../map/source/include/BoxMap.hpp
+    ../map/source/include/BoxMap.hpp \
+    ../adt/source/include/ADT_Base.hpp \
+    ../polarview/source/include/DistanceReading.hpp
+
 
 INCLUDEPATH += ../adt/source/include/
+INCLUDEPATH += ../polarview/source/include/
 
 FORMS    += source/mainwindow.ui

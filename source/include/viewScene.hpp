@@ -42,7 +42,7 @@ public:
     explicit viewScene(QObject *parent = 0);
 
     //! Draws a line from position x1,y1 to position x2,y2 on the scene.
-    void drawLine(int x1, int y1, int x2, int y2, QRgb color);
+    void drawLine(r2d2::Coordinate point1, r2d2::Coordinate point2, QColor color);
 
     //! Draws a the text value on the scene on position x,y.
     void setTag(int x, int y, QString value);

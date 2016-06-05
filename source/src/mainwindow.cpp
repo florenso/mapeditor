@@ -221,45 +221,70 @@ void MainWindow::on_goNavigate_clicked()
 
 }
 
+#include "Angle.hpp"
+#include "DistanceReading.hpp"
 void MainWindow::on_actionDebug_triggered()
 {
-   int test = ui->graphicsView->scene->items().length();
-   std::cout << "items in scene items list: " << test << std::endl;
+    std::map<r2d2::Angle, DistanceReading> testpolar;
+    for( int a = 0; a < 20; a = a + 1 )
+    {
+            testpolar.insert(std::pair<r2d2::Angle, DistanceReading>(
+                                 r2d2::Angle((rand()%360)*r2d2::Angle::deg),
+                                 DistanceReading((rand()%100+10)*r2d2::Length::CENTIMETER,DistanceReading::ResultType::CHECKED)
+                                 ));
+    }
+
+    std::map<r2d2::Angle, DistanceReading> testpolar2;
+    for( int a = 0; a < 20; a = a + 1 )
+    {
+            testpolar2.insert(std::pair<r2d2::Angle, DistanceReading>(
+                                 r2d2::Angle((rand()%360)*r2d2::Angle::deg),
+                                 DistanceReading((rand()%100+10)*r2d2::Length::CENTIMETER,DistanceReading::ResultType::CHECKED)
+                                 ));
+    }
 
 
-   QRectF testrect(10,10,10,10);
+    ui->graphicsView->showPolarView(testpolar,r2d2::Coordinate(-30*r2d2::Length::CENTIMETER,0*r2d2::Length::CENTIMETER,0*r2d2::Length::CENTIMETER));
+    ui->graphicsView->showPolarView(testpolar2,r2d2::Coordinate(30*r2d2::Length::CENTIMETER,0*r2d2::Length::CENTIMETER,0*r2d2::Length::CENTIMETER));
 
-   std::cout<< "testrect: " <<
-   testrect.left() << " " <<
-   testrect.right() << " " <<
-   testrect.bottom() << " " <<
-   testrect.top() << std::endl;
+   if(false){
+       int test = ui->graphicsView->scene->items().length();
+       std::cout << "items in scene items list: " << test << std::endl;
 
 
-   r2d2::Box testbox = ui->graphicsView->scene->qrect_2_box_coordinate(testrect);
+       QRectF testrect(10,10,10,10);
 
-   std::cout << "testbox: " <<
-   testbox.get_bottom_left().get_x() << " " <<
-   testbox.get_top_right().get_x() << " " <<
-   testbox.get_bottom_left().get_y() << " " <<
-   testbox.get_top_right().get_y() << std::endl;
+       std::cout<< "testrect: " <<
+       testrect.left() << " " <<
+       testrect.right() << " " <<
+       testrect.bottom() << " " <<
+       testrect.top() << std::endl;
 
-   QRectF testrect2 = ui->graphicsView->scene->box_tile_2_qrect(testbox);
 
-   std::cout<< "testrect2: " <<
-   testrect2.left() << " " <<
-   testrect2.right() << " " <<
-   testrect2.bottom() << " " <<
-   testrect2.top() << std::endl;
+       r2d2::Box testbox = ui->graphicsView->scene->qrect_2_box_coordinate(testrect);
 
-   testbox = ui->graphicsView->scene->qrect_2_box_coordinate(testrect);
+       std::cout << "testbox: " <<
+       testbox.get_bottom_left().get_x() << " " <<
+       testbox.get_top_right().get_x() << " " <<
+       testbox.get_bottom_left().get_y() << " " <<
+       testbox.get_top_right().get_y() << std::endl;
 
-      std::cout << "testbox2: " <<
-      testbox.get_bottom_left().get_x() << " " <<
-      testbox.get_top_right().get_x() << " " <<
-      testbox.get_bottom_left().get_y() << " " <<
-      testbox.get_top_right().get_y() << std::endl;
+       QRectF testrect2 = ui->graphicsView->scene->box_tile_2_qrect(testbox);
 
+       std::cout<< "testrect2: " <<
+       testrect2.left() << " " <<
+       testrect2.right() << " " <<
+       testrect2.bottom() << " " <<
+       testrect2.top() << std::endl;
+
+       testbox = ui->graphicsView->scene->qrect_2_box_coordinate(testrect);
+
+          std::cout << "testbox2: " <<
+          testbox.get_bottom_left().get_x() << " " <<
+          testbox.get_top_right().get_x() << " " <<
+          testbox.get_bottom_left().get_y() << " " <<
+          testbox.get_top_right().get_y() << std::endl;
+    }
 }
 
 
