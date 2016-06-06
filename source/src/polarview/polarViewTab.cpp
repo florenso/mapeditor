@@ -18,21 +18,21 @@ polarViewTab::~polarViewTab()
 
 void polarViewTab::on_pushButton_clicked()
 {
-        std::map<r2d2::Angle, DistanceReading> testpolar;
+        std::map<r2d2::Angle, r2d2::DistanceReading> testpolar;
         for( int a = 0; a < 20; a = a + 1 )
         {
-                testpolar.insert(std::pair<r2d2::Angle, DistanceReading>(
+                testpolar.insert(std::pair<r2d2::Angle, r2d2::DistanceReading>(
                                      r2d2::Angle((rand()%360)*r2d2::Angle::deg),
-                                     DistanceReading((rand()%100+10)*r2d2::Length::CENTIMETER,DistanceReading::ResultType::CHECKED)
+                                     r2d2::DistanceReading((rand()%100+10)*r2d2::Length::CENTIMETER,r2d2::DistanceReading::ResultType::CHECKED)
                                      ));
         }
 
-        std::map<r2d2::Angle, DistanceReading> testpolar2;
+        std::map<r2d2::Angle, r2d2::DistanceReading> testpolar2;
         for( int a = 0; a < 20; a = a + 1 )
         {
-                testpolar2.insert(std::pair<r2d2::Angle, DistanceReading>(
+                testpolar2.insert(std::pair<r2d2::Angle, r2d2::DistanceReading>(
                                      r2d2::Angle((rand()%360)*r2d2::Angle::deg),
-                                     DistanceReading((rand()%100+10)*r2d2::Length::CENTIMETER,DistanceReading::ResultType::CHECKED)
+                                     r2d2::DistanceReading((rand()%100+10)*r2d2::Length::CENTIMETER, r2d2::DistanceReading::ResultType::CHECKED)
                                      ));
         }
 
@@ -41,13 +41,13 @@ void polarViewTab::on_pushButton_clicked()
 
 }
 
-void polarViewTab::showPolarView(std::map<r2d2::Angle, DistanceReading> polarview, r2d2::Coordinate centerCoordinate)
+void polarViewTab::showPolarView(std::map<r2d2::Angle, r2d2::DistanceReading> polarview, r2d2::Coordinate centerCoordinate)
     {
         {
-            for (const pair<r2d2::Angle, DistanceReading> & pv : polarview )
+            for (const pair<r2d2::Angle, r2d2::DistanceReading> & pv : polarview )
             {
-                DistanceReading dr(pv.second);
-                if (dr.get_result_type() == DistanceReading::ResultType::CHECKED){
+                r2d2::DistanceReading dr(pv.second);
+                if (dr.get_result_type() == r2d2::DistanceReading::ResultType::CHECKED){
 
                     r2d2::Coordinate PolarPoint(centerCoordinate+r2d2::Translation{
                                                     dr.get_length()*sin(pv.first/r2d2::Angle::deg),
@@ -55,7 +55,7 @@ void polarViewTab::showPolarView(std::map<r2d2::Angle, DistanceReading> polarvie
                                                     0*r2d2::Length::CENTIMETER
                                                     });
 
-                    mapViewer->scene->drawLine(centerCoordinate,PolarPoint,Qt::red);
+                    mapViewer->scene->drawLine(centerCoordinate,PolarPoint,Qt::blue);
 
                 }
             }

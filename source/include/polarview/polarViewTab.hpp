@@ -21,7 +21,7 @@ public:
 
     ~polarViewTab();
 
-    void showPolarView(std::map<r2d2::Angle, DistanceReading> polarview,r2d2::Coordinate centerCoordinate);
+    void showPolarView(std::map<r2d2::Angle, r2d2::DistanceReading> polarview,r2d2::Coordinate centerCoordinate);
 
 
 private slots:
