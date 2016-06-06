@@ -29,7 +29,10 @@ MainWindow::MainWindow(QWidget *parent) :
     //TODO: check if we need both eventfilters (check MainWindow::eventFilter(...) )
     ui->graphicsView->scene->installEventFilter(this);
     ui->graphicsView->installEventFilter(this);
-}
+
+    polarTab = new polarViewTab(ui->graphicsView);
+
+    }
 
 MainWindow::~MainWindow()
 {
@@ -202,30 +205,9 @@ void MainWindow::on_goNavigate_clicked()
 
 }
 
-#include "Angle.hpp"
-#include "DistanceReading.hpp"
+
 void MainWindow::on_actionDebug_triggered()
 {
-    std::map<r2d2::Angle, DistanceReading> testpolar;
-    for( int a = 0; a < 20; a = a + 1 )
-    {
-            testpolar.insert(std::pair<r2d2::Angle, DistanceReading>(
-                                 r2d2::Angle((rand()%360)*r2d2::Angle::deg),
-                                 DistanceReading((rand()%100+10)*r2d2::Length::CENTIMETER,DistanceReading::ResultType::CHECKED)
-                                 ));
-    }
-
-    std::map<r2d2::Angle, DistanceReading> testpolar2;
-    for( int a = 0; a < 20; a = a + 1 )
-    {
-            testpolar2.insert(std::pair<r2d2::Angle, DistanceReading>(
-                                 r2d2::Angle((rand()%360)*r2d2::Angle::deg),
-                                 DistanceReading((rand()%100+10)*r2d2::Length::CENTIMETER,DistanceReading::ResultType::CHECKED)
-                                 ));
-    }
-
-    ui->graphicsView->showPolarView(testpolar,r2d2::Coordinate(-30*r2d2::Length::CENTIMETER,0*r2d2::Length::CENTIMETER,0*r2d2::Length::CENTIMETER));
-    ui->graphicsView->showPolarView(testpolar2,r2d2::Coordinate(30*r2d2::Length::CENTIMETER,0*r2d2::Length::CENTIMETER,0*r2d2::Length::CENTIMETER));
 
    if(false){
        int test = ui->graphicsView->scene->items().length();
@@ -269,4 +251,16 @@ void MainWindow::on_Delete_pressed()
     ui->graphicsView->updateSelection();
     ui->graphicsView->removeTile();
     ui->graphicsView->displayEdit();
+}
+
+void MainWindow::on_actionPolar_view_toggled(bool checked)
+{
+    //polarViewModule->setActive(checked);
+    if (checked){
+        ui->tabWidget->insertTab(ui->tabWidget->count(),polarTab,QIcon(QString("")),"new tab");
+        ui->tabWidget->setCurrentWidget(polarTab);
+        }
+    else {
+            ui->tabWidget->removeTab(ui->tabWidget->indexOf(polarTab));
+        }
 }

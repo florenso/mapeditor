@@ -247,9 +247,6 @@ public:
     //! \param  bool if set false does not recenter the map
     void drawBox(r2d2::Box box, int tileSize = 10, bool centeron = true);
 
-    //TEMP!!!
-    void showPolarView(std::map<r2d2::Angle, DistanceReading> polarview, r2d2::Coordinate centerCoordinate);
-    //
 private:
 
     //! scene dimensions

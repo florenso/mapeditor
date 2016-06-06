@@ -29,15 +29,15 @@ SOURCES += source/src/main.cpp \
     ../adt/source/src/Angle.cpp \
     ../map/source/src/MapInterface.cpp \
     ../map/source/src/BoxMap.cpp \
-    source/src/polarviewview.cpp \
-    ../polarview/source/src/DistanceReading.cpp
+    ../polarview/source/src/DistanceReading.cpp \
+    source/src/polarview/polarViewTab.cpp #\
+    #source/src/polarview/polarView.cpp
 
 
 HEADERS  += source/include/mainwindow.hpp \
     source/include/mapEditor.hpp \
     source/include/mapView.hpp \
     source/include/viewScene.hpp \
-    source/include/polarviewview.hpp \
     ../adt/source/include/Length.hpp \
     ../adt/source/include/Translation.hpp \
     ../adt/source/include/Box.hpp \
@@ -46,11 +46,15 @@ HEADERS  += source/include/mainwindow.hpp \
     ../map/source/include/MapInterface.hpp \
     ../map/source/include/BoxMap.hpp \
     ../adt/source/include/ADT_Base.hpp \
-    ../polarview/source/include/DistanceReading.hpp
+    ../polarview/source/include/DistanceReading.hpp \
+    source/include/polarview/polarViewTab.hpp #\
+    #source/include/polarview/polarView.hpp
 
 
 INCLUDEPATH += ../adt/source/include/
 INCLUDEPATH += ../polarview/source/include/
 INCLUDEPATH += source/include/
+INCLUDEPATH += source/include/polarview/
 
-FORMS    += source/mainwindow.ui
+FORMS    += source/mainwindow.ui \
+    source/polarViewTab.ui

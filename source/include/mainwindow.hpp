@@ -63,6 +63,7 @@
 #include <QEnterEvent>
 #include <QEvent>
 #include <string>
+#include "polarview/polarViewTab.hpp"
 
 namespace Ui {
 class MainWindow;
@@ -126,12 +127,17 @@ private slots:
     void on_Delete_pressed();
 
 
+    void on_actionPolar_view_toggled(bool arg1);
+
 private:
+    polarViewTab * polarTab;
+
     Ui::MainWindow *ui;
 
     r2d2::SaveLoadMap * map;
 
     std::string fileName_std = "";
+
 };
 
 #endif // MAINWINDOW_HPP
