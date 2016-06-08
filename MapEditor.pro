@@ -30,8 +30,8 @@ SOURCES += source/src/main.cpp \
     ../map/source/src/MapInterface.cpp \
     ../map/source/src/BoxMap.cpp \
     ../polarview/source/src/DistanceReading.cpp \
-    source/src/polarview/polarViewTab.cpp #\
-    #source/src/polarview/polarView.cpp
+    source/src/polarview/polarViewTab.cpp \
+    ../PolarView-Aggregator/source/src/PolarViewAggregator.cpp
 
 
 HEADERS  += source/include/mainwindow.hpp \
@@ -47,14 +47,15 @@ HEADERS  += source/include/mainwindow.hpp \
     ../map/source/include/BoxMap.hpp \
     ../adt/source/include/ADT_Base.hpp \
     ../polarview/source/include/DistanceReading.hpp \
-    source/include/polarview/polarViewTab.hpp #\
-    #source/include/polarview/polarView.hpp
+    source/include/polarview/polarViewTab.hpp \
+    ../PolarView-Aggregator/source/include/PolarViewAggregator.hpp
 
 
 INCLUDEPATH += ../adt/source/include/
 INCLUDEPATH += ../polarview/source/include/
 INCLUDEPATH += source/include/
 INCLUDEPATH += source/include/polarview/
+INCLUDEPATH += ../PolarView-Aggregator/source/include/
 
 FORMS    += source/mainwindow.ui \
     source/polarViewTab.ui
