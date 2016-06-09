@@ -27,9 +27,24 @@ public:
 private slots:
     void on_pushButton_clicked();
 
+    void on_pushButton_2_clicked();
+
+
+    void on_pushButton_3_clicked();
+
 private:
     Ui::polarViewTab *ui;
     mapView * mapViewer;
+
+
+
+    r2d2::Coordinate origin{0*r2d2::Length::CENTIMETER,0*r2d2::Length::CENTIMETER,0*r2d2::Length::CENTIMETER};
+    r2d2::Translation trans1{60*r2d2::Length::CENTIMETER,30*r2d2::Length::CENTIMETER,0*r2d2::Length::CENTIMETER};
+    r2d2::Translation trans2{-60*r2d2::Length::CENTIMETER,30*r2d2::Length::CENTIMETER,0*r2d2::Length::CENTIMETER};
+    std::map<r2d2::Angle, r2d2::DistanceReading> testpolar1;
+    std::map<r2d2::Angle, r2d2::DistanceReading> testpolar2;
+
+
     };
 
 #endif // POLARVIEWTAB_HPP
