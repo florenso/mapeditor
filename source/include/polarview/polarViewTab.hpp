@@ -44,8 +44,8 @@ private:
 
     r2d2::Coordinate trans1{60*r2d2::Length::CENTIMETER,30*r2d2::Length::CENTIMETER,0*r2d2::Length::CENTIMETER};
     r2d2::Coordinate trans2{-60*r2d2::Length::CENTIMETER,30*r2d2::Length::CENTIMETER,0*r2d2::Length::CENTIMETER};
-    std::unique_ptr<r2d2::MapPolarView> testpolar1{new r2d2::MapPolarView};
-    std::unique_ptr<r2d2::MapPolarView> testpolar2;
+    r2d2::MapPolarView testpolar1;
+    r2d2::MapPolarView testpolar2;
 
 
     };
