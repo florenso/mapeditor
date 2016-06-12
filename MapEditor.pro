@@ -30,8 +30,10 @@ SOURCES += source/src/main.cpp \
     ../map/source/src/MapInterface.cpp \
     ../map/source/src/BoxMap.cpp \
     ../polarview/source/src/DistanceReading.cpp \
+    ../polarview/source/src/MapPolarView.cpp \
     source/src/polarview/polarViewTab.cpp \
-    ../PolarView-Aggregator/source/src/PolarViewAggregator.cpp
+    ../PolarView-Aggregator/source/src/PolarViewAggregator.cpp \
+    ../PolarView-Aggregator/source/src/SensorAggregator.cpp
 
 
 HEADERS  += source/include/mainwindow.hpp \
@@ -47,8 +49,16 @@ HEADERS  += source/include/mainwindow.hpp \
     ../map/source/include/BoxMap.hpp \
     ../adt/source/include/ADT_Base.hpp \
     ../polarview/source/include/DistanceReading.hpp \
+    ../polarview/source/include/PolarView.hpp \
+    ../polarview/source/include/MapPolarView.hpp \
     source/include/polarview/polarViewTab.hpp \
-    ../PolarView-Aggregator/source/include/PolarViewAggregator.hpp
+    ../sensorInterfaces/source/include/Sensor.hpp \
+    ../sensorInterfaces/source/include/LocatedDistanceSensor.hpp \
+    ../sensorInterfaces/source/include/CoordinateAttitude.hpp \
+    ../sensorInterfaces/source/include/DistanceSensor.hpp \
+    ../sensorInterfaces/source/include/Locatable.hpp \
+    ../PolarView-Aggregator/source/include/PolarViewAggregator.hpp \
+    ../PolarView-Aggregator/source/include/SensorAggregator.hpp
 
 
 INCLUDEPATH += ../adt/source/include/
@@ -56,6 +66,7 @@ INCLUDEPATH += ../polarview/source/include/
 INCLUDEPATH += source/include/
 INCLUDEPATH += source/include/polarview/
 INCLUDEPATH += ../PolarView-Aggregator/source/include/
+INCLUDEPATH += ../sensorInterfaces/source/include/
 
 FORMS    += source/mainwindow.ui \
     source/polarViewTab.ui

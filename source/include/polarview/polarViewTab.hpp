@@ -3,10 +3,15 @@
 
 #include <QMainWindow>
 #include <QWidget>
-#include "polarview/polarView.hpp"
+#include "MapPolarView.hpp"
 #include "polarview.hpp"
 #include "Angle.hpp"
 #include "mapView.hpp"
+#include "DistanceReading.hpp"
+#include <forward_list>
+#include "ui_polarViewTab.h"
+#include "PolarViewAggregator.hpp"
+#include "SensorAggregator.hpp"
 
 namespace Ui {
     class polarViewTab;
@@ -21,7 +26,7 @@ public:
 
     ~polarViewTab();
 
-    void showPolarView(std::map<r2d2::Angle, r2d2::DistanceReading> polarview,r2d2::Coordinate centerCoordinate, QColor color = Qt::blue);
+    void showPolarView(r2d2::MapPolarView polarview,r2d2::Coordinate centerCoordinate, QColor color = Qt::blue);
 
 
 private slots:
@@ -37,12 +42,10 @@ private:
     mapView * mapViewer;
 
 
-
-    r2d2::Coordinate origin{0*r2d2::Length::CENTIMETER,0*r2d2::Length::CENTIMETER,0*r2d2::Length::CENTIMETER};
-    r2d2::Translation trans1{60*r2d2::Length::CENTIMETER,30*r2d2::Length::CENTIMETER,0*r2d2::Length::CENTIMETER};
-    r2d2::Translation trans2{-60*r2d2::Length::CENTIMETER,30*r2d2::Length::CENTIMETER,0*r2d2::Length::CENTIMETER};
-    std::map<r2d2::Angle, r2d2::DistanceReading> testpolar1;
-    std::map<r2d2::Angle, r2d2::DistanceReading> testpolar2;
+    r2d2::Coordinate trans1{60*r2d2::Length::CENTIMETER,30*r2d2::Length::CENTIMETER,0*r2d2::Length::CENTIMETER};
+    r2d2::Coordinate trans2{-60*r2d2::Length::CENTIMETER,30*r2d2::Length::CENTIMETER,0*r2d2::Length::CENTIMETER};
+    std::unique_ptr<r2d2::MapPolarView> testpolar1{new r2d2::MapPolarView};
+    std::unique_ptr<r2d2::MapPolarView> testpolar2;
 
 
     };
